@@ -1,0 +1,144 @@
+<!--#nk_get SetPageWidth="0"-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Web Management</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<script  language="JavaScript">
+/***************************************************/
+/*												     */	
+/*      		Begin of content's JavaScript function    	    */
+/*												    */	
+/***************************************************/
+
+function Entryfunction()
+{
+	ChangeBgsize();
+}
+function Leavefunction()
+{
+	setTimeout("", 3000);
+}
+
+function chSubmit(F)
+{	
+	if (parseInt(F.SetTCPTimeOut.value)<600 || parseInt(F.SetTCPTimeOut.value)>86400 )
+	{
+		top.AlertMsg("Alert", "Please input TCP timeout value within 600~86400 seconds.");
+		return;
+	}
+
+	if (parseInt(F.SetUDPTimeOut.value)<15 || parseInt(F.SetUDPTimeOut.value)>300)
+	{
+		top.AlertMsg("Alert", "Please input UDP timeout value within 15~300 seconds.");
+		return;
+	}
+
+	F.submitStatus.value=1;
+    F.submit();
+}
+
+function falseSubmit()
+{
+	F.submitStatus.value=0; 
+	F.submit();
+}
+
+//================= End =================*/
+
+/***************************************************/
+/*												   */	
+/*      			  Begin of content    				   */
+/*												   */	
+/***************************************************/
+var ButtonType = "OkCancel";		// NULL/Refresh/OkCancel/BackOkCancel/ShowTableOkCancel
+var Savelink = "chSubmit(document.formf_generalHidden);";
+var Cancellink = "";
+var helplink ='';
+var UserName = '<!--#nk_get DisplayOnly="nUser"-->';
+var FixedTableWidth = 660;
+var head_width=120;
+
+function PrintContent()
+{
+	PrintBeginContent();
+	PrintTimeout(1);
+	PrintSIPALG(0);
+	PrintEndContent();
+}
+
+function PrintTimeout(hasUnderLine)
+{
+	PrintBeginBlock(0);
+	document.write('<table>');
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('TCP timeout&nbsp;:&nbsp;'); 
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="SetTCPTimeOut" size="3" maxlength="5" onKeypress="return Check_User_Input(event)" value="<!--#nk_get 1to1_Handle="SetTCPTimeOut"-->" >'); //UDPSetTimeout
+	document.write('&nbsp;Seconds</td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('UDP timeout&nbsp;:&nbsp;'); 
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="SetUDPTimeOut" size="3" maxlength="3" onKeypress="return Check_User_Input(event)" value="<!--#nk_get 1to1_Handle="SetUDPTimeOut"-->" >'); //UDPSetTimeout
+	document.write('&nbsp;Seconds</td>');
+	document.write('</tr>');
+	document.write('</table>');
+	PrintEndBlock(hasUnderLine);
+}
+
+function PrintSIPALG(hasUnderLine)
+{
+	PrintBeginBlock(0);
+	document.write('<table>');
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('SIP ALG&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="radio" name="SipAlg" value="1" <!--#nk_get RadioHandle2="SipAlg:1"-->>');
+	document.write('&nbsp;&nbsp;Enable');
+	document.write('<input type="radio" name="SipAlg" value="0" <!--#nk_get RadioHandle2="SipAlg:0"-->>');
+	document.write('&nbsp;&nbsp;Disable');
+	document.write('</td>');
+	document.write('<td colspan="2">');
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('</table>');
+	PrintEndBlock(hasUnderLine);
+}
+
+//=============== End of content ===============*/
+</script>
+</head>
+<body class="mainframe" onLoad="Entryfunction();" onUnload="Leavefunction();" onResize="ChangeBgsize();">
+<script>PrintBackground();</script>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<form id="submitform" name="submitform"  method="post">
+	 	<!--#nk_get SetPageWidth="1"-->
+	</form>
+	<!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+
+	<script>
+         SetItemInit(foldersTree, 6, 1);		// Set Selected Node
+         initializeTree(foldersTree); 			// Draw Menu & Layout
+	</script>
+
+	<form name="formf_generalHidden" action="f_general_hidden.htm" method="post">
+		<input type="hidden" name="page" value="f_general_hidden.htm">
+		<input type="hidden" name="submitStatus" value="0">
+	<script>PrintContent();</script>
+	<script>PrintRight();</script>      
+	<script>PrintBottom();</script>	
+</table>
+</body>
+</html>
+<!--#nk_get SetTimeout=""-->

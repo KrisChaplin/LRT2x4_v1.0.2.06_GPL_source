@@ -1,0 +1,515 @@
+<!--#nk_get SetPageWidth="0"-->
+<!--#nk_get DeleteDhcpClient=""-->
+<!--#nk_get SaveStatusType=""-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Web Management</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<script  language="JavaScript">
+/***************************************************/
+/*												     */	
+/*      		Begin of content's JavaScript function    	    */
+/*												    */	
+/***************************************************/
+function Entryfunction()
+{
+	ChangeBgsize();
+}
+function Leavefunction()
+{
+	chLeave();
+}
+var removeLinen;
+function removeLine(n)
+{
+	removeLinen = n;
+	top.ConfirmMsg("Confirm",cRemoveClient,"removeLine",""); 
+/*	if (confirm(cRemoveClient))
+	{
+		document.formdhcp_status.RemoveLine.value=n;
+		window.status=wRemoveClient;	
+		document.formdhcp_status.submit();
+	}*/
+}
+var removeLinev6n ;
+function removeLine_v6(n)
+{
+	removeLinev6n = n;
+	top.ConfirmMsg("Confirm",cRemoveClient,"removeLine_v6",""); 
+/*	if (confirm(cRemoveClient))
+	{
+		document.formdhcp_status.RemoveLine_v6.value=n;
+		window.status=wRemoveClient;	
+		document.formdhcp_status.submit();
+	}*/
+}
+
+function getIPNumber(ipAddr)
+{
+	var result = 0;
+	var value = 0;
+	var ipParts = new Array();
+
+	ipParts = ipAddr.split(".");
+
+   for (var i=0; i < ipParts.length; i++) 
+   {
+      var addr =  ipParts[i];
+
+      if (i==0)
+         value = addr * 256 * 256 * 256;
+      else if (i == 1)
+         value = addr * 256 * 256;
+      else if (i == 2)
+         value = addr * 256;
+      else if (i == 3)
+         value = addr * 1;
+
+      result = result + value;
+   }
+   return result; 
+}
+
+function IP_S_to_B_Data(a,b)
+{
+    var aText = a;
+    var bText = b;
+	var items;
+	
+	if(!a) return -1;
+	if(!b) return 1;
+	
+	items=aText.split(splitVarforSpecialWordField+"#");
+	aText=getIPNumber(items[0]);
+	
+	items=bText.split(splitVarforSpecialWordField+"#");
+	bText=getIPNumber(items[0]);
+
+	if (aText < bText) return -1;
+    if (aText > bText) return 1;
+    return 0;
+}
+
+var list;
+function produce_table(data)
+{
+	var items;
+
+	list=data.split(splitVarforSpecialWordField+"?");
+	list.sort(IP_S_to_B_Data);	
+
+	if(list.length < 2) return ;
+
+	document.write('<tr>');
+	document.write('<td class="STtable">');
+	document.write('<table width="100%"  class="STtable"  border="0">');
+
+	for (var i=1; i < list.length; i++) 
+	{
+		items=list[i].split(splitVarforSpecialWordField+"#");
+		if(i%2==1)
+		    Print_table_tr_cell("OddRow",items[1],items[0],items[2],items[3],items[4]);
+		else
+		    Print_table_tr_cell("EvenRow",items[1],items[0],items[2],items[3],items[4]);
+		//list[i]=list[i]+"#"+i;
+	}
+	document.write('</table>');		
+	document.write('</td>');
+	document.write('</tr>');
+}
+
+function produce_table_v6(data)
+{
+	var items;
+
+	list=data.split(splitVarforSpecialWordField+"?");
+	list.sort(IP_S_to_B_Data);	
+
+	if(list.length < 2) return ;
+
+	for (var i=1; i < list.length; i++) 
+	{
+		items=list[i].split(splitVarforSpecialWordField+"#");
+		if(i%2==1)
+		    Print_table_tr_cell_v6("OddRow",items[1],items[0],items[3]);
+		else
+		    Print_table_tr_cell_v6("EvenRow",items[1],items[0],items[3]);
+		//Print_table_tr_cell_v6("OddRow",items[1],items[0],items[2],items[3]); print MAC
+	}
+}
+
+
+function EditIndexChange(F)
+{
+    F.SubnetEditIndex.value=F.indexID.value
+   // F.submitStatus.value=0; 
+    F.submit();
+}
+
+function chChangeIPmode(val)
+{
+	var obj;
+	var F = document.formdhcp_status;
+	var serviceName="IPv6 DHCP Server";
+
+	if(val==1)
+	{
+		obj = MM_findObj('ClientTableV4','');	
+	    obj.style.display=style_display_on();
+		obj = MM_findObj('ClientTableV6','');	
+	    obj.style.display='none';
+	}
+	else if(val==2)
+	{
+		if ('<!--#nk_get RadioHandle="setIpMode:0"-->'== "checked")
+		{
+			top.ConfirmMsg("Confirm",(alertMessageBegin+serviceName+selectMessage),"chChangeIPmode",""); 
+/*			if (confirm(alertMessageBegin+serviceName+selectMessage)){
+				document.location.href="network.htm";
+			}*/
+		}
+		else
+		{
+		obj = MM_findObj('ClientTableV4','');	
+	    obj.style.display='none';
+		obj = MM_findObj('ClientTableV6','');	
+	    obj.style.display=style_display_on();		
+		}
+
+	}
+	
+}
+
+function ConfirmMsgResult(chose,mode,a)
+{
+	if(mode=="removeLine")
+	{		
+		if(chose=="yes")
+		{
+			document.formdhcp_status.RemoveLine.value=removeLinen;
+			window.status=wRemoveClient;	
+			document.formdhcp_status.submit();
+		}
+		else if(chose=="no")
+		{
+			return;
+		}
+	}
+
+	if(mode=="removeLine_v6")
+	{		
+		if(chose=="yes")
+		{
+			document.formdhcp_status.RemoveLine_v6.value=removeLinev6n;
+			window.status=wRemoveClient;	
+			document.formdhcp_status.submit();
+		}
+		else if(chose=="no")
+		{
+			return;
+		}
+	}
+	
+	if(mode=="chChangeIPmode")
+	{		
+		if(chose=="yes")
+		{
+			document.location.href="network.htm";
+		}
+		else if(chose=="no")
+		{
+			return;
+		}
+	}
+}
+
+//================= End =================*/
+
+/***************************************************/
+/*												   */	
+/*      			  Begin of content    				   */
+/*												   */	
+/***************************************************/
+var ButtonType = "Refresh";		// NULL/Refresh/OkCancel/BackOkCancel/ShowTableOkCancel
+var Reloadlink = "";
+var helplink ='help_dhcp_status.html';
+var UserName = '<!--#nk_get DisplayOnly="nUser"-->';
+var FixedTableWidth = "100%";
+var head_width=130;
+
+function PrintContent()
+{
+	PrintBeginContent();
+	PrintDhcpStatus(1);
+	PrintClientTable(0);
+	chChangeIPmode(1);
+	PrintEndContent();
+}
+
+function PrintDhcpStatus(hasUnderLine)
+{
+	PrintBeginBlock(0);
+	var data = document.formdhcp_status.SubnetData.value.split(';');
+	var server_data = document.formdhcp_status.DHCPServerStatus.value.split(',');
+	document.write('<table width="'+FixedTableWidth+'" class="Infotable" border="'+Tableborder+'">');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'"></td>');	
+	document.write('<th>IPv4</th>');
+	document.write('<th>IPv6</th>');
+	document.write('</tr>');	
+	document.write('<tr>');	
+	document.write('<td width="'+head_width+'" align="left">VID&nbsp;:&nbsp;</td>');
+  	document.write('<td width="40%">');
+	document.write('<select class="select" id="indexID" name="indexID" style="width:50px" onChange="EditIndexChange(this.form);">');
+	for(var i=0; i<=data.length-1; i++)
+	{
+			document.write('<option value="'+data[i]+'" ');
+			if ( data[i] == document.formdhcp_status.SubnetEditIndex.value)
+				  document.write(' selected');
+			document.write('>'+data[i]+'</option>');
+	}
+	document.write('</select>');	
+	document.write('</td>');
+
+	document.write('<td width="40%"></td>');	
+	document.write('<td></td>');	
+	document.write('</tr>');
+	document.write('<tr>');	
+	document.write('<td width="'+head_width+'" align="left">DHCP Server&nbsp;:&nbsp;</td>');
+	document.write('<td width="40%">'+server_data[0]+'</td>');
+	document.write('<td width="40%"><!--#nk_get DisplayOnly="ipAddr_v6"--></td>');	
+	document.write('<td></td>');	
+	document.write('</tr>');
+	document.write('<tr>');	
+	document.write('<td width="'+head_width+'" align="left">Dynamic IP Used&nbsp;:&nbsp;</td>');
+	document.write('<td>'+server_data[1]+'</td>');
+	document.write('<td><!--#nk_get DynaIPUsed_v6=""--></td>');	
+	document.write('</tr>');
+	document.write('<tr>');	
+	document.write('<td width="'+head_width+'" align="left">Static IP Used&nbsp;:&nbsp;</td>');	
+	document.write('<td>'+server_data[2]+'</td>');	
+	document.write('<td>---</td>');	
+	document.write('<td></td>');	
+	document.write('</tr>');
+	document.write('<tr>');	
+	document.write('<td width="'+head_width+'" align="left">DHCP Available&nbsp;:&nbsp;</td>');	
+	document.write('<td>'+server_data[3]+'</td>');	
+	document.write('<td><!--#nk_get DhcpIPAvailable_v6="1"--></td>');	
+	document.write('<td></td>');	
+	document.write('</tr>');
+	document.write('<tr>');	
+	document.write('<td width="'+head_width+'" align="left">Total&nbsp;:&nbsp;</td>');	
+	document.write('<td>'+server_data[4]+'</td>');
+	document.write('<td><!--#nk_get DhcpIPTotal_v6="1"--></td>');	
+	document.write('<td></td>');	
+	document.write('</tr>');
+	document.write('</table>');
+	PrintEndBlock(hasUnderLine, 1);
+}
+
+function Print_table_tr_cell(cell_type,host_name,IP,MAC, time, bind_name)
+{
+	document.write('<tr class='+cell_type+' >');	
+	document.write('<td class="tdContentBorderRight tdContentC">'+host_name+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+bind_name+'<img border="0" src="images/_blank.gif" width="1" height="1"></td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+IP+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+MAC+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+time+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentC"><a href=javascript:removeLine("'+IP+'")><img src=images/trash.gif width=20 height=16 border=0 title=Delete></a></td>');	
+	
+	document.write('<td class="tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</td>');
+	
+	document.write('</tr>');
+}
+
+function Print_table_tr_cell_v6(cell_type,host_name,IP, time)
+{	
+	document.write('<tr class='+cell_type+' >');	
+	document.write('<td class="tdContentBorderRight tdContentC">'+host_name+'<img border="0" src="images/_blank.gif" width="8" height="1"></td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+IP+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+time+'</td>');
+	
+	document.write('<td class="tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</td>');
+	
+	document.write('</tr>');
+}
+
+function PrintClientTable(hasUnderLine)
+{
+
+	//PrintBeginBlock(1, "Client Table");
+	var titlestr = "Client Table";
+	document.write('<tr><td>');
+	document.write('<table id="'+titlestr+'" width="100%" class="Grouptitle" border="0" cellpadding="0" cellspacing="0">');
+	document.write('<tr>');
+	document.write('<td align="left" valign="top"><font class="Grouptitle">');	
+	PrintBarItem(titlestr);
+	document.write('</font></td>');
+	document.write('</tr>');
+	document.write('</table>');
+	document.write('<table id="'+titlestr+'content" width="100%" border="0" cellpadding="0" cellspacing="0">');
+	document.write('<tr>');
+	document.write('<td align="left" valign="top">');
+	
+	var data = document.formdhcp_status.DHCPClientStatus.value.split(';');
+	document.write('<table id=ClientTableV4  width="'+FixedTableWidth+'" border="0">');	
+	PrintIPTypeTab('IPv4','true','IPv6','false');
+	document.write('<tr><td class="ipvxtabtable" style="background:#f9f9f9;">');
+	document.write('<table width="100%" cellpadding="0" cellspacing="0">');
+	document.write('<tr><td>');
+	
+	document.write('<table width="100%" class="SpecialTable" cellspacing="0" cellpadding="0" border="0">');	
+	document.write('<tr>');	
+	document.write('<th class="firstth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Client Host Name');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Rule Name');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	//   
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('IP Address');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('MAC Address');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Client Lease Time');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Delete');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="lastth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	document.write('</tr>');
+	
+	if((data.length-1)>0)
+	{
+	    for(var i=0; i<data.length-1; i++)
+	    {//host_name ,rulename, ip ,mac ,leasetime
+	    //Print_table_tr_cell(cell_type,host_name,IP,MAC, time, bind_name)
+		var client_data = data[i].split('&');
+		    if(i%2==1)
+			Print_table_tr_cell("OddRow",client_data[0],client_data[2],client_data[3],client_data[4],client_data[1]);
+		    else
+			Print_table_tr_cell("EvenRow",client_data[0],client_data[2],client_data[3],client_data[4],client_data[1]);
+
+	    }
+	}
+	document.write('</table>');
+	
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('</table>');
+	
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('</table>');
+	
+//ipv6
+	document.write('<table id=ClientTableV6  width="'+FixedTableWidth+'" border="0"><tr><td>');	
+	PrintIPTypeTab('IPv4','false','IPv6','true');
+	document.write('<tr><td class="ipvxtabtable" style="background:#f9f9f9;">');
+	document.write('<table width="100%" cellpadding="0" cellspacing="0">');
+	document.write('<tr><td>');
+	
+	document.write('<table width="100%" class="SpecialTable" cellspacing="0" cellpadding="0" border="0">');	
+	document.write('<tr height="20">');	
+	document.write('<th class="firstth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Client Host Name');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('IP Address');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Client Lease Time');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="lastth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	document.write('</tr>');
+	
+	if ('<!--#nk_get RadioHandle="setIpMode:0"-->' != "checked" ){
+		<!--#nk_get DhcpClientTable_v6=""-->
+	}
+	document.write('</table>');
+	
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('</table>');
+	
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('</table>');
+
+	PrintEndBlock(hasUnderLine);	
+}
+
+//=============== End of content ===============*/
+</script>
+</head>
+<body class="mainframe" onLoad="Entryfunction();" onUnload="Leavefunction();" onResize="ChangeBgsize();">
+<script>PrintBackground();</script>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<form id="submitform" name="submitform"  method="post">
+	 	<!--#nk_get SetPageWidth="1"-->
+	</form>
+	<!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+	<script>
+         SetItemInit(foldersTree, 3, 2);		// Set Selected Node
+         initializeTree(foldersTree); 			// Draw Menu & Layout
+	</script>
+		
+	<form name="formdhcp_status" action="dhcp_status.htm" method="post">
+	<input type="hidden" name="RemoveLine" value="0">
+	<input type="hidden" name="RemoveLine_v6" value="0">
+	<input type="hidden" name="page" value="dhcp_status.htm">
+	<input type="hidden" name="StatusType" value='<!--#nk_get DisplayOnly="dhcpStatusType"-->'>
+	<input type="hidden" name="SubnetData" value='<!--#nk_get MultipleSubnetData="VID"-->'>
+	<input type="hidden" name="SubnetEditType" value='<!--#nk_get SubnetEditType=""-->'>
+	<input type="hidden" name="SubnetEditIndex" value='<!--#nk_get SubnetEditIndex=""-->'>  
+	<input type="hidden" name="DHCPClientStatus" value="<!--#nk_get DHCPClientStatus=""-->">
+	<input type="hidden" name="DHCPServerStatus" value='<!--#nk_get DHCPServerStatus=""-->'>
+
+	<script>PrintContent();</script>
+	<script>PrintRight();</script>      
+	<script>PrintBottom();</script>   
+</table>
+</body>
+</html>

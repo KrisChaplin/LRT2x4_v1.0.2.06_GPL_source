@@ -1,0 +1,7 @@
+
+config CONFIG_engine
+	bool "engine"
+	default n
+	depends CONFIG_openssl
+	help
+		This is a Octeon Crypto Engine Implementation for OpenSSL.

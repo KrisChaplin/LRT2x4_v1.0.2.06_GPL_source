@@ -1,0 +1,1 @@
+#undef CONFIG_RTC_X1205_I2C

@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>System Log</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<script language=JavaScript>
+function LogSel(F)
+{
+    F.submitStatus.value="2";
+    F.submit();
+}
+function refreshLog(F)
+{
+	F.submit();
+}
+function clearLog(F)
+{
+    F.submitStatus.value="3";
+    F.submit();
+}
+function chCend(F)
+{
+    F.submitStatus.value="1";
+    if(F.cend.value=="1")
+	F.cend.value="0";
+    else if(F.cend.value=="0")
+	F.cend.value="1";
+
+    F.submit();
+}
+
+function FilterString(Str)
+{
+	var index = Str.indexOf("kernel:",0);
+	if (index > 0)
+		return Str.substring(index+8, Str.length);
+	else
+		return Str;
+}
+
+function Print_table_tr_cell(cell_type,time,event_type, message)
+{
+	document.write('<tr class='+cell_type+' >');	
+	document.write('<td class="tdContentBorderRight tdContentL">'+FilterDate(time)+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentL">'+event_type+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentL">'+FilterString(message)+'</td>');	
+	
+	document.write('<td class="tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</td>');
+	
+	document.write('</tr>');
+	
+}
+</script>
+</head>
+<body class="poplist" onLoad="ChangeWhiteTable()" onResize="ChangeWhiteTable()" style="overflow:hidden">
+<form name="formLog" method="post" action="sys_log.htm">
+<input type="hidden" name="page" value="sys_log.htm"> 
+<input type="hidden" name="submitStatus" value="0"> 
+<input type="hidden" name="cend" value='<!--#nk_get 1to1_Handle="cend"-->'> 
+  <table class="pop_title_table" border="0" width="100%">     
+    <tr> 
+      <td valign="bottom" width="90">Current Time&nbsp;:&nbsp;<img border="0" src="images/_blank.gif" width="8" height="1"></td>
+      <td valign="bottom">
+        <!--#config timefmt="%a %b %e %H:%M:%S %Y"-->
+        <!--#echo var="DATE_LOCAL"-->
+      </td>          
+      <th>
+        <select class="select" name="LogType" onChange="LogSel(this.form)">
+        <option value="0" <!--#nk_get SelectStatus="LogType:0"-->>ALL</option>
+        <option value="1" <!--#nk_get SelectStatus="LogType:1"-->>System Log</option>
+        <option value="2" <!--#nk_get SelectStatus="LogType:2"-->>Access Log</option>
+        <option value="3" <!--#nk_get SelectStatus="LogType:3"-->>Firewall Log</option>
+        <option value="4" <!--#nk_get SelectStatus="LogType:4"-->>VPN Log</option>
+        </select>
+      </th>
+      <th width="300">
+        <script language="JavaScript">
+        	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+        	PrintSTButton('refresh', 'Refresh', 'refreshLog(this.form)', "","","");
+		document.write('<img border="0" src="images/_blank.gif" width="5" height="1">');
+		document.write('<input type="hidden" name="LogClear" value="0">');  
+		PrintSTButton('clear', 'Clear', 'clearLog(this.form)', "","","" );
+		document.write('<img border="0" src="images/_blank.gif" width="5" height="1">');
+		PrintSTButton('close', 'Close', 'closeWindow();', "","","" );
+        </script> 
+      </th>  
+    </tr>     
+  </table>
+  
+
+<script>PrintWhiteTableBegin();</script>
+
+<table width="100%" >
+	<tr>
+	<td>
+		 <script language="JavaScript">
+			document.write('<table width="100%" class="SpecialTable" cellspacing="0" cellpadding="0" border="0">');	
+			document.write('<tr >');	
+			document.write('<th class="firstth tdContentC">');
+			document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+			if (document.formLog.cend.value == 1)
+				document.write('<img src=\'images/cend21.gif\' width="12" height="12" onClick="chCend(document.formLog)">');		
+			else
+				document.write('<img src=\'images/cend11.gif\' width="12" height="12" onClick="chCend(document.formLog)">');
+			document.write('Time');
+			document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+			document.write('</th>');
+			
+			document.write('<th class="middleth tdContentC">');
+			document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+			document.write('Event-Type');
+			document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+			document.write('</th>');
+			
+			document.write('<th class="middleth tdContentC">');
+			document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+			document.write('Message');
+			document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+			document.write('</th>');
+			
+			document.write('<th class="lastth tdContentC">');
+			document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+			document.write('</th>');
+			document.write('</tr>');
+			
+			<!--#nk_get SysLogList=""-->
+			document.write('</table>');
+		</script>
+	
+	</td>
+	</tr>
+	</table>
+	
+	<script>PrintWhiteTableEnd();</script>
+</form>     
+</body>
+</html>

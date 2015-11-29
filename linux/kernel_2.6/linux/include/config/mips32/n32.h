@@ -1,0 +1,1 @@
+#define CONFIG_MIPS32_N32 1

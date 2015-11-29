@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>UPnP Forwarding Table List</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<script language=JavaScript>
+function Entryfunction()
+{
+	window.status='';
+}
+function Leavefunction()
+{
+}
+function Print_table_tr_cell(cell_type, ServiceName, Protocol, ExtPort, InternalPort, IP, Enable)
+{
+	document.write('<tr class='+cell_type+' >');	
+	document.write('<td class="tdContentBorderRight tdContentC">'+ServiceName+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+Protocol+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+ExtPort+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+InternalPort+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+IP+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+Enable+'</td>');	
+	
+	document.write('<td class="tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</td>');
+	
+	document.write('</tr>');
+}
+</script>
+</head>
+<body class="poplist" onResize="ChangeWhiteTable()" style="overflow:hidden">
+<form action="UPnP_table.htm" method="post">
+<input type=hidden name="page" value="UPnP_table.htm"> 
+<input type="hidden" name="pointbufList" value="0"> 
+<table class="pop_title_table" border="0" width="100%">
+<tr> 
+    <th> 
+       <script language="JavaScript">
+        	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+        	PrintSTButton('refresh', 'Refresh', "javascript: location.href='UPnP_table.htm'", "","",70);
+		document.write('<img border="0" src="images/_blank.gif" width="5" height="1">');
+		PrintSTButton('close', 'Close', 'closeWindow();', "","", 70);
+        </script> 
+    </th>
+</tr>
+</table>
+  <script>PrintWhiteTableBegin();</script>
+  
+   <table width="100%" class="" border="0">
+  	<tr><td>
+  	<script language="JavaScript">
+		document.write('<table width="100%" class="SpecialTable" cellspacing="0" cellpadding="0" border="0">');	
+		document.write('<tr >');	
+		document.write('<th class="firstth tdContentC">');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('Service Name');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+		document.write('</th>');
+		
+		document.write('<th class="middleth tdContentC">');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('Protocol');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('</th>');
+		
+		document.write('<th class="middleth tdContentC">');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('External Port');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('</th>');
+		
+		document.write('<th class="middleth tdContentC">');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('Internal Port');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('</th>');
+		
+		document.write('<th class="middleth tdContentC">');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('IP Address');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('</th>');
+		
+		document.write('<th class="middleth tdContentC">');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('Enabled');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('</th>');
+		
+		document.write('<th class="lastth tdContentC">');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('</th>');
+		document.write('</tr>');
+		
+		<!--#nk_get UPnPTable=""-->
+		document.write('</table>');		
+	</script>
+	
+	</td></tr>
+  </table>
+  
+<script>PrintWhiteTableEnd();</script>
+</form>
+</body>
+</html>

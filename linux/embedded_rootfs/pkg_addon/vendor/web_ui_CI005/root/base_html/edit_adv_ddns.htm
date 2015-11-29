@@ -1,0 +1,701 @@
+<!--#nk_get SetPageWidth="0"-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<!--#nk_get RedirectPage="adv_ddns.htm:0"-->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Web Management</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<script  language="JavaScript">
+/***************************************************/
+/*												     */	
+/*      		Begin of content's JavaScript function    	    */
+/*												    */	
+/***************************************************/
+
+function Entryfunction()
+{
+	ChangeBgsize();
+	var ruleAction=document.getElementsByName('ruleAction');
+	ruleAction.selectedIndex = 0;
+	displaytable(document.formedit_DDNS);
+}
+
+function Leavefunction()
+{
+	chLeave();
+}
+
+function setiName()
+{
+	var F=document.formedit_DDNS;
+	if (F.editInterface.value==2) F.iName.value="WAN2";
+	else if (F.editInterface.value==3) F.iName.value="WAN3";
+	else if (F.editInterface.value==4) F.iName.value="WAN4";
+	else if (F.editInterface.value==5) F.iName.value="WAN5";
+	else if (F.editInterface.value==6) F.iName.value="WAN6";
+	else if (F.editInterface.value==7) F.iName.value="WAN7";
+	else if (F.editInterface.value==8) F.iName.value="WAN8";
+	else
+	{
+		F.editInterface.value = 1;
+		F.iName.value="WAN1";
+	}
+}
+
+function check_special_for_ddns(word)
+{
+        var iChars = ":"; //"~!#$%^&*()+{}|\"<>?=[];,";
+	
+	for (var i = 0; i < word.value.length; i++)
+	{
+		if (iChars.indexOf(word.value.charAt(i)) != -1 )
+		{
+			top.AlertMsg("Alert", aCheckSpecialCharacter);
+			return -1;
+		}
+	}
+	return 0;
+}
+
+function chSubmit(F)
+{		
+	if(F.ruleAction.options[F.ruleAction.selectedIndex].value == 1)
+	{
+	    F.ddns_enabled1.value = 1;
+	    F.ddns_enabled2.value = 0;
+        F.ddns_enabled3.value = 0;
+        F.ddns_enabled4.value = 0;
+		F.ddns_enabled5.value = 0;
+		if(check_special_for_ddns(F.ddnsPasswordW11) < 0 )
+		      return ;
+
+		if(check_special_for_ddns(F.ddnsUsernameW11) < 0 )
+		      return ;
+		if(F.ddnsHostname1.value.length == 0)
+		{
+			top.AlertMsg("Alert", aHostName);
+			F.ddnsHostname1.select();
+			return;
+		}
+		else if(Check_Special_Words(F.ddnsHostname1) == -1)
+		{
+			F.ddnsHostname1.select();
+			return;
+		}
+	}	
+	else if(F.ruleAction.options[F.ruleAction.selectedIndex].value == 2)
+	{
+		F.ddns_enabled1.value = 0;
+		F.ddns_enabled2.value = 1;
+		F.ddns_enabled3.value = 0;
+		F.ddns_enabled4.value = 0;
+		F.ddns_enabled5.value = 0;
+		if(check_special_for_ddns(F.ddnsPasswordW12) < 0 )
+		      return ;
+
+		if(check_special_for_ddns(F.ddnsUsernameW12) < 0 )
+		      return ;
+		if(F.ddnsHostname2.value.length == 0)
+		{
+			top.AlertMsg("Alert", aHostName);
+			F.ddnsHostname2.select();
+			return;
+		}
+		else if(Check_Special_Words(F.ddnsHostname2) == -1)
+		{
+			F.ddnsHostname2.select();
+			return;
+		}
+	}
+	else if(F.ruleAction.options[F.ruleAction.selectedIndex].value == 3)
+	{
+		F.ddns_enabled1.value = 0;
+		F.ddns_enabled2.value = 0;
+		F.ddns_enabled3.value = 1;
+		F.ddns_enabled4.value = 0;
+		F.ddns_enabled5.value = 0;
+		if(check_special_for_ddns(F.ddnsPasswordW13) < 0 )
+		  return ;
+
+		if(check_special_for_ddns(F.ddnsUsernameW13) < 0 )
+		  return ;
+		if(F.ddnsHostname3.value.length == 0)
+		{
+			top.AlertMsg("Alert", aHostName);
+			F.ddnsHostname3.select();
+			return;
+		}
+		else if(Check_Special_Words(F.ddnsHostname3) == -1)
+		{
+			F.ddnsHostname3.select();
+			return;
+		}				
+	}
+	else if(F.ruleAction.options[F.ruleAction.selectedIndex].value == 4)
+	{
+		F.ddns_enabled1.value = 0;
+		F.ddns_enabled2.value = 0;
+		F.ddns_enabled3.value = 0;
+		F.ddns_enabled4.value = 1;
+		F.ddns_enabled5.value = 0;
+		if(check_special_for_ddns(F.ddnsPasswordW14) < 0 )
+		      return ;
+
+		if(check_special_for_ddns(F.ddnsUsernameW14) < 0 )
+		      return ;
+		if(F.ddnsHostname4.value.length == 0)
+		{
+			top.AlertMsg("Alert", aHostName);
+			F.ddnsHostname4.select();
+			return;
+		}
+		else if(Check_Special_Words(F.ddnsHostname4) == -1)
+		{
+			F.ddnsHostname4.select();
+			return;
+		}
+			
+	}
+	else if(F.ruleAction.options[F.ruleAction.selectedIndex].value == 5)
+	{
+		F.ddns_enabled1.value = 0;
+		F.ddns_enabled2.value = 0;
+		F.ddns_enabled3.value = 0;
+		F.ddns_enabled4.value = 0;
+		F.ddns_enabled5.value = 1;
+		if(check_special_for_ddns(F.ddnsPasswordW15) < 0 )
+		      return ;
+
+		if(check_special_for_ddns(F.ddnsUsernameW15) < 0 )
+		      return ;
+		if(F.ddnsHostname5.value.length == 0)
+		{
+			top.AlertMsg("Alert", aHostName);
+			F.ddnsHostname5.select();
+			return;
+		}
+		else if(Check_Special_Words(F.ddnsHostname5) == -1)
+		{
+			F.ddnsHostname5.select();
+			return;
+		}
+	}
+	else 
+	{
+	    F.ddns_enabled1.value = 0;
+	    F.ddns_enabled2.value = 0;
+		F.ddns_enabled3.value = 0;
+		F.ddns_enabled4.value = 0;
+		F.ddns_enabled5.value = 0;
+	}
+	
+	F.submitStatus.value=1;
+	F.log_ch.value=1;
+	F.action="edit_adv_ddns.htm";   //to save
+	window.status=wSave;	
+	MM_showHideLayers('AutoNumber15','','hide');  	
+	F.submit();
+}
+
+function displaytable(n)
+{
+	var obj;
+	
+	obj = MM_findObj('DynDNSTable','');
+	obj.style.display='none';
+	obj = MM_findObj('DDNS3322Table','');
+	obj.style.display='none';
+	obj = MM_findObj('NOIPTable','');
+	obj.style.display='none';
+	obj = MM_findObj('CHANGEIPTable','');
+	obj.style.display='none';
+	obj = MM_findObj('YITable','');
+	obj.style.display='none';
+	
+	switch (document.formedit_DDNS.ruleAction.value)
+	{
+ 		case "0":
+				obj = MM_findObj('DynDNSTable','');
+				obj.style.display='none';
+				obj = MM_findObj('DDNS3322Table','');
+				obj.style.display='none';
+				obj = MM_findObj('NOIPTable','');
+				obj.style.display='none';
+				obj = MM_findObj('CHANGEIPTable','');
+        		obj.style.display='none';
+				obj = MM_findObj('YITable','');
+				obj.style.display='none';
+				break;
+
+		case "1":
+				obj = MM_findObj('DynDNSTable','');
+				obj.style.display='block';
+				obj = MM_findObj('DDNS3322Table','');
+				obj.style.display='none';
+				obj = MM_findObj('NOIPTable','');
+				obj.style.display='none';
+				obj = MM_findObj('CHANGEIPTable','');
+       			obj.style.display='none';
+				obj = MM_findObj('YITable','');
+				obj.style.display='none';
+				break;
+
+		case "2":
+				obj = MM_findObj('DynDNSTable','');
+				obj.style.display='none';
+				obj = MM_findObj('DDNS3322Table','');
+				obj.style.display='block';
+				obj = MM_findObj('NOIPTable','');
+				obj.style.display='none';
+				obj = MM_findObj('CHANGEIPTable','');
+        		obj.style.display='none';
+				obj = MM_findObj('YITable','');
+				obj.style.display='none';
+				break;
+				
+		case "3":
+				obj = MM_findObj('DynDNSTable','');
+				obj.style.display='none';
+				obj = MM_findObj('DDNS3322Table','');
+				obj.style.display='none';
+				obj = MM_findObj('NOIPTable','');
+				obj.style.display='block';
+				obj = MM_findObj('CHANGEIPTable','');
+        		obj.style.display='none';
+				obj = MM_findObj('YITable','');
+				obj.style.display='none';
+				break;
+		case "4":
+				obj = MM_findObj('DynDNSTable','');
+				obj.style.display='none';
+				obj = MM_findObj('DDNS3322Table','');
+				obj.style.display='none';
+				obj = MM_findObj('NOIPTable','');
+				obj.style.display='none';
+				obj = MM_findObj('CHANGEIPTable','');
+        		obj.style.display='block';
+				obj = MM_findObj('YITable','');
+				obj.style.display='none';
+				break;
+		case "5":
+				obj = MM_findObj('DynDNSTable','');
+				obj.style.display='none';
+				obj = MM_findObj('DDNS3322Table','');
+				obj.style.display='none';
+				obj = MM_findObj('NOIPTable','');
+				obj.style.display='none';
+				obj = MM_findObj('CHANGEIPTable','');
+        		obj.style.display='none';
+				obj = MM_findObj('YITable','');
+				obj.style.display='block';
+				break;
+		default:
+				break;	
+	
+	}	
+}
+//=============== End of Javascript ===============*/
+
+/***************************************************/
+/*												   */	
+/*      			  Begin of content    			*/
+/*												   */	
+/***************************************************/
+var ButtonType = "BackOkCancel";
+var Savelink = "chSubmit(document.formedit_DDNS)";
+var Cancellink = "";
+var Backlink = "adv_ddns.htm";
+var helplink ='help_edit_adv_ddns.html';
+var UserName = '<!--#nk_get DisplayOnly="nUser"-->';
+var head_width=94;
+
+function PrintContent()
+{
+	PrintBeginContent();
+	PrintEditDDNSServers(0);
+	PrintEndContent();
+}
+
+function PrintEditDDNSServers(hasUnderLine)
+{
+	PrintBeginBlock(1, "Edit Dynamic DNS Setup");
+	PrintDDNSServers();
+	PrintDynDNS();
+	Print3322();
+	PrintNOIP();
+	PrintCHANGEIP();
+	PrintYI();
+	PrintEndBlock(hasUnderLine);
+}
+
+function PrintDDNSServers()
+{
+	setiName();
+	document.write('<table class="Setuptable" width="'+SmallLayoutwidth+'" border='+Tableborder+'>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Interface&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td><font color="#8e8e8e">');
+	document.write(document.formedit_DDNS.iName.value);
+	document.write('</font></td>');
+	document.write('</tr>');	
+	document.write('<tr><td width="'+head_width+'">Service&nbsp;:&nbsp;</td>'); 
+	document.write('<td>');           
+	document.write('<select class="Select" name="ruleAction" size="1" onChange="displaytable(this.form.ruleAction.value);" style="width:132px">');
+	if ('<!--#nk_get DdnsCheckByInf="1"-->' == 'checked')
+	{
+		document.write('<option value="0">Disable</option>');
+		document.write('<option value="1" selected>DynDNS.org</option>');
+		document.write('<option value="2">3322.org</option>');
+		if(SupportNOIPDDNS)
+			document.write('<option value="3">NOIP</option>');
+		if(SupportCHANGEIPDDNS)
+			document.write('<option value="4">ChangeIP</option>');
+		if(SupportYIDDNS)
+			document.write('<option value="5">YI.org</option>');
+		
+	}	
+	else if ('<!--#nk_get DdnsCheckByInf="2"-->' == 'checked')	
+	{	
+		document.write('<option value="0">Disable</option>');
+		document.write('<option value="1">DynDNS.org</option>');
+		document.write('<option value="2" selected>3322.org</option>');
+		if(SupportNOIPDDNS)
+			document.write('<option value="3">NOIP</option>');
+		if(SupportCHANGEIPDDNS)
+			document.write('<option value="4">ChangeIP</option>');
+		if(SupportYIDDNS)
+			document.write('<option value="5">YI.org</option>');
+	}	
+	else if ('<!--#nk_get DdnsCheckByInf="3"-->' == 'checked')	
+	{	
+		document.write('<option value="0">Disable</option>');
+		document.write('<option value="1">DynDNS.org</option>');
+		document.write('<option value="2">3322.org</option>');
+		if(SupportNOIPDDNS)
+			document.write('<option value="3"selected>NOIP</option>');
+		if(SupportCHANGEIPDDNS)
+			document.write('<option value="4">ChangeIP</option>');
+		if(SupportYIDDNS)
+			document.write('<option value="5">YI.org</option>');
+	}	
+	else if ('<!--#nk_get DdnsCheckByInf="4"-->' == 'checked')	
+	{	
+		document.write('<option value="0">Disable</option>');
+		document.write('<option value="1">DynDNS.org</option>');
+		document.write('<option value="2">3322.org</option>');
+		if(SupportNOIPDDNS)
+			document.write('<option value="3">NOIP</option>');
+		if(SupportCHANGEIPDDNS)
+			document.write('<option value="4"selected>ChangeIP</option>');
+		if(SupportYIDDNS)
+			document.write('<option value="5">YI.org</option>');
+	}	
+	else if ('<!--#nk_get DdnsCheckByInf="5"-->' == 'checked')	
+	{	
+		document.write('<option value="0">Disable</option>');
+		document.write('<option value="1">DynDNS.org</option>');
+		document.write('<option value="2">3322.org</option>');
+		if(SupportNOIPDDNS)
+			document.write('<option value="3">NOIP</option>');
+		if(SupportCHANGEIPDDNS)
+			document.write('<option value="4">ChangeIP</option>');
+		if(SupportYIDDNS)
+			document.write('<option value="5"selected>YI.org</option>');
+	}	
+	else
+	{
+		document.write('<option value="0" selected>Disable</option>');
+		document.write('<option value="1">DynDNS.org</option>');
+		document.write('<option value="2">3322.org</option>');
+		if(SupportNOIPDDNS)
+			document.write('<option value="3">NOIP</option>');
+		if(SupportCHANGEIPDDNS)
+			document.write('<option value="4">ChangeIP</option>');
+		if(SupportYIDDNS)
+			document.write('<option value="5">YI.org</option>');
+	}
+	document.write('</select>');
+	document.write('</td>');
+	document.write('</tr>');   
+	document.write('</table>'); 	
+}
+
+function PrintDynDNS()
+{
+	document.write('<table name="DynDNSTable" id="DynDNSTable" class="Setuptable" style="display:none" width="'+SmallLayoutwidth+'" border='+Tableborder+'>');
+	document.write('<tr><td width="'+head_width+'">Username&nbsp;:&nbsp;');   
+	document.write('</td>');  
+	document.write('<td>');
+	document.write('<input type=hidden name=ddns_list1 value=<!--#nk_get DdnsListByInf="1"-->>');
+	document.write('<input type=hidden name=ddns_enabled1 value=<!--#nk_get DdnsEnabledByInf="1"-->>');		
+	document.write('<input type="text" name="ddnsUsernameW11" value=\'<!--#nk_get DdnsUserByInf="1"-->\' maxlength="25" size="20"  onFocus="this.select();" onBlur="sTrim(this);">');        
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	PrintSTButton("Register1", "Register", "openRegPage(1);");
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr><td width="'+head_width+'">Password&nbsp;:&nbsp;');    
+	document.write('</td>');  
+	document.write('<td>'); 
+	document.write('<input type="password" name="ddnsPasswordW11" value=\'<!--#nk_get DdnsPwdByInf="1"-->\' maxlength="15" size="20"  onFocus="this.select();" onBlur="sTrim(this);">');        
+	document.write('</td>'); 
+	document.write('</tr>');
+	document.write('<tr><td width="'+head_width+'">Host Name&nbsp;:&nbsp;');      
+	document.write('</td>');  
+	document.write('<td>'); 
+	document.write('<input type="text" name="ddnsHostname1" id="ddnsHostname1" maxlength="39" size="33" onFocus="this.select();" onBlur="sTrim(this);" value=\'<!--#nk_get DdnsFullHostByInf="1"-->\'>');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('<b>(Ex: abc.dyndns.org)</b>');
+	document.write('</td>');  
+	document.write('</tr>')
+	document.write('<tr><td width="'+head_width+'" height="29">WAN IP Address&nbsp;:&nbsp;');  
+	document.write('</td>');    
+	document.write('<td>'); 
+	document.write('<!--#nk_get DdnsUpdateIp="1"-->');        			  
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr><td width="'+head_width+'" height="29">Status&nbsp;:&nbsp;');   
+	document.write('</td>');
+	document.write('<td>');
+	if (document.formedit_DDNS.ddns_enabled1.value==1)
+		document.write('<!--#nk_get DdnsUpdateStatus="1"-->');
+	document.write('</td>');      
+	document.write('</tr>');
+	document.write('</table>'); 		
+}
+function Print3322()
+{
+	document.write('<table name="DDNS3322Table" id="DDNS3322Table" class="Setuptable" style="display:none" width="'+SmallLayoutwidth+'" border='+Tableborder+'>');
+	document.write('<tr><td width="'+head_width+'">Username&nbsp;:&nbsp;');   
+	document.write('</td>');  
+	document.write('<td>');
+	document.write('<input type=hidden name=ddns_list2 value=<!--#nk_get DdnsListByInf="2"-->>');
+	document.write('<input type=hidden name=ddns_enabled2 value=<!--#nk_get DdnsEnabledByInf="2"-->>');	
+	document.write('<input type="text" name="ddnsUsernameW12" value=\'<!--#nk_get DdnsUserByInf="2"-->\' maxlength="25" size="20"  onFocus="this.select();" onBlur="sTrim(this);">');        
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	PrintSTButton("Register2", "Register", "openRegPage(2);");
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr><td width="'+head_width+'">Password&nbsp;:&nbsp;');    
+	document.write('</td>');  
+	document.write('<td>'); 
+	document.write('<input type="password" name="ddnsPasswordW12" value=\'<!--#nk_get DdnsPwdByInf="2"-->\' maxlength="15" size="20"  onFocus="this.select();" onBlur="sTrim(this);">');        
+	document.write('</td>'); 
+	document.write('</tr>');
+	document.write('<tr><td width="'+head_width+'" height="29">Host Name&nbsp;:&nbsp;');      
+	document.write('</td>');  
+	document.write('<td>'); 
+	document.write('<input type="text" name="ddnsHostname2" id="ddnsHostname2" maxlength="39" size="33" onFocus="this.select();" onBlur="sTrim(this);" value=\'<!--#nk_get DdnsFullHostByInf="2"-->\'>');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('<b>(Ex: abc.3322.org)</b>');
+	document.write('</td>');  
+	document.write('</tr>')
+	document.write('<tr><td width="'+head_width+'" height="29">WAN IP Address&nbsp;:&nbsp;');  
+	document.write('</td>');    
+	document.write('<td>'); 
+	document.write('<!--#nk_get DdnsUpdateIp="2"-->');        			  
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr><td width="'+head_width+'" height="29">Status&nbsp;:&nbsp;');   
+	document.write('</td>');
+	document.write('<td>');
+	if (document.formedit_DDNS.ddns_enabled2.value==1)
+		document.write('<!--#nk_get DdnsUpdateStatus="2"-->');
+	document.write('</td>');      
+	document.write('</tr>');
+	document.write('</table>'); 			
+}
+
+function PrintNOIP()
+{
+	document.write('<table name="NOIPTable" id="NOIPTable" class="Setuptable" style="display:none" width="'+SmallLayoutwidth+'" border='+Tableborder+'>');
+	document.write('<tr><td width="'+head_width+'">Username&nbsp;:&nbsp;');   
+	document.write('</td>');  
+	document.write('<td>');
+	document.write('<input type=hidden name=ddns_list3 value=<!--#nk_get DdnsListByInf="3"-->>');
+	document.write('<input type=hidden name=ddns_enabled3 value=<!--#nk_get DdnsEnabledByInf="3"-->>');	
+	document.write('<input type="text" name="ddnsUsernameW13" value=\'<!--#nk_get DdnsUserByInf="3"-->\' maxlength="25" size="20"  onFocus="this.select();" onBlur="sTrim(this);">');        
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	PrintSTButton("Register3", "Register", "openRegPage(3);");
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr><td width="'+head_width+'">Password&nbsp;:&nbsp;');    
+	document.write('</td>');  
+	document.write('<td>'); 
+	document.write('<input type="password" name="ddnsPasswordW13" value=\'<!--#nk_get DdnsPwdByInf="3"-->\' maxlength="15" size="20"  onFocus="this.select();" onBlur="sTrim(this);">');        
+	document.write('</td>'); 
+	document.write('</tr>');
+	document.write('<tr><td width="'+head_width+'" height="29">Host Name&nbsp;:&nbsp;');      
+	document.write('</td>');  
+	document.write('<td>'); 
+	document.write('<input type="text" name="ddnsHostname3" id="ddnsHostname3" maxlength="39" size="33" onFocus="this.select();" onBlur="sTrim(this);" value=\'<!--#nk_get DdnsFullHostByInf="3"-->\'>');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('<b>(Ex: abc.zapto.org)</b>');
+	document.write('</td>');  
+	document.write('</tr>')
+	document.write('<tr><td width="'+head_width+'" height="29">WAN IP Address&nbsp;:&nbsp;');  
+	document.write('</td>');    
+	document.write('<td>'); 
+	document.write('<!--#nk_get DdnsUpdateIp="3"-->');        			  
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr><td width="'+head_width+'" height="29">Status&nbsp;:&nbsp;');   
+	document.write('</td>');
+	document.write('<td>');
+	if (document.formedit_DDNS.ddns_enabled3.value==1)
+		document.write('<!--#nk_get DdnsUpdateStatus="3"-->');
+	document.write('</td>');      
+	document.write('</tr>');
+	document.write('</table>'); 			
+}
+
+function PrintCHANGEIP()
+{
+	document.write('<table name="CHANGEIPTable" id="CHANGEIPTable" class="Setuptable" style="display:none" width="'+SmallLayoutwidth+'" border='+Tableborder+'>');
+	document.write('<tr><td width="'+head_width+'">Username&nbsp;:&nbsp;');   
+	document.write('</td>');  
+	document.write('<td>');
+	document.write('<input type=hidden name=ddns_list4 value=<!--#nk_get DdnsListByInf="4"-->>');
+	document.write('<input type=hidden name=ddns_enabled4 value=<!--#nk_get DdnsEnabledByInf="4"-->>');	
+	document.write('<input type="text" name="ddnsUsernameW14" value=\'<!--#nk_get DdnsUserByInf="4"-->\' maxlength="25" size="20"  onFocus="this.select();" onBlur="sTrim(this);">');        
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	PrintSTButton("Register4", "Register", "openRegPage(4);");
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr><td width="'+head_width+'">Password&nbsp;:&nbsp;');    
+	document.write('</td>');  
+	document.write('<td>'); 
+	document.write('<input type="password" name="ddnsPasswordW14" value=\'<!--#nk_get DdnsPwdByInf="4"-->\' maxlength="15" size="20"  onFocus="this.select();" onBlur="sTrim(this);">');        
+	document.write('</td>'); 
+	document.write('</tr>');
+	document.write('<tr><td width="'+head_width+'" height="29">Host Name&nbsp;:&nbsp;');      
+	document.write('</td>');  
+	document.write('<td>'); 
+	document.write('<input type="text" name="ddnsHostname4" id="ddnsHostname4" maxlength="39" size="33" onFocus="this.select();" onBlur="sTrim(this);" value=\'<!--#nk_get DdnsFullHostByInf="4"-->\'>');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('<b>(Ex: abc.dynamic-dns.net)</b>');
+	document.write('</td>');  
+	document.write('</tr>')
+	document.write('<tr><td width="'+head_width+'" height="29">WAN IP Address&nbsp;:&nbsp;');  
+	document.write('</td>');    
+	document.write('<td>'); 
+	document.write('<!--#nk_get DdnsUpdateIp="4"-->');        			  
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr><td width="'+head_width+'" height="29">Status&nbsp;:&nbsp;');   
+	document.write('</td>');
+	document.write('<td>');
+	if (document.formedit_DDNS.ddns_enabled4.value==1)
+		document.write('<!--#nk_get DdnsUpdateStatus="4"-->');
+	document.write('</td>');      
+	document.write('</tr>');
+	document.write('</table>'); 			
+}
+
+function PrintYI()
+{
+	document.write('<table name="YITable" id="YITable" class="Setuptable" style="display:none" width="'+SmallLayoutwidth+'" border='+Tableborder+'>');
+	document.write('<tr><td width="'+head_width+'">Username&nbsp;:&nbsp;');   
+	document.write('</td>');  
+	document.write('<td>');
+	document.write('<input type=hidden name=ddns_list5 value=<!--#nk_get DdnsListByInf="5"-->>');
+	document.write('<input type=hidden name=ddns_enabled5 value=<!--#nk_get DdnsEnabledByInf="5"-->>');	
+	document.write('<input type="text" name="ddnsUsernameW15" value=\'<!--#nk_get DdnsUserByInf="5"-->\' maxlength="25" size="20"  onFocus="this.select();" onBlur="sTrim(this);">');        
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	PrintSTButton("Register5", "Register", "openRegPage(5);");
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr><td width="'+head_width+'">Password&nbsp;:&nbsp;');    
+	document.write('</td>');  
+	document.write('<td>'); 
+	document.write('<input type="password" name="ddnsPasswordW15" value=\'<!--#nk_get DdnsPwdByInf="5"-->\' maxlength="15" size="20"  onFocus="this.select();" onBlur="sTrim(this);">');        
+	document.write('</td>'); 
+	document.write('</tr>');
+	document.write('<tr><td width="'+head_width+'" height="29">Host Name&nbsp;:&nbsp;');      
+	document.write('</td>');  
+	document.write('<td>'); 
+	document.write('<input type="text" name="ddnsHostname5" id="ddnsHostname5" maxlength="39" size="33" onFocus="this.select();" onBlur="sTrim(this);" value=\'<!--#nk_get DdnsFullHostByInf="5"-->\'>');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('<b>(Ex: abc)</b>');
+	document.write('</td>');  
+	document.write('</tr>')
+	document.write('<tr><td width="'+head_width+'" height="29">WAN IP Address&nbsp;:&nbsp;');  
+	document.write('</td>');    
+	document.write('<td>'); 
+	document.write('<!--#nk_get DdnsUpdateIp="5"-->');        			  
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr><td width="'+head_width+'" height="29">Status&nbsp;:&nbsp;');   
+	document.write('</td>');
+	document.write('<td>');
+	if (document.formedit_DDNS.ddns_enabled5.value==1)
+		document.write('<!--#nk_get DdnsUpdateStatus="5"-->');
+	document.write('</td>');      
+	document.write('</tr>');
+	document.write('</table>'); 			
+}
+
+function openRegPage(n)
+{
+	if(n == "1")
+	{
+		//open DynDns
+		window.open('http://www.dyndns.org/','newwindow','');
+	}
+	else if(n == "2")
+	{
+		//open 3322
+		window.open('http://www.3322.org/','newwindow','');
+	}
+	else if(n == "3")
+	{
+		//open NO-IP DDNS
+		window.open('http://www.no-ip.com','newwindow','');
+	}
+	else if(n == "4")
+	{
+		//open NO-IP DDNS
+		window.open('http://www.changeip.com','newwindow','');
+	}
+	else if(n == "5")
+	{
+		//open yi DDNS
+		window.open('http://http://www.yi.org','newwindow','');
+	}
+}
+
+</script>
+
+</head>
+<body class="mainframe" onLoad="Entryfunction();" onUnload="Leavefunction();" onResize="ChangeBgsize();">
+<script>PrintBackground();</script>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+	<form id="submitform" name="submitform"  method="post">
+	 	<!--#nk_get SetPageWidth="1"-->
+	</form>
+	<script>
+      		SetItemInit(foldersTree, 2, 9);      
+      		initializeTree(foldersTree); 
+	</script>
+	<form name="formedit_DDNS" method="post" action="edit_adv_ddns.htm">
+	<input type="hidden" name="page" value="adv_ddns.htm">
+	<input type="hidden" name="submitStatus" value="0">
+	<input type="hidden" name="log_ch" value="0">
+	<input type="hidden" name="wanNumbers" value='<!--#nk_get GetSystemNum="wan_port_num"-->'>
+	<input type="hidden" name="editInterface" value='<!--#nk_get WanEditInterface=""-->'>
+	<input type="hidden" name="iName" value=''>
+
+	<script>PrintContent();</script>
+	<script>PrintRight();</script>      
+	<script>PrintBottom();</script>	
+</table>
+</body>
+</html>
+<!--#nk_get SysLogChange="edit_adv_ddns.htm"-->
+<!--#nk_get DdnsUpdate=""-->

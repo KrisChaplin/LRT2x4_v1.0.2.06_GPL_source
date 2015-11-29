@@ -1,0 +1,1 @@
+#define CONFIG_TEXTSEARCH_KMP 1

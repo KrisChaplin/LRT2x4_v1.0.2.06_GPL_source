@@ -1,0 +1,30 @@
+include ../make-include-Octeon.mk
+all:
+	$(MAKE) -C single_cgi -f Makefile.Octeon
+	$(MAKE) -C cgi-bin/common -f Makefile.Octeon
+ifneq "$(CONFIG_NK_NO_SSL_FUNCTION)" "y"
+	$(MAKE) -C cgi-bin/user-pages/cifs -f Makefile.Octeon
+endif
+
+clean:
+	$(MAKE) -C single_cgi clean -f Makefile.Octeon
+	$(MAKE) -C cgi-bin/common clean -f Makefile.Octeon
+ifneq "$(CONFIG_NK_NO_SSL_FUNCTION)" "y"
+	$(MAKE) -C cgi-bin/user-pages/cifs clean -f Makefile.Octeon
+endif
+
+install:
+	$(MAKE) -C single_cgi install -f Makefile.Octeon
+	$(MAKE) -C cgi-bin/common install -f Makefile.Octeon
+ifneq "$(CONFIG_NK_NO_SSL_FUNCTION)" "y"
+	$(MAKE) -C cgi-bin/user-pages/cifs install -f Makefile.Octeon
+	$(MAKE) -C Java copy
+	$(MAKE) -C cgi-bin content-install
+endif
+
+un-install:
+	$(MAKE) -C single_cgi un-install -f Makefile.Octeon
+	$(MAKE) -C cgi-bin/common un-install -f Makefile.Octeon
+ifneq "$(CONFIG_NK_NO_SSL_FUNCTION)" "y"
+	$(MAKE) -C cgi-bin/user-pages/cifs un-install -f Makefile.Octeon
+endif

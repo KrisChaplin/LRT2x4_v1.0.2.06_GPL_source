@@ -1,0 +1,441 @@
+<!--#nk_get SetPageWidth="0"-->
+<!--#nk_get Simple8021Q="edit"-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<!--#nk_get Simple8021Q="redirect"-->
+<meta name="Expires" content="-1">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Web Management</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<script  language="JavaScript">
+/***************************************************/
+/*												     */	
+/*      		Begin of content's JavaScript function    	    */
+/*												    */	
+/***************************************************/
+var EditId = "";
+function Entryfunction()
+{
+	ChangeBgsize();
+}
+
+function Leavefunction()
+{
+	chLeave();
+}
+
+function setMode(s , x)
+{
+	var flag = 0;
+	if(document.getElementById("EditNum").value==document.getElementById("Datanum").value)
+	{
+		if(s.options[s.selectedIndex].value != 0 )
+		{
+			var List=document.getElementById("AllData").value.split("{[***]}");
+			for(var i=0;i<parseInt(List.length-1);i++)
+			{
+				if(i == document.getElementById("EditNum").value-1)
+					continue;
+				var String = List[i].split("{[*-*-*]}");
+				if(String[x+1] == 0)
+				{
+					flag = 1 ;
+					break;
+				}
+			}		
+			if(flag == 0 )
+			{
+				return -1;
+			}
+		}
+	}
+	return 0
+}
+
+function chSubmit(F)
+{
+	var tmp;
+	if(document.getElementById("EditNum").value!=1)
+	{
+        /* purpose :change vid of wan1 and wan2 : George date : 2013-07-25 */
+        /* description : make VID2 VID3 can be used in LAN port            */
+		//if(document.getElementById('vid').value < 4 || document.getElementById('vid').value > 4095)
+        if(document.getElementById('vid').value >= 2 && document.getElementById('vid').value <= 4092);
+		else
+		{
+			top.AlertMsg("Alert", "Please input right VID!");
+			return;
+		}
+	}
+	var String=document.getElementById("AllData").value.split("{[***]}");
+	
+	if(document.getElementById("EditNum").value!=1)
+	{
+		for(var i=0;i<parseInt(String.length-1);i++)
+		{
+			tmp = String[i].split("{[*-*-*]}");
+			if(EditId == tmp[0])
+				continue;
+			if(document.getElementById('vid').value == tmp[0])
+			{
+				top.AlertMsg("Alert", "This VID is same with other rules,please input different VID!");
+				return; 
+			}
+		}
+	}
+/*	
+	if(setMode(document.getElementById("lan1"),1)<0)
+	{
+		alert("A VLAN port can only be untagged to one VLAN ID.(LAN1)");																
+		return ;
+	}
+	if(setMode(document.getElementById("lan2"),2)<0)
+	{
+		alert("A VLAN port can only be untagged to one VLAN ID.(LAN2)");
+		return;
+	}
+	if(setMode(document.getElementById("lan3"),3)<0)
+	{
+		alert("A VLAN port can only be untagged to one VLAN ID.(LAN3)"); 
+		return;
+	}
+	if(setMode(document.getElementById("lan4"),4)<0)
+	{
+		alert("A VLAN port can only be untagged to one VLAN ID.(LAN4)");
+		return;
+	}*/
+	if(document.getElementById("EditNum").value == 1 && document.getElementById("Datanum").value == 1 )
+	{
+		if( document.getElementById("lan1").options[document.getElementById("lan1").selectedIndex].value !=0)
+		{
+			top.AlertMsg("Alert", "A VLAN port can only be untagged to one VLAN ID.(LAN1)"); 
+			return;
+		}
+		if( document.getElementById("lan2").options[document.getElementById("lan2").selectedIndex].value !=0)
+		{
+			top.AlertMsg("Alert", "A VLAN port can only be untagged to one VLAN ID.(LAN2)"); 
+			return;
+		}
+		if( document.getElementById("lan3").options[document.getElementById("lan3").selectedIndex].value !=0)
+		{
+			top.AlertMsg("Alert", "A VLAN port can only be untagged to one VLAN ID.(LAN3)"); 
+			return;
+		}
+		if( document.getElementById("lan4").options[document.getElementById("lan4").selectedIndex].value !=0)
+		{
+			top.AlertMsg("Alert", "A VLAN port can only be untagged to one VLAN ID.(LAN4)"); 
+			return;
+		}
+	}
+	document.getElementById("vlanroute").value=document.getElementById("svlanroute").options[document.getElementById("svlanroute").selectedIndex].value;
+	document.getElementById("device_m").value=document.getElementById("sdevice_m").options[document.getElementById("sdevice_m").selectedIndex].value;
+	document.getElementById("p1").value=document.getElementById("lan1").options[document.getElementById("lan1").selectedIndex].value;
+	document.getElementById("p2").value=document.getElementById("lan2").options[document.getElementById("lan2").selectedIndex].value;
+	document.getElementById("p3").value=document.getElementById("lan3").options[document.getElementById("lan3").selectedIndex].value;
+	document.getElementById("p4").value=document.getElementById("lan4").options[document.getElementById("lan4").selectedIndex].value;
+	
+	
+	
+	if(F.EditStatus.value==1)
+		F.EditStatus.value=11;
+	else if(F.EditStatus.value==2)
+		F.EditStatus.value=22;
+	F.submitStatus.value=1;
+	F.submit();
+}
+function CancelSubmit()
+{
+	document.location.href="8021q_simple.htm";
+}
+//================= End =================*/
+
+/***************************************************/
+/*												   */	
+/*      			  Begin of content    				   */
+/*												   */	
+/***************************************************/
+var ButtonType = "OkCancel";		// NULL/Refresh/OkCancel/BackOkCancel/ShowTableOkCancel
+var Reloadlink = "";
+var Savelink = "chSubmit(document.form8021Q);";
+var Cancellink = "CancelSubmit();"; 
+var helplink ='help_8021q.html';
+var UserName = '<!--#nk_get DisplayOnly="nUser"-->';
+var FixedTableWidth = "100%";
+
+function PrintContent()
+{
+	PrintBeginContent();
+	Print8021Q(0);
+	PrintEndContent();
+}
+
+function Print_table_tr_cell(cell_type, UserData)
+{
+	document.write('<tr class='+cell_type+' >');
+	
+	UserDataSplit = UserData.split("{[*-*-*]}");
+	if(UserData=="Add")
+	{
+		//ID
+		document.write('<td class="tdContentBorderRight tdContentC"><input type="text" class="TableInputText" size="2" id="vid" name="vid" onkeypress="return Check_User_Input_Number(event)" value=""></td>');
+		//DESCRIPTION
+		document.write('<td class="tdContentBorderRight tdContentC"><input type="text" class="TableInputText" size="6" id="description" name="description" maxlength="16" value=""></td>');
+		
+		//inter VLAN routing 
+		document.write('<td class="tdContentBorderRight tdContentC"><select name="svlanroute" id="svlanroute">');
+		document.write('<option value="1">Enabled</option>');
+		document.write('<option value="0" selected>Disabled</option>');
+		document.write("</select></td>");
+			
+		//device management
+		document.write('<td class="tdContentBorderRight tdContentC"><select name="sdevice_m" id="sdevice_m">');
+		document.write('<option value="1">Enabled</option>');
+		document.write('<option value="0" selected>Disabled</option>');
+		document.write("</select></td>");
+		
+		//lan1~4
+		for(var x=1;x<=4;x++)
+		{
+			document.write('<td class="tdContentBorderRight tdContentC">');
+			document.write('<select name="lan'+x+'" id="lan'+x+'">');
+			document.write('<option value="0">UnTagged</option>');
+			document.write('<option value="1">Tagged</option>');
+			document.write('<option selected value="2">Excluded</option>');
+			document.write('</select>');
+			document.write('</td>');
+		}
+		
+		document.write('<td class="tdContentC">');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('</td>');
+		
+		document.write('</tr>');
+	}
+	else
+	{
+		//ID ²»ÄÜÐÞ¸ÄÉ¾³ý UserDataSplit[0]==1
+		if(UserDataSplit[0]==1)
+		{
+			document.write('<td class="tdContentBorderRight tdContentC">'+UserDataSplit[0]+'</td>');
+			document.write('<input type="hidden" size="2" id="vid" name="vid" value="'+UserDataSplit[0]+'">');
+		}
+		else
+		{
+			EditId = UserDataSplit[0];
+			document.write('<td class="tdContentBorderRight tdContentC"><input type="text" class="TableInputText" size="2" id="vid" name="vid" onkeypress="return Check_User_Input_Number(event)" value="'+UserDataSplit[0]+'"></td>');
+		}
+		
+		//DESCRIPTION
+		document.write('<td class="tdContentBorderRight tdContentC"><input type="text" class="TableInputText" size="6" id="description" maxlength="16" name="description" value="'+UserDataSplit[1]+'"></td>');
+		
+		//inter VLAN routing 
+		document.write('<td class="tdContentBorderRight tdContentC"><select name="svlanroute" id="svlanroute">');
+		if(UserDataSplit[2]==1)
+		{
+			document.write('<option value="1" selected>Enabled</option>');
+			document.write('<option value="0">Disabled</option>');
+		}
+		else
+		{
+			document.write('<option value="1">Enabled</option>');
+			document.write('<option value="0" selected>Disabled</option>');
+		}
+			
+		document.write("</select></td>");
+		
+		//device management 
+		if(UserDataSplit[0]==1)
+		{
+			document.write('<td class="tdContentBorderRight tdContentC"><select disabled="true" name="sdevice_m" id="sdevice_m">');
+		}
+		else
+		{
+			document.write('<td class="tdContentBorderRight tdContentC"><select name="sdevice_m" id="sdevice_m">');
+		}
+		if(UserDataSplit[3]==1)
+		{
+			document.write('<option value="1" selected>Enabled</option>');
+			document.write('<option value="0">Disabled</option>');
+		}
+		else
+		{
+			document.write('<option value="1">Enabled</option>');
+			document.write('<option value="0" selected>Disabled</option>');
+		}
+		document.write("</select></td>");
+		
+		//lan1
+		for(var x=1;x<=4;x++)
+		{
+			document.write('<td class="tdContentBorderRight tdContentC">');
+			document.write('<select name="lan'+x+'" id="lan'+x+'">');
+			if(UserDataSplit[x+3]==0)
+			{
+				document.write('<option selected value="0">UnTagged</option>');
+				document.write('<option value="1">Tagged</option>');
+				document.write('<option value="2">Excluded</option>');
+			}
+			else if(UserDataSplit[x+3]==1)
+			{
+				document.write('<option  value="0">UnTagged</option>');
+				document.write('<option selected value="1">Tagged</option>');
+				document.write('<option value="2">Excluded</option>');
+			}
+			else if(UserDataSplit[x+3]==2)
+			{
+				document.write('<option  value="0">UnTagged</option>');
+				document.write('<option value="1">Tagged</option>');
+				document.write('<option selected value="2">Excluded</option>');	
+			}
+			document.write('</select>');
+			document.write('</td>');
+		}
+		
+		document.write('<td class="tdContentC">');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('</td>');
+		
+		document.write('</tr>');
+	}
+}
+
+function Print8021Q(hasUnderLine)
+{
+	PrintBeginBlock(1, "802.1Q LAN");
+	document.write("<table width='98%'><tr><td align='right'>(VID range is 2~4092)</td></tr></table>")
+	
+	document.write('<table width="98%" border="0">');		
+	document.write('<tr><td>');
+	
+	document.write('<table width="100%" class="SpecialTable"  cellspacing="0" cellpadding="0" border="0">');	
+	document.write('<tr>');	
+	document.write('<th class="firstth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('VLAN');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('<br>');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+	document.write('ID');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Description');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Inter VLAN');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('<br>');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+	document.write('Routing');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Device');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('<br>');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+	document.write('Management');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('LAN1');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('LAN2');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('LAN3');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('LAN4');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="lastth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('</tr>');
+	
+	if(document.getElementById("DataList").value == "Add")
+	{
+		Print_table_tr_cell("OddRow", "Add");
+	}
+	else
+	{
+		var List=document.getElementById("DataList").value.split("{[***]}");
+		for(var i=0;i<parseInt(List.length-1);i++)
+		{
+			if(i%2==0)
+				Print_table_tr_cell("OddRow", List[i]);
+			else
+				Print_table_tr_cell("EvenRow", List[i]);
+		}
+	}
+		
+	document.write('</table>');
+	
+	document.write('</td></tr>');
+	document.write('</table>');
+	
+	PrintEndBlock(hasUnderLine);
+}
+
+//=============== End of content ===============*/
+</script>
+</head>
+<body class="mainframe" onLoad="Entryfunction();" onUnload="Leavefunction();" onResize="ChangeBgsize();">
+<script>PrintBackground();</script>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<form id="submitform" name="submitform"  method="post">
+	 	<!--#nk_get SetPageWidth="1"-->
+	</form>	
+	<!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+	<script>
+         SetItemInit(foldersTree, 5, 3);		// Set Selected Node
+         initializeTree(foldersTree); 			// Draw Menu & Layout
+	</script>
+		
+	<form name="form8021Q" action="8021q_simple_lan_config.htm" method="post">
+	<input type="hidden" name="page" value="8021q_simple_lan_config.htm">  
+	<input type="hidden" name="submitStatus" id="submitStatus" value='0'>
+	<input type="hidden" name="DataList" id="DataList" value='<!--#nk_get Simple8021Q="Modify"-->'>
+	<input type="hidden" name="AllData" id="AllData" value='<!--#nk_get Simple8021Q="Data"-->'>
+	<input type="hidden" name="Datanum" id="Datanum" value='<!--#nk_get Simple8021Q="num"-->'>
+	<input type="hidden" name="EditStatus" id="EditStatus" value='<!--#nk_get Simple8021Q="EditStatus"-->'>
+	<input type="hidden" name="vlanroute" id="vlanroute" value='1'>
+	<input type="hidden" name="device_m" id="device_m" value='1'>
+	<input type="hidden" name="p1" id="p1" value='1'>
+	<input type="hidden" name="p2" id="p2" value='1'>
+	<input type="hidden" name="p3" id="p3" value='1'>
+	<input type="hidden" name="p4" id="p4" value='1'>
+	<input type="hidden" name="EditNum" id="EditNum" value="<!--#nk_get Simple8021Q="EditNum"-->">
+	<script>PrintContent();</script>
+	<script>PrintRight();</script>      
+	<script>PrintBottom();</script>	
+</table>
+</body>
+</html>
+<!--#nk_get Simple8021Q="update"-->

@@ -1,0 +1,1 @@
+#define CONFIG_FONT_8x16 1

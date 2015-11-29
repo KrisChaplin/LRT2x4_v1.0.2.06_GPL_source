@@ -1,0 +1,281 @@
+<!--#nk_get SetPageWidth="0"-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Web Management</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<script  language="JavaScript">
+/***************************************************/
+/*												     */	
+/*      		Begin of content's JavaScript function    	    */
+/*												    */	
+/***************************************************/
+
+
+String.prototype.trim=function(){return this.replace(/^\s+|\s+$/,'');}; // for IE Browser
+
+function Entryfunction()
+{
+	ChangeBgsize();
+	chAfterSubmit();
+}
+
+function Leavefunction()
+{
+	chLeave();
+}
+
+function CancelSubmit(F)
+{
+	
+}
+function select_auth()
+{
+	if (document.formsmtp_config.smtpauth.value!="off")
+	{
+		document.formsmtp_config.smtpName.disabled=false;			
+		document.formsmtp_config.smtpPasswd.disabled=false;	
+		document.formsmtp_config.smtpName.style.background = "#FFF";
+		document.formsmtp_config.smtpPasswd.style.background = "#FFF";
+	}
+	else
+	{
+		document.formsmtp_config.smtpName.disabled=true;	
+		document.formsmtp_config.smtpPasswd.disabled=true;
+		document.formsmtp_config.smtpName.style.background = "#CCC";
+		document.formsmtp_config.smtpPasswd.style.background = "#CCC";
+	}
+	sTrim(document.formsmtp_config.smtpName);
+	sTrim(document.formsmtp_config.smtpPasswd);
+	sTrim(document.formsmtp_config.smtpServerName);
+	sTrim(document.formsmtp_config.smtpSender);
+}
+function NumCheck(I,cType)
+{
+	var d;
+	d=parseInt(I.value,10);
+	if (cType=="L")
+	{
+		if (!(d<=100 && d>=10)) 
+		{
+			top.AlertMsg("Alert", aLogQueueCheck);
+			I.value=10;
+			return;    
+		}
+	}
+
+	if (cType=="T")
+	{
+	        if (!(d<=10080 && d>=10)) 
+	        {
+			top.AlertMsg("Alert", aLogTimeCheck);
+			I.value=10;
+			return;    
+	        }
+	}
+
+	if (cType=="K")
+	{
+	        if (!(d<=65535 && d>=1)) 
+	        {
+			top.AlertMsg("Alert", aLogPortCheck);
+			I.value=25;
+			return;    
+	        }
+	}
+
+	I.value=d;
+}
+
+function emailCheck(I, type)
+{
+	var p=-1;
+	p=I.value.indexOf("@");
+	if (p==-1)
+	{
+           if (type == 1)
+		top.AlertMsg("Alert", aSenderEMailCheck);   	
+           else if (type == 2)		
+		top.AlertMsg("Alert", aRecipientEMailCheck);   	
+           else if (type == 3)
+		top.AlertMsg("Alert", aCarponRecipientEMailCheck);   	
+           else		
+           	top.AlertMsg("Alert", aEMailCheck);
+	    I.value=I.defaultValue;
+	    return -1;       
+	}
+	return 1;
+}
+function chSubmit(F)
+{
+	if (F.smtpServerName.value.length==0)
+        {
+            top.AlertMsg("Alert", aMailServer);
+            F.smtpServerName.select();
+            return;
+        }
+
+	if (F.smtpSender.value.length==0)
+	{
+	    top.AlertMsg("Alert", aSenderEMail);
+	    F.smtpSender.select();
+	    return;
+	}
+	else if (emailCheck(F.smtpSender, 1) < 0)
+	{
+	    F.smtpSender.select();
+	    return;
+	}
+
+	if(F.smtpauth.value!="off"){
+
+		if (F.smtpName.value.length==0)
+		{
+		    top.AlertMsg("Alert", aUserName);
+		    F.smtpName.select();
+		    return;
+		}
+		if (F.smtpPasswd.value.length==0)
+		{
+		    top.AlertMsg("Alert", aPassword);
+		    F.smtpPasswd.select();
+		    return;
+		}
+	    
+	}
+	F.log_ch.value=1;
+	F.submitStatus.value=1;
+	window.status=wSave;
+	F.submit();
+}
+function chAfterSubmit()
+{  
+	
+}
+//================= End =================*/
+
+/***************************************************/
+/*												   */	
+/*      			  Begin of content    				   */
+/*												   */	
+/***************************************************/
+var ButtonType = "OkCancel";		// NULL/Refresh/OkCancel/BackOkCancel/ShowTableOkCancel
+var Savelink = "chSubmit(document.formsmtp_config);";
+var Cancellink = "CancelSubmit(document.formsmtp_config);"; 
+var Backlink = "";
+var helplink ='help_outgoing_mail_server.html';
+var UserName = '<!--#nk_get DisplayOnly="nUser"-->';
+var FixedTableWidth = 640;
+var head_width=200;
+var middle_width=500;
+
+function PrintContent()
+{
+	PrintBeginContent();
+	PrintMailServerConfig(0);
+	PrintEndContent();
+	select_auth();	
+}
+
+function PrintMailServerConfig(hasUnderLine)
+{
+	PrintBeginBlock(1, "Mail Server");
+	document.write('<table class="Setuptable" width="'+FixedTableWidth+'" border='+Tableborder+'>');
+
+	document.write('<tr>');
+	document.write('<td width='+head_width+' align="left">');
+	document.write('Sender&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td width="'+middle_width+'">');
+	document.write('<input type="text" name="smtpSender" maxlength="40" value=\'<!--#nk_get 1to1_Handle="smtpSender"-->\'  onFocus="this.select();" onBlur="sTrim(this);" style="width:200px">');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('(Email Address) </td>');
+	document.write('</tr>');
+
+	document.write('<tr>');
+	document.write('<td width='+head_width+' align="left">');
+	document.write('Mail Server&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td width="'+middle_width+'">');
+	document.write('<input type="text" name="smtpServerName" maxlength="40" value=\'<!--#nk_get 1to1_Handle="smtpServerName"-->\'  onFocus="this.select();" onBlur="sTrim(this);" style="width:200px">');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('(Name or IPv4 Address)</td>');
+	document.write('</tr>');
+
+	document.write('<tr>');
+	document.write('<td width='+head_width+' align="left">');
+	document.write('Authentication&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td colspan="2">');
+	document.write('<select name="smtpauth" id="smtpauth" class="Select" onChange="select_auth(this)" style="width:200px">');
+	<!--#nk_get SysLogEmail1Auth="display"-->
+	document.write('</select>');
+	document.write('</td>');
+	document.write('</tr>');
+
+	document.write('<tr>');
+	document.write('<td width='+head_width+' align="left">SMTP Port&nbsp;:&nbsp;</td>');
+	document.write('<td width="'+middle_width+'" align="left">'); 
+	document.write('<input type="text" maxlength=5 name="smtpPort" value=\'<!--#nk_get 1to1_Handle="smtpPort"-->\'  onFocus="this.select();" onBlur="sTrim(this);NumCheck(this.form.smtpPort,\'K\')" style="width:200px">');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('(Range: 1-65535, Default 25)</td>');
+	document.write('<td></td>');
+	document.write('</tr>');
+
+
+	document.write('<tr>');
+	document.write('<td width='+head_width+' align="left">');
+	document.write('Username&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td colspan="2">');
+	document.write('<input type="text" name="smtpName" id="smtpName" maxlength="65" onFocus="this.select();" onBlur="sTrim(this);" value=\'<!--#nk_get 1to1_Handle="smtpName"-->\' style="width:200px">');
+	document.write('<span class="ErrorMsg" id="_smtpName"></span>');
+	document.write('</td>');
+	document.write('</tr>');
+	
+
+	document.write('<tr>');
+	document.write('<td width='+head_width+' align="left">');
+	document.write('Password&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td colspan="2">');
+	document.write('<input type="password" name="smtpPasswd" id="smtpPasswd" maxlength="65" onFocus="this.select();" onBlur="sTrim(this);" value=\'<!--#nk_get 1to1_Handle="smtpPasswd"-->\' style="width:200px">');
+	
+	document.write('<span class="ErrorMsg" id="_smtpPasswd"></span>');
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('</table>');
+	PrintEndBlock(hasUnderLine, 0, 1);
+}
+
+//=============== End of content ===============*/
+</script>
+</head>
+<body class="mainframe" onLoad="Entryfunction();" onUnload="Leavefunction();" onResize="ChangeBgsize();">
+<script>PrintBackground();</script>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<form id="submitform" name="submitform"  method="post">
+	 	<!--#nk_get SetPageWidth="1"-->
+	</form>
+	<!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+	<script>
+         SetItemInit(foldersTree, 2, 12);		// Set Selected Node
+         initializeTree(foldersTree); 			// Draw Menu & Layout
+	</script>
+		
+	<form name="formsmtp_config" method="post" action="smtp_config.htm">
+	<input type="hidden" name="page" value="smtp_config.htm">
+	<input type="hidden" name="submitStatus" value="0">
+	<input type="hidden" name="log_ch" value="0">
+	<script>PrintContent();</script>
+	<script>PrintRight();</script>
+	<script>PrintBottom();</script>	
+</table>
+</body>
+</html>
+<!--#nk_get SysLogChange="smtp_config.htm"-->
+<!--#nk_get SmtpChange=""-->

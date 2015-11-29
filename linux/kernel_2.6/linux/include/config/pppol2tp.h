@@ -1,0 +1,1 @@
+#define CONFIG_PPPOL2TP 1

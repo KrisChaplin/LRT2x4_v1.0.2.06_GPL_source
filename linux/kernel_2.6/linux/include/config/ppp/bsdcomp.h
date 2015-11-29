@@ -1,0 +1,1 @@
+#define CONFIG_PPP_BSDCOMP 1

@@ -1,0 +1,1 @@
+#define CONFIG_IRQ_CPU_OCTEON 1

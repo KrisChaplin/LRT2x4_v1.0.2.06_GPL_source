@@ -1,0 +1,1 @@
+#define CONFIG_INET6_TUNNEL 1

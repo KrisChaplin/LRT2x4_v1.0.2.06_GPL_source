@@ -1,0 +1,22 @@
+#--------------------------------------------
+# Makefile for MS Visual C++
+# muquit@muquit.com
+# Updated for MS Visual Studio 10.0 Feb-27-2012 
+#--------------------------------------------
+
+DEFS=  -DWINNT=1 -DSTRICT_MODE=1 -DHAVE_STRING_H=1 -DHAVE_FCNTL_H=1
+CFLAGS= /DWINNT /DWIN32 /DHAVE_MALLOC_H /DHAVE_OPENSSL /Ic:\openssl\include /I.
+CFLAGS=$(CFLAGS) /Ox /W3 /wd4996 /nologo
+LIBFLAGS=/nologo
+LIBRARY=msock.lib
+
+SRCS = msock.c
+OBJS = msock.obj
+
+all: $(LIBRARY)
+
+$(LIBRARY): $(OBJS)
+	lib $(LIBFLAGS) $(OBJS) /out:$(LIBRARY)
+
+clean:
+	del $(OBJS) $(LIBRARY) *.bak

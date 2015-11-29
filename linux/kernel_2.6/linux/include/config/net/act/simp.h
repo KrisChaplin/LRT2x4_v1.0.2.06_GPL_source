@@ -1,0 +1,1 @@
+#define CONFIG_NET_ACT_SIMP 1

@@ -1,0 +1,28 @@
+#--------------------------------------------
+# Makefile for MS Visual C++
+# muquit@muquit.com
+# updated for MS Visual Studio 10.0 Feb-27-2012 
+#--------------------------------------------
+
+DEFS=  -DWINNT=1 -DSTRICT_MODE=1 -DHAVE_STRING_H=1 -DHAVE_FCNTL_H=1
+CFLAGS= /DWINNT /DWIN32 /DHAVE_MALLOC_H /DHAVE_STRING_H /DHAVE_FCNTL_H /DHAVE_CTYPE_H /DHAVE_STDLIB_H /I.
+CFLAGS=$(CFLAGS) /Ox /W3 /wd4996 /nologo
+LIBFLAGS=/nologo
+LIBRARY=mutils.lib
+
+# replace -O with -g in order to debug
+
+DEFINES= $(INCLUDES) $(DEFS) 
+#CFLAGS=  $(cvars) $(cdebug) -nologo -G4 $(DEFINES)
+
+
+SRCS = string.c mutils.c mime.c
+OBJS = string.obj mutils.obj mime.obj
+
+all: $(LIBRARY)
+
+$(LIBRARY): $(OBJS)
+	lib $(LIBFLAGS) $(OBJS) /out:$(LIBRARY)
+
+clean:
+	del $(OBJS) $(LIBRARY) *.bak

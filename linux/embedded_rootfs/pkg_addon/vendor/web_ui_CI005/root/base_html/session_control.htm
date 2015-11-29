@@ -1,0 +1,347 @@
+<!--#nk_get SetPageWidth="0"-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Web Management</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<script  language="JavaScript">
+/***************************************************/
+/*												     */	
+/*      		Begin of content's JavaScript function    	    */
+/*												    */	
+/***************************************************/
+function Entryfunction()
+{
+	chSchedule();
+}
+function Leavefunction()
+{
+	chLeave();
+}
+
+function defaultType()
+{
+	if (document.formQOS.block_type[0].checked==false && document.formQOS.block_type[1].checked==false)
+		document.formQOS.block_type[0].checked=true;
+}
+
+
+function hours_minutes_Check(I,mod_1,mod_2)
+{
+  var d;
+  var single;
+  if(I.value.length == 0)
+   return ;
+  var q = I.value.indexOf(':');
+ 
+  if( q == -1 )
+  {
+  	top.AlertMsg("Alert", "the time should be like:\'hh:mm\'");
+  	I.value="";
+  	I.select();
+  	return	
+  }
+  else
+  {
+  	var hours= I.value.substring(0,q);
+  	var minutes= I.value.substring(q+1,I.value.length);
+  	
+  	if(minutes.indexOf(':')!= -1 )
+  	{
+  		I.select();
+  		I.value="";
+  		return ;
+  	}
+  	 if (isNaN(hours) == true)
+  	{
+  		I.select();
+  		I.value="";
+  		return ;
+  	}
+  	 if (isNaN(minutes) == true)
+  	{
+  		I.select();
+  		I.value="";
+  		return ;
+  	}
+  
+ 
+  if(mod_1 == "h")
+  {
+  	 d=parseInt(hours,10);
+  	 if (!(d<24 && d>=0))
+    {
+      top.AlertMsg("Alert", "The value (Hour) is out of range [0~23] !");
+    I.select();
+    I.value="";
+	  return; 
+    }
+		hours=d;
+    if (hours.toString().length==1) 
+    {
+      single=hours;
+      hours="0"+single;
+    }  	
+  }
+   if(mod_2 == "m")
+  {
+  	d=parseInt(minutes,10);
+ 
+  	if (!(d<60 && d>=0))
+    {
+      top.AlertMsg("Alert", "The value (Minute) is out of range [0~59] !");
+    I.select();
+    I.value="";
+	  return;
+    }
+	  minutes = d;
+	 
+    if (minutes.toString().length==1) 
+    {
+      single=minutes;
+      minutes="0"+single;
+     
+    }  	
+  }
+   I.value = hours.toString()+":"+ minutes.toString() ; 
+   return ;
+  } 
+}
+function StringTrim(thisV)
+{
+	if(thisV)
+	{
+		var s = thisV.value;
+		var reg = /\s/g;
+		var ss = s.replace(reg, "");
+		thisV.value = ss ;
+  }
+}
+function SessionCheck(I)
+{
+	validatenum(I, 5001, 1, "The session's entry value is between 1~5000. Please enter it again.");
+}
+
+function BlockTimeCheck(I)
+{
+	validatenum(I, 1441, 1, "The entry value is between 1~1440 minutes. Please enter it again.");
+}
+function chSchedule()
+{
+	if (document.formQOS.Session_timeBegin.value=="")
+		document.formQOS.Session_timeBegin.value = "00:00";
+
+	if (document.formQOS.Session_timeEnd.value=="")
+		document.formQOS.Session_timeEnd.value = "00:00";
+
+	if(document.formQOS.Session_timeConstraint)
+	if(document.formQOS.Session_timeConstraint.selectedIndex==0)
+	{
+		document.formQOS.session_days[0].checked=true;
+		document.formQOS.session_days[0].disabled=true;
+		document.formQOS.Session_timeBegin.disabled = true;
+		document.formQOS.Session_timeEnd.disabled = true;
+	}
+	else	
+	{
+		document.formQOS.session_days[0].disabled=false;
+		document.formQOS.Session_timeBegin.disabled = false;
+		document.formQOS.Session_timeEnd.disabled = false;
+	}
+		
+	if (document.formQOS.session_days[0].checked==false)
+	{
+		document.formQOS.session_days[1].disabled=false;
+		document.formQOS.session_days[2].disabled=false;
+		document.formQOS.session_days[3].disabled=false;
+		document.formQOS.session_days[4].disabled=false;
+		document.formQOS.session_days[5].disabled=false;
+		document.formQOS.session_days[6].disabled=false;
+		document.formQOS.session_days[7].disabled=false;		
+	}
+	else if(document.formQOS.session_days[0].checked==true)
+	{
+		document.formQOS.session_days[1].disabled=true;
+		document.formQOS.session_days[2].disabled=true;
+		document.formQOS.session_days[3].disabled=true;
+		document.formQOS.session_days[4].disabled=true;
+		document.formQOS.session_days[5].disabled=true;
+		document.formQOS.session_days[6].disabled=true;
+		document.formQOS.session_days[7].disabled=true;	 
+	}
+}
+function chSubmit(F)
+{
+	if (document.formQOS.Session_timeConstraint.selectedIndex==1) 
+	if(checkHourMinuteRange(document.formQOS.Session_timeBegin, document.formQOS.Session_timeEnd)<0) return ;
+	if(document.formQOS.session_days[0].checked ==false && document.formQOS.session_days[1].checked ==false && document.formQOS.session_days[2].checked ==false && document.formQOS.session_days[3].checked ==false && document.formQOS.session_days[4].checked ==false && document.formQOS.session_days[5].checked ==false && document.formQOS.session_days[6].checked ==false && document.formQOS.session_days[7].checked ==false )
+	{
+		top.AlertMsg("Alert", "Time Schedule Setting is not completed !!");
+		return;
+	}
+    F.submitStatus.value=1;  
+    F.submit();
+}
+//================= End =================*/
+
+/***************************************************/
+/*												   */	
+/*      			  Begin of content    				   */
+/*												   */	
+/***************************************************/
+var ButtonType = "OkCancel";		// NULL/Refresh/OkCancel/BackOkCancel/ShowTableOkCancel
+var Reloadlink = "";
+var Savelink = "chSubmit(document.formQOS);";
+var Cancellink = ""; 
+var helplink ='help_session_control.html';
+var UserName = 'admin';
+var FixedTableWidth = 650;
+var head_width=170;
+ 
+function PrintContent()
+{
+	PrintBeginContent();
+	PrintSession(1);
+	PrintScheduling(0);
+	PrintEndContent();
+}
+
+function PrintSession(hasUnderLine)
+{
+	PrintBeginBlock(1, "Session Control");
+	
+	document.write('<table class="Setuptable">');
+	document.write('<tr><td width="25">');
+	document.write('<input type="radio" name="session_type"  value="0" <!--#nk_get SessionRadio="s:0"-->>');
+	document.write('</td>');
+	document.write('<td colspan="3">');
+	document.write('Disabled');
+	document.write('</td></tr>');
+	
+	document.write('<tr><td>');
+	document.write('<input type="radio" name="session_type"  value="1" <!--#nk_get SessionRadio="s:1"-->>');
+	document.write('</td>');
+	document.write('<td colspan="3">');
+	document.write('Single IP cannot exceed&nbsp;&nbsp;');
+	document.write('<input type="text" name="session_noexceed" maxlength="4" size="2"  value=\'<!--#nk_get 1to1_Handle="session_noexceed"-->\' onFocus="this.select();" onBlur="SessionCheck(this);">');
+	document.write('&nbsp;&nbsp;Session');
+	document.write('</td></tr>');	
+	
+	document.write('<tr><td>');
+	document.write('<input type="radio" name="session_type"  value="4" <!--#nk_get SessionRadio="s:4"-->>');
+	document.write('</td>');
+	document.write('<td colspan="3">');
+	document.write('Single IP cannot exceed TCP&nbsp;&nbsp;');
+	document.write('<input type="text" name="TCP_noexceed" value=\'<!--#nk_get 1to1_Handle="TCP_noexceed"-->\' maxlength="4" size="2" onFocus="this.select();" onBlur="SessionCheck(this);">');
+	document.write('&nbsp;&nbsp;,&nbsp;&nbsp;UDP&nbsp;&nbsp;');
+	document.write('<input type="text" name="UDP_noexceed" value=\'<!--#nk_get 1to1_Handle="UDP_noexceed"-->\' maxlength="4" size="2" onFocus="this.select();"onBlur="SessionCheck(this);">');
+	document.write('&nbsp;&nbsp;Session');	
+	document.write('</td></tr>');
+	
+	document.write('<tr><td>');
+	document.write('<input type="radio" name="session_type" onClick="defaultType();" value="2" <!--#nk_get SessionRadio="s:2"-->>');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('When single IP exceed&nbsp;&nbsp;');
+	document.write('<input type="text" name="session_exceed" value=\'<!--#nk_get 1to1_Handle="session_exceed"-->\' maxlength="4" size="2" onFocus="this.select();" onBlur="SessionCheck(this);">');
+	document.write('&nbsp;&nbsp;Session');	
+	document.write('</td>');
+	
+	document.write('<td width="50" align="center">');
+	document.write('<input type="radio" name="block_type"  value="2" <!--#nk_get SessionRadio="b:2"-->>');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('block this IP\'s new sessions for&nbsp;&nbsp;');
+	document.write('<input type="text" name="exceed_time" maxlength="4" size="2" value=\'<!--#nk_get 1to1_Handle="exceed_time"-->\' onFocus="this.select();" onBlur="BlockTimeCheck(this);">');
+	document.write('&nbsp;&nbsp;minutes');
+	document.write('</td></tr>');
+	
+	document.write('<tr>');
+	document.write('<td></td><td></td><td width="50" align="center">');
+	document.write('<input type="radio" name="block_type"  value="3" <!--#nk_get SessionRadio="b:3"-->>');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('block this IP\'s all sessions for&nbsp;&nbsp;');
+	document.write('<input type="text" name="connect_time" maxlength="4" size="2" value=\'<!--#nk_get 1to1_Handle="connect_time"-->\' onFocus="this.select();" onBlur="BlockTimeCheck(this);">');
+	document.write('&nbsp;&nbsp;minutes');
+	document.write('</td>');
+	
+	
+	document.write('</tr></table>');
+	
+	PrintEndBlock(0);	
+}
+function PrintScheduling(hasUnderLine)
+{
+	PrintBeginBlock(1, "Scheduling");
+	document.write('<table width="'+FixedTableWidth+'" class="Setuptable" border="'+Tableborder+'">');
+	document.write('<tr>');	
+	document.write('<td>');
+	document.write('Time&nbsp;:&nbsp;');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('<select name="Session_timeConstraint" class="Select" onChange="chSchedule();">');
+	document.write('<option value="0" <!--#nk_get SelectHandle="Session_timeConstraint:0"-->>Always</option>');
+	document.write('<option value="1" <!--#nk_get SelectHandle="Session_timeConstraint:1"-->>Interval</option>');                    
+	document.write('</select>');	
+	document.write('</td>');
+	document.write('</tr>');	
+	document.write('<tr>');	
+	document.write('<td>');
+	document.write('From&nbsp;:&nbsp;');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	document.write('<input type="text" name="Session_timeBegin" size="12" maxlength="5" value=\'<!--#nk_get 1to1_Handle="Session_timeBegin"-->\' onFocus="this.select();" onBlur="sTrim(this);hours_minutes_Check(this,\'h\',\'m\');">');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	document.write('(hh:mm)'); 
+	document.write('<img border="0" src="images/_blank.gif" width="40" height="1">');
+	document.write('To&nbsp;:&nbsp;');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	document.write('<input type="text" name="Session_timeEnd" size="12" maxlength="5" value=\'<!--#nk_get 1to1_Handle="Session_timeEnd"-->\' onFocus="this.select();" onBlur="sTrim(this);hours_minutes_Check(this,\'h\',\'m\');">');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	document.write('(hh:mm)');
+	document.write('</td>')
+	document.write('</tr>');	
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('Effective on&nbsp;:&nbsp;');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	document.write('<input type="checkbox" name="session_days" value="7" onClick="chSchedule();"  <!--#nk_get EverydayCheckbox="session_days:1"-->>');
+	document.write(' Everyday '); 	 
+	document.write('<!--#nk_get WeekScheduleContent="session_days"-->');	
+	document.write('</td>')
+	document.write('</tr>');	
+	document.write('</table>');
+	PrintEndBlock(hasUnderLine);
+}
+//=============== End of content ===============*/
+</script>
+</head>
+<body class="mainframe" onLoad="Entryfunction();" onUnload="Leavefunction();" onResize="ChangeBgsize()" style="overflow:hidden">
+<script>PrintBackground();</script>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<form id="submitform" name="submitform"  method="post">
+	 	<!--#nk_get SetPageWidth="1"-->
+	</form>
+	<!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+	<script>
+         SetItemInit(foldersTree, 4, 4);		// Set Selected Node
+         initializeTree(foldersTree); 			// Draw Menu & Layout
+	</script>
+		
+	<form name="formQOS" method="post" action="session_control.htm">
+	<input type="hidden" name="page" value="session_control.htm">
+	<input type="hidden" name="Sgroup" value='0'>	
+	<input type="hidden" name="Sbutton" value='0'>	
+	<input type="hidden" name="submitStatus" value="10">
+
+	<script>PrintContent();</script>
+	<script>PrintRight();</script>
+	<script>PrintBottom();</script>
+</table>
+</body>
+</html> 
+<!--#nk_get SessionUpdate=""-->
+

@@ -1,0 +1,1 @@
+#define CONFIG_CPU_CAVIUM_OCTEON 1

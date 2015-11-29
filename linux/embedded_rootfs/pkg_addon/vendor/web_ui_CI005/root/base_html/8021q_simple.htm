@@ -1,0 +1,332 @@
+<!--#nk_get SetPageWidth="0"-->
+<!--#nk_get Simple8021Q="Del"-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta name="Expires" content="-1">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Web Management</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<script  language="JavaScript">
+/***************************************************/
+/*												     */	
+/*      		Begin of content's JavaScript function    	    */
+/*												    */	
+/***************************************************/
+function Entryfunction()
+{
+	ChangeBgsize();
+}
+
+function Leavefunction()
+{
+	chLeave();
+}
+
+function editLine(n,m)
+{
+    document.form8021Q.EditLine.value=n;
+	document.form8021Q.submitStatus.value=3;
+	document.form8021Q.EditStatus.value=2;
+	document.form8021Q.EditNum.value=m;
+	document.form8021Q.action="8021q_simple_lan_config.htm";
+	window.status=wEditRules;  
+	document.form8021Q.submit();
+}
+
+function removeLine(n,m)
+{	
+	document.form8021Q.EditLine.value=n;
+	document.form8021Q.EditNum.value=m;
+	document.form8021Q.submitStatus.value=2;
+	window.status=wEditRules;  
+	document.form8021Q.submit();
+}
+
+
+
+function Add_Rule(F)
+{
+    if (parseInt(F.Datanum.value,10)>=5)
+	{
+	    top.AlertMsg("Alert", aLimitRule+'5'+aLimitEnd);
+		return;
+	}
+	else
+	{
+		document.form8021Q.submitStatus.value=1;
+		document.form8021Q.EditStatus.value=1;
+		document.form8021Q.action='8021q_simple_lan_config.htm';
+		document.form8021Q.submit();
+	}
+}
+
+//================= End =================*/
+
+/***************************************************/
+/*												   */	
+/*      			  Begin of content    				   */
+/*												   */	
+/***************************************************/
+var ButtonType = "";		// NULL/Refresh/OkCancel/BackOkCancel/ShowTableOkCancel
+var Reloadlink = "";
+var Savelink = "chSubmit(document.formOpenvpnSetup);";
+var Cancellink = ""; 
+var helplink ='help_8021q.html';
+var UserName = '<!--#nk_get DisplayOnly="nUser"-->';
+var FixedTableWidth = "100%";
+
+function PrintContent()
+{
+	PrintBeginContent();
+	Print8021Q(0);
+	PrintEndContent();
+}
+
+function Print_table_tr_cell(cell_type, UserData,num)
+{
+	document.write('<tr height="24" class='+cell_type+' >');
+	
+	UserDataSplit = UserData.split("{[*-*-*]}");
+		
+	//ID
+	document.write('<td height="24" class="tdContentBorderRight tdContentC">');
+	document.write(UserDataSplit[0]);
+	document.write('</td>');
+	//DESCRIPTION
+	document.write('<td height="24" class="tdContentBorderRight tdContentC">');
+	document.write(UserDataSplit[1]);
+	document.write('</td>');
+	//inter vlan routing
+	document.write('<td height="24" class="tdContentBorderRight tdContentC">');
+	if(UserDataSplit[2]==1)
+		document.write('Enabled');
+	if(UserDataSplit[2]==0)
+		document.write('Disabled');
+	document.write('</td>');
+	
+	//device management
+	document.write('<td height="24" class="tdContentBorderRight tdContentC">');
+	if(UserDataSplit[3]==1)
+		document.write('Enabled');
+	if(UserDataSplit[3]==0)
+		document.write('Disabled');
+	document.write('</td>');
+	
+	//lan1
+	document.write('<td height="24" class="tdContentBorderRight tdContentC">');
+	if(UserDataSplit[4]==0)
+		document.write('UnTagged');
+	if(UserDataSplit[4]==1)
+		document.write('Tagged');
+	if(UserDataSplit[4]==2)
+		document.write('Excluded');
+	document.write('</td>');
+	
+	//lan2
+	document.write('<td height="24" class="tdContentBorderRight tdContentC">');
+	if(UserDataSplit[5]==0)
+		document.write('UnTagged');
+	if(UserDataSplit[5]==1)
+		document.write('Tagged');
+	if(UserDataSplit[5]==2)
+		document.write('Excluded');
+	document.write('</td>');
+	
+	//lan3
+	document.write('<td height="24" class="tdContentBorderRight tdContentC">');
+	if(UserDataSplit[6]==0)
+		document.write('UnTagged');
+	if(UserDataSplit[6]==1)
+		document.write('Tagged');
+	if(UserDataSplit[6]==2)
+		document.write('Excluded');
+	document.write('</td>');
+	
+	//lan4
+	document.write('<td height="24" class="tdContentBorderRight tdContentC">');
+	if(UserDataSplit[7]==0)
+		document.write('UnTagged');
+	if(UserDataSplit[7]==1)
+		document.write('Tagged');
+	if(UserDataSplit[7]==2)
+		document.write('Excluded');
+	document.write('</td>');
+		
+	//config
+	document.write('<td height="24" class="tdContentBorderRight tdContentC">');
+	document.write('<a href="javascript: editLine('+UserDataSplit[0]+','+num+')"><img src=images/edit.gif width=20 height=16 border=0 title=Edit></a>');
+	//document.write('</td>');
+	
+	//delete
+	//document.write('<td height="24" class="tdContentBorderRight tdContentC">');
+	if(UserDataSplit[0] == 1)
+	{
+		document.write('<img border="0" src="images/_blank.gif" width="20" height="1">');
+	}
+	else
+	{
+		document.write('<a href="javascript: removeLine('+UserDataSplit[0]+','+num+')">');
+		document.write('<img src="images/trash.gif" width="20" height="16" alt="Delete" border="0">');
+		document.write('</a>');	
+	}
+	document.write('</td>');
+	
+	document.write('<td class="tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</td>');
+	document.write('</tr>');
+}
+
+function Print8021Q(hasUnderLine)
+{
+	PrintBeginBlock(1, "802.1Q LAN");
+	
+	document.write('<table width="100%" cellspacing="0" cellpadding="0" style="margin-top:15px;border:1px solid #e2e2e2;">');
+	document.write('<tr><td>');
+	
+	document.write('<table width="'+FixedTableWidth +'" cellspacing="0" cellpadding="0" border="0">');
+	document.write('<tr><td>');
+	
+	document.write('<table class="SpecialTable" cellspacing="0" cellpadding="0" border="0">');	
+	document.write('<tr height="20">');	
+	document.write('<th class="firstth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('VLAN');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('<br>');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+	document.write('ID');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Description');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Inter VLAN');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('<br>');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+	document.write('Routing');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Device');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('<br>');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+	document.write('Management');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('LAN1');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('LAN2');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('LAN3');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('LAN4');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Config.');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	/*document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Del.');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');*/
+	
+	document.write('<th class="lastth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('</tr>');
+	
+	var List=document.getElementById("DataList").value.split("{[***]}");
+	for(var i=0;i<parseInt(List.length-1);i++)
+	{
+		if(i%2==0)
+			Print_table_tr_cell("OddRow", List[i], i+1);
+		else
+			Print_table_tr_cell("EvenRow", List[i], i+1);
+	}
+	document.write('</table>');
+	
+	document.write('</td></tr>');
+	document.write('</table>');
+	
+	document.write('<table class="ListButtom" height="29" width="100%" cellspacing="'+Tablecellspacing+'" border="'+Tableborder+'">');
+	document.write('<tr>');
+	document.write('<td align="right">');	
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	PrintSTButton("B5", "Add", "Add_Rule(this.form)");
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</td>') 	
+	document.write('</tr>');
+	document.write('</table>');
+	
+	document.write('</td>') 	
+	document.write('</tr>');
+	document.write('</table>');
+	PrintEndBlock(hasUnderLine);
+}
+
+//=============== End of content ===============*/
+</script>
+</head>
+<body class="mainframe" onLoad="Entryfunction();" onUnload="Leavefunction();" onResize="ChangeBgsize();">
+<script>PrintBackground();</script>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<form id="submitform" name="submitform"  method="post">
+	 	<!--#nk_get SetPageWidth="1"-->
+	</form>
+	<!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+	<script>
+         SetItemInit(foldersTree, 5, 3);		// Set Selected Node
+         initializeTree(foldersTree); 			// Draw Menu & Layout
+		//1{[*-*-*]}Default{[*-*-*]}0{[*-*-*]}0{[*-*-*]}0{[*-*-*]}0{[***]}
+	</script>
+		
+	<form name="form8021Q" action="8021q_simple.htm" method="post">
+	<input type="hidden" name="submitStatus" value='0'>
+	<input type="hidden" name="DataList" id="DataList" value='<!--#nk_get Simple8021Q="Data"-->'>
+	<input type="hidden" name="Datanum" id="Datanum" value='<!--#nk_get Simple8021Q="num"-->'>
+	<input type="hidden" name="EditLine" id="EditLine" value="0">
+	<input type="hidden" name="EditStatus" id="EditStatus" value="0">
+	<input type="hidden" name="EditNum" id="EditNum" value="0">
+	<script>PrintContent();</script>
+	<script>PrintRight();</script>      
+	<script>PrintBottom();</script>	
+</table>
+</body>
+</html>
+<!--#nk_get Simple8021Q="update"-->

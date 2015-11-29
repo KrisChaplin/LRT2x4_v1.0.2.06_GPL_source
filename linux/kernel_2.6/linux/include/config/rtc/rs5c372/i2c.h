@@ -1,0 +1,1 @@
+#define CONFIG_RTC_RS5C372_I2C 1

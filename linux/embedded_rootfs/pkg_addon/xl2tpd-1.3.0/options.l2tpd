@@ -1,0 +1,13 @@
+ipcp-accept-local
+ipcp-accept-remote
+noccp
+auth
+crtscts
+idle 1800
+logfile /var/log/messages
+mtu 1400
+mru 1400
+nodefaultroute
+lock
+proxyarp
+connect-delay 5000

@@ -1,0 +1,1 @@
+#define CONFIG_PPP_MPPE_MPPC 1

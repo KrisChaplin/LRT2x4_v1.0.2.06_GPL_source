@@ -1,0 +1,493 @@
+<!--#nk_get SetPageWidth="0"-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Web Management</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<script  language="JavaScript">
+/***************************************************/
+/*												     */	
+/*      		Begin of content's JavaScript function    	    */
+/*												    */	
+/***************************************************/
+var win = null;
+function rtrim(instr)
+{
+	return instr.replace(/[\s]*$/gi,"");
+}
+function may_need_CertPasswd()
+{
+	if(document.formvpn_clients.KeyPasswdFlag.value == "0")
+	{
+		var w = 355, h = 140;
+		var winl = (screen.width-w)/2;
+		var wint = (screen.height-h)/2;
+		if (winl < 0) winl = 0;
+		if (wint < 0) wint = 0;
+		win = window.open('vpn_passwd.htm','','height='+h+',width='+w+',top='+wint+',left='+winl+',toolbar=no, menubar=no, scrollbars=no, resizable=yes, location=no, status=no');
+		if(win != null)
+			win.window.focus();
+	}
+	else if(rtrim(document.formvpn_clients.KeyPasswdFlag.value) == "1")
+	{
+		top.AlertMsg("Alert", "Import Success!");
+	}
+	else if(rtrim(document.formvpn_clients.KeyPasswdFlag.value) == "2")
+	{
+		top.AlertMsg("Alert", "Import Fail!");
+	}
+}
+function refreshMe()
+{
+	document.location.href="ssl_cert.htm"; 
+}
+
+function getPasswd()
+{
+	setTimeout("getPasswd1()",500);
+}
+function getPasswd1()
+{
+	win.close();
+	setTimeout("refreshMe()",1500);
+}
+function Entryfunction()
+{
+	ChangeBgsize();
+}
+function Leavefunction()
+{
+	if(win != null)
+		win.close();
+	chLeave();
+}
+function KeepItName(name)
+{
+	var c=-1;
+	var p;
+	var q; 
+	var rightString;
+	var tmpString;
+	var ts=new tmpWord(15);
+	
+	rightString=name;
+	
+	//account id{
+	q=rightString.length;
+	p=rightString.indexOf("{");
+	ts[1]=rightString.substring(0,p); 
+	tmpString=rightString;
+	rightString=tmpString.substring(p+1,q); 
+
+	//pwd;
+	q=rightString.length;
+	p=rightString.indexOf(";");
+	ts[2]=rightString.substring(0,p); 
+	tmpString=rightString;
+	rightString=tmpString.substring(p+1,q);     
+	
+	//ip1.ip2.ip3.ip4;
+	for(j=3;j<7;j++)
+	{
+		q=rightString.length;
+		if(j==6)
+			p=rightString.indexOf(";");
+		else
+			p=rightString.indexOf(".");
+		
+		ts[j]=rightString.substring(0,p); 
+		tmpString=rightString;
+		rightString=tmpString.substring(p+1,q);
+	}
+	
+	//mask1.mask2.mask3.mask4;
+	for(j=7;j<11;j++)
+	{
+		q=rightString.length;
+		if(j==10)
+			p=rightString.indexOf(";");
+		else
+			p=rightString.indexOf(".");
+		
+		ts[j]=rightString.substring(0,p); 
+		tmpString=rightString;
+		rightString=tmpString.substring(p+1,q);
+	}
+	
+	//active
+	q=rightString.length;
+	p=rightString.indexOf(";");
+	ts[11]=rightString.substring(0,p); 
+	tmpString=rightString;
+	rightString=tmpString.substring(p+1,q);    
+
+	//type
+	q=rightString.length;
+	p=rightString.indexOf(";");
+	ts[12]=rightString.substring(0,p); 
+	tmpString=rightString;
+	rightString=tmpString.substring(p+1,q);   
+
+	//vpn hub
+	q=rightString.length;
+	p=rightString.indexOf("}");
+	ts[13]=rightString.substring(0,p); 
+	tmpString=rightString;
+	rightString=tmpString.substring(p+1,q); 
+
+	//No.
+	q=rightString.length;
+	p=rightString.indexOf(";");
+	ts[14]=rightString.substring(0,p); 
+	tmpString=rightString;
+	rightString=tmpString.substring(p+1,q); 
+	
+	if(ts[12]!="1")
+	{
+		c=document.formCMSserver.QvmDeleteList.length;
+		document.formCMSserver.QvmDeleteList.length+=1;
+		
+		document.formCMSserver.QvmDeleteList.options[c].value=ts[14];
+		document.formCMSserver.QvmDeleteList.options[c].text=ts[14];
+	}
+}
+function showUser(s)
+{
+	var p;
+	var q; 
+	var userString=s.options[s.selectedIndex].value;
+	var rightString;
+	var tmpString;
+	var ts=new tmpWord(7); 
+	var specialDefinedLength=splitVarforSpecialWordField.length;
+
+	rightString=userString;
+	q=rightString.length;
+	p=rightString.indexOf(splitVarforSpecialWordField);
+	ts[1]=rightString.substring(0,p); 
+	tmpString=rightString;
+	rightString=tmpString.substring(p+specialDefinedLength,q);        
+	
+	for (var j=2; j<=5; j++)
+	{
+		q=rightString.length;
+		if (j==5)
+			p=rightString.indexOf(splitVarforSpecialWordField);
+		else
+			p=rightString.indexOf(splitVarforSpecialWordField);
+		ts[j]=rightString.substring(0,p); 
+		tmpString=rightString;
+		rightString=tmpString.substring(p+specialDefinedLength,q); 
+	}
+
+	s.form.uName.value=ts[1]; 
+	s.form.nPasswd.value=ts[2]; 
+	s.form.cPasswd.value=ts[2]; 
+	
+	if (ts[3] == "1")
+	{ 
+	    s.form.passChanged[0].checked=true;
+		s.form.passChanged[1].checked=false;
+	}
+	else
+	{
+		s.form.passChanged[0].checked=false;
+	    s.form.passChanged[1].checked=true;
+	}
+	
+	if (ts[4] == "1")
+		s.form.userActive.checked=true;
+	else
+		s.form.userActive.checked=false;
+	
+	s.form.userType.value=ts[5];
+	
+	s.form.addUser.value=sUpdateUser; 
+	s.form.removeUser.disabled=false;
+	//MM_showHideLayers('btnNew','','show');
+	SetButtonStatus("showNew","show");
+	SetButtonStatus("removeUser","show");
+	s.form.uName.disabled=true; // Can't Change Username
+}
+
+function tmpWord(n)
+{
+	this.length=n;
+	for (var i=1; i<=n; i++)
+	this[i]=0;
+	return this;
+}
+
+function confirmPass(cP,nP)
+{
+	if (nP.value.length==0)
+	{
+		top.AlertMsg("Alert", aNewPasswordFirst);
+		cP.value=cP.defaultValue;
+		return -1;
+	}
+
+	if (cP.value!=nP.value)
+	{
+		top.AlertMsg("Alert", aNewPasswordNoMatch);
+		cP.value=cP.defaultValue;
+		return -1;
+	}
+	return 1;
+}
+
+function chSubmit()
+{	
+	document.formvpn_clients.submitStatus.value=1;
+	document.formvpn_clients.log_ch.value=1;
+	window.status=wSave;
+	MM_showHideLayers('AutoNumber15','','hide'); 
+	document.formvpn_clients.action = "ssl_cert.htm";
+	document.formvpn_clients.cerificateType.value=0;
+	document.formvpn_clients.submit();
+}
+
+function NewCertRequest(F)
+{
+	var QueryStr="";
+	var obj;
+
+	top.ConfirmMsg("Confirm",cGenerate,"NewCertRequest",""); 
+/*	if (confirm(cGenerate))
+	{
+		F.submitStatus.value = 1;
+		F.CertStatus.value = 3;
+		F.log_ch.value=1;
+		F.action = "vpn_clients_cm_2.htm";
+  		F.submit();
+	}*/
+
+}
+
+function ExportCert_chSubmit(F, flag)
+{
+	if(flag == 1)
+    		F.action = "/cgi-bin/config.exp?export_cert_client";
+	else if(flag == 0)
+    		F.action = "/cgi-bin/config.exp?export_cert_admin";
+
+	F.submit();
+}
+
+function ImportCert_chSubmit(F)
+{
+	var importFileNameLength=0;
+
+	if (F.importFile.value.length==0)
+	  return; 
+	top.ConfirmMsg("Confirm","The new certification will replace the old one.\nDo you want to continue?","ImportCert_chSubmit",""); 
+/*  if (confirm("The new certification will replace the old one.\nDo you want to continue?"))
+  {
+	F.importFileName.value=F.importFile.value;
+	if(F.importFileName.value.lastIndexOf("/")!=-1)
+		importFileNameLength=F.importFileName.value.lastIndexOf("/");
+	else if(F.importFileName.value.lastIndexOf("\\")!=-1)
+		importFileNameLength=F.importFileName.value.lastIndexOf("\\");
+
+	if (importFileNameLength > 0)
+		importFileNameLength += 1;
+
+	F.importFileName.value=F.importFileName.value.substring(importFileNameLength);
+	if(F.importFileName.value.substring(F.importFileName.value.lastIndexOf(".")+1)=="pem")
+	{
+		F.submitStatus.value = 1;
+		F.CertStatus.value = 3;
+		F.log_ch.value=1;
+		F.action = "vpn_clients_cm.htm";
+  		F.submit();
+	}
+	else
+	{
+		top.AlertMsg("Alert", "Please input correct file format! ");
+		return;
+	}
+  }*/
+}
+
+function ConfirmMsgResult(chose,mode,a)
+{
+	var importFileNameLength=0;
+	var F = document.formvpn_clients;
+	if(mode=="NewCertRequest")
+	{		
+		if(chose=="yes")
+		{
+			F.submitStatus.value = 1;
+			F.CertStatus.value = 3;
+			F.log_ch.value=1;
+			F.action = "vpn_clients_cm_2.htm";
+	  		F.submit();
+		}
+		else if(chose=="no")
+		{
+			return;
+		}
+	}
+
+	if(mode=="ImportCert_chSubmit")
+	{		
+		if(chose=="yes")
+		{
+			F.importFileName.value=F.importFile.value;
+			if(F.importFileName.value.lastIndexOf("/")!=-1)
+				importFileNameLength=F.importFileName.value.lastIndexOf("/");
+			else if(F.importFileName.value.lastIndexOf("\\")!=-1)
+				importFileNameLength=F.importFileName.value.lastIndexOf("\\");
+		
+			if (importFileNameLength > 0)
+				importFileNameLength += 1;
+		
+			F.importFileName.value=F.importFileName.value.substring(importFileNameLength);
+			if(F.importFileName.value.substring(F.importFileName.value.lastIndexOf(".")+1)=="pem")
+			{
+				F.submitStatus.value = 1;
+				F.CertStatus.value = 3;
+				F.log_ch.value=1;
+				F.action = "vpn_clients_cm.htm";
+		  		F.submit();
+			}
+			else
+			{
+				top.AlertMsg("Alert", "Please input correct file format! ");
+				return;
+			}
+		}
+		else if(chose=="no")
+		{
+			return;
+		}
+	}
+}
+
+//================= End =================*/
+
+/***************************************************/
+/*												   */	
+/*      			  Begin of content    				   */
+/*												   */	
+/***************************************************/
+var ButtonType = "OkCancel";		// NULL/Refresh/OkCancel/BackOkCancel/ShowTableOkCancel
+var Reloadlink = "";
+var Savelink = "chSubmit(document.formvpn_clients);";
+var Cancellink = ""; 
+var helplink ='help_ssl_certificate.html';
+var UserName = '<!--#nk_get DisplayOnly="nUser"-->';
+var head_width=230;
+		
+function PrintContent()
+{
+	PrintBeginContent();
+	PrintCertificate(0);
+	PrintEndContent();
+}
+
+function PrintCertificate(hasUnderLine)
+{
+	PrintBeginBlock(1, "Certificate Management");
+	document.write('<table class="Setuptable" width="'+SmallLayoutwidth+'" border='+Tableborder+'>');	
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');	
+	document.write('Generate New Certificate&nbsp;:&nbsp;');	
+	document.write('</td>');
+	document.write('<td width="260">');	
+	PrintSTButton("showNew", "Generate", "NewCertRequest(document.formvpn_clients)");
+	document.write('</td>');
+	document.write('<td></td>');
+	document.write('</tr>');	
+	document.write('<tr>');
+	document.write('<td>');	
+	document.write('Export Certificate for Administrator&nbsp;:&nbsp;');	
+	document.write('</td>');
+	document.write('<td>');	
+	PrintSTButton("showNew", "Export for Admin", "ExportCert_chSubmit(document.formvpn_clients, 0)");	
+	document.write('</td>');
+	document.write('<td></td>');
+	document.write('</tr>');	
+	document.write('<tr>');
+	document.write('<td>');	
+	document.write('Export Certificate for Client&nbsp;:&nbsp;');	
+	document.write('</td>');
+	document.write('<td>');	
+	PrintSTButton("showNew", "Export for Client", "ExportCert_chSubmit(document.formvpn_clients, 1)");	
+	document.write('</td>');
+	document.write('<td></td>');
+	document.write('</tr>');		
+	document.write('<tr>');
+	document.write('<td>');	
+	document.write('Import Certificate&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');	
+	document.write('<input type="FILE" name="importFile" style="height:24px;margin-top:15px;">');	
+	document.write('</td>');
+	document.write('<td></td>');	
+	document.write('</tr>');		
+	document.write('<tr>');
+	document.write('<td></td>');		
+	document.write('<td>');	
+	PrintSTButton("showNew", "Import", "ImportCert_chSubmit(document.formvpn_clients)");	
+	document.write('</td>');
+	document.write('<td></td>');	
+	document.write('</tr>');	
+	document.write('<tr>');
+	document.write('<td style="height:24px;margin-top:15px;">');	
+	document.write('Existing Certificate :');	
+	document.write('</td>');
+	document.write('<td>');	
+	document.write('<!--#nk_get RVCertNAME=""-->');	
+	document.write('</td>');
+	document.write('<td></td>');	
+	document.write('</tr>');
+	document.write('</table>');
+	PrintEndBlock(hasUnderLine);
+}
+//=============== End of content ===============*/
+</script>
+</head>
+<body class="mainframe" onLoad="Entryfunction();" onUnload="Leavefunction();" onResize="ChangeBgsize();">
+<script>PrintBackground();</script>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <form name="formdualwan" method="post" action="">
+      <input type="hidden" name="wanNumber" value='<!--#nk_get GetSystemNum="wan_port_num_now"-->'>
+    </form>
+	<form id="submitform" name="submitform"  method="post">
+	 	<!--#nk_get SetPageWidth="1"-->
+	</form>
+	<!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+	<script>
+         SetItemInit(foldersTree, 4, 11);		// Set Selected Node
+   	  if (document.formdualwan.wanNumber.value <= 2 && ShareDMZPort == 1)
+	  	SetItemStr(foldersTree, 4, 1, "Dual WAN");
+   	  if (document.formdualwan.wanNumber.value <= 2 && ShareDMZPort == 0)
+	  	SetItemStr(foldersTree, 4, 1, "Network Service Detection");
+         initializeTree(foldersTree); 			// Draw Menu & Layout
+	</script>
+		
+	<form name="formvpn_clients" method="post" action="ssl_cert.htm" enctype="multipart/form-data">
+	<input type="hidden" name="page" value="ssl_cert.htm"> 
+	<input type="hidden" name="submitStatus" value="1">
+	<input type="hidden" name="log_ch" value="0">
+	<input type="hidden" name="CertStatus" value="0">
+	<input type="hidden" name="VPN_number" value='50'>
+	<input type="hidden" name="cerificateType" value=''>
+	<input type="hidden" name="importFileName" value=''> 
+	<input type="hidden" name="KeyPasswdFlag" value='<!--#nk_get KeyPasswdFlag-->'> 
+
+	<script>PrintContent();</script>
+	<script>PrintRight();</script>      
+	<script>PrintBottom();</script>
+ 	<script>may_need_CertPasswd();</script>
+
+</table>
+</body>
+</html>
+<!--#nk_get SysLogChange="ssl_cert.htm"-->
+<!--#nk_get DBUpdate=""-->

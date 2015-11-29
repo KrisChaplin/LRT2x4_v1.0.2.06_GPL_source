@@ -1,0 +1,547 @@
+<!--#nk_get SetPageWidth="0"-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Web Management</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<script  language="JavaScript">
+/***************************************************/
+/*												     */	
+/*      		Begin of content's JavaScript function    	    */
+/*												    */	
+/***************************************************/
+function Entryfunction()
+{
+	ChangeBgsize();
+}
+function Leavefunction()
+{
+	chLeave();
+}
+
+function refreshMe()
+{
+	document.location.href="dhcp_static.htm"; 
+}
+function closeService()
+{
+  timer1=setTimeout("closeTable(wsetting_window)",1000);
+  timer2=setTimeout("refreshMe()",3000);
+}
+
+function getIPNumber(ipAddr)
+{
+	var result = 0;
+	var value = 0;
+	var ipParts = new Array();
+
+	ipParts = ipAddr.split(".");
+
+   for (var i=0; i < ipParts.length; i++) 
+   {
+      var addr =  ipParts[i];
+
+      if (i==0)
+         value = addr * 256 * 256 * 256;
+      else if (i == 1)
+         value = addr * 256 * 256;
+      else if (i == 2)
+         value = addr * 256;
+      else if (i == 3)
+         value = addr * 1;
+
+      result = result + value;
+   }
+   return result; 
+}
+
+function disableIt(obj)
+{
+    obj.disabled=true;
+}
+
+function enableIt(obj)
+{
+    obj.disabled=false;
+}
+
+function chSubmit(F)
+{	
+	var items,String;
+
+	if (F.dhcp_staticList1) selAll(F.dhcp_staticList1);
+
+			
+	if(F.BlockMacWrongIP_check.checked==true)
+		F.BlockMacWrongIP.value=1;
+	else
+		F.BlockMacWrongIP.value=0;
+			
+	if(F.BlockMacNotList_check.checked==true)
+		F.BlockMacNotList.value=1;
+	else
+		F.BlockMacNotList.value=0;
+			
+	F.dhcpSubnetStatus1.value=1;
+	F.submitStatus.value=1;
+	F.log_ch.value=1;
+	window.status = wSave;
+	MM_showHideLayers('AutoNumber15','','hide');  	
+	F.submit();
+
+}
+
+function timeCheck(I)
+{
+  var d;
+  d=parseInt(I.value,10);
+  if (!(d<=43200 && d>=5))
+  {
+    top.AlertMsg("Alert", aMinuteSNumsCheck);
+    I.value=I.defaultValue;
+    return -1;
+  }
+  I.value=d;
+}
+
+
+function forceEnDhcp()
+{  
+	if (document.formDHCPSetup.dhcpSubnet1)
+    if (document.formDHCPSetup.dhcpStatusIPv4.checked==true && document.formDHCPSetup.dhcpStatusE.value==0)
+    {
+	if(document.formDHCPSetup.dhcpSubnet1.checked==false && document.formDHCPSetup.dhcpSubnet2.checked==false &&
+	   document.formDHCPSetup.dhcpSubnet3.checked==false && document.formDHCPSetup.dhcpSubnet4.checked==false)
+        	document.formDHCPSetup.dhcpSubnet1.checked=true;
+    }
+}
+
+function showdeleteButton2(F,s)
+{
+    var forwardString=s.options[s.selectedIndex].value; 
+    var rightString,macstring;
+
+	if (s.selectedIndex==-1) return;
+
+	rightString=forwardString.split(splitVarforSpecialWordField);
+			
+	F.ss.value=rightString[0];
+
+	macstring=rightString[2].split(":");
+	F.sMAC.value=macstring[0]+":"+macstring[1]+":"+macstring[2]+":"+macstring[3]+":"+macstring[4]+":"+macstring[5]; 
+	F.userName.value=rightString[4];
+	
+	if(rightString[3]=="1") //enable
+		F.dhcpEnable.checked=true;
+	else
+		F.dhcpEnable.checked=false;
+
+	F.btnAddToList.value=sUpdateEntry; 		
+	SetButtonStatus('btnNew','show');
+	SetButtonStatus('delStatic','show');
+	F.delStatic.disabled=false;	
+
+}
+
+
+function blurList2(F)
+{
+    for (var i=0; i < F.dhcp_staticList1.length; i++)
+    {
+      F.dhcp_staticList1.options[i].selected=false;
+    }
+    F.delStatic.disabled=true;
+}
+
+
+function clearContent_dhcp(F,fo)
+{
+  //  blurList2(F);
+	if (fo==F.ss)
+	{
+		var index=F.dhcp_staticList1.selectedIndex;
+		
+		if(index != -1)   
+			F.dhcp_staticList1.options[index].selected=false;
+	  
+		F.ss.value="";
+		F.sMAC.value="";	
+		F.userName.value="";		
+		F.btnAddToList.value=sAddtoList; 
+		if(F.dhcpEnable)
+			F.dhcpEnable.checked=false;
+		SetButtonStatus('delStatic','disabled'); 	
+		SetButtonStatus('btnNew','disabled'); 
+		fo.select();
+	}
+}
+
+function changeIP(s,number)
+{
+	var i=0,j=0;
+	var p=-1;
+	var pp;
+	var qq; 
+	var rightString;
+	var tmpString;
+	var temp,temp2;
+	var ts=new tmpWord(3);  
+	temp=s.options[s.length-1].value;
+	temp2=s.options[s.length-1].text;
+	for(i=s.length-1;i>number;i--)
+	{
+		s.options[i].value=s.options[i-1].value;
+		s.options[i].text=s.options[i-1].text;
+	}
+	s.options[number].value=temp;
+	s.options[number].text=temp2;
+}
+
+function delDhcpSelect(s,fo)
+{
+   var index=s.selectedIndex;
+   
+   if(index == -1) return;   
+   s.options[index]=null;
+   clearContent_dhcp(s.form,fo);		
+}
+
+
+function IpMACaddSel(IP,MAC,s,Enable,userName) 
+{
+	var p=-1;
+	var pp;
+	var qq; 
+	var rightString;
+	var tmpString;
+	var ts=new tmpWord(3);  
+	var enable,enableText;
+
+	if (IP.value.length == 0)
+	{
+		top.AlertMsg("Alert", aIPAddress);
+		IP.select();
+		return;
+	}else if (IPCheck(IP) < 0)
+	{
+		IP.select();
+		return;
+	}
+	
+
+	if(MAC.value.length == 0)
+	{
+	    top.AlertMsg("Alert", aMAC);
+		MAC.select();
+		return;
+	}
+	else if(MACCheck(MAC) <0)
+	{
+	    MAC.select();
+		return;
+	}
+
+	if (s.form.LanIP.value==IP.value)
+  	{
+		top.AlertMsg("Alert", aDeviceIPAlready);
+		return;
+	}
+	
+	if(userName.value.length != 0 )
+        if(Check_Special_Words(userName) == -1)
+	{
+		userName.select();
+		return;
+	}
+
+    if (s.form.btnAddToList.value==sUpdateEntry)
+    {
+		p=-1;
+		while (s.options[++p].selected != true);
+    }
+
+	
+   for (var i=0; i < s.length; i++)
+   {
+   	var rightString = s.options[i].value.split(" ");
+	var usrName=rightString[4];
+  
+	if(userName.value.length != 0 )
+	{
+		if(userName.value == usrName && s.options[i].selected == false )
+		{
+			top.AlertMsg("Alert", aName);
+			userName.select() ;
+			return ;
+		}
+	}
+	
+	if (i != p)
+	{
+		if (rightString[0]==IP.value)
+	    	{
+			top.AlertMsg("Alert", aIPAlready);
+			return;
+		}
+		if (rightString[1]==MAC.value)
+	    	{
+			top.AlertMsg("Alert", aMACAlready);
+			return;
+		}
+	}
+    }    
+	
+    for (var i=0; i < s.length; i++)
+    {
+        s.options[i].selected=false;
+    }	
+
+	if (s.form.btnAddToList.value==sAddtoList)
+	{
+		if (s.length>=LimitStaticIP)
+		{
+			top.AlertMsg("Alert", aLimitStaticIP+LimitStaticIP+aLimitEnd);
+			return;
+		}     
+	    p=s.length;
+		s.length+=1;
+	}
+
+	enable=0;
+	if(Enable)
+	if(Enable.checked==true)
+		enable=1;
+	enableText="Disabled";
+	if(Enable)
+	if(Enable.checked==true)
+		enableText="Enabled";
+
+
+	s.options[p].text=IP.value+"=>"+filterMAC(MAC.value)+"=>"+userName.value+"=>"+enableText;
+	s.options[p].value=IP.value+splitVarforSpecialWordField+"=>"+splitVarforSpecialWordField+filterMAC(MAC.value)+splitVarforSpecialWordField+enable+splitVarforSpecialWordField+userName.value;
+	  
+	clearContent_dhcp(s.form,IP);
+}
+
+function IP_S_to_B_Data(a,b)
+{
+    var aText = a;
+    var bText = b;
+	var items;
+	
+	if(!a) return -1;
+	if(!b) return 1;
+	
+	items=aText.split("#");
+	aText=getIPNumber(items[0]);
+	
+	items=bText.split("#");
+	bText=getIPNumber(items[0]);
+
+	if (aText < bText) return -1;
+    if (aText > bText) return 1;
+    return 0;
+}
+
+function String_S_to_B_Data(a,b)
+{
+    var aText = a;
+    var bText = b;
+	var items;
+	
+	if(!a) return -1;
+	if(!b) return 1;
+	
+	items=aText.split("#");
+	aText=items[0];
+	
+	items=bText.split("#");
+	bText=items[0];
+
+	if (aText < bText) return -1;
+    if (aText > bText) return 1;
+    return 0;
+}
+
+function Print_static_ip_table_tr_cell(IP,MAC, bindable,username,BufBindable)
+{
+	MAC=MAC.toUpperCase();
+	document.write('<option value="'+IP+splitVarforSpecialWordField+'=>'+splitVarforSpecialWordField+MAC+splitVarforSpecialWordField+bindable+splitVarforSpecialWordField+username+'">'+IP+' => '+MAC+'=>'+username+'=>'+BufBindable+'</option>');
+}
+
+
+function produce_static_ip_table(data)
+{
+	var items;
+	var list;
+
+    list=data.split(splitVarforSpecialWordField+"?");
+    list.sort(IP_S_to_B_Data);	
+	for (var i=1; i < list.length; i++) 
+    {
+        items=list[i].split(splitVarforSpecialWordField+"#");
+		Print_static_ip_table_tr_cell(items[0],items[1],items[2],items[3],items[4]);
+    }
+}
+
+
+//================= End =================*/
+
+/***************************************************/
+/*												   */	
+/*      			  Begin of content    				   */
+/*												   */	
+/***************************************************/
+var ButtonType = "OkCancel";		// NULL/Refresh/OkCancel/BackOkCancel/ShowTableOkCancel
+var Savelink = "chSubmit(document.formDHCPSetup);";
+var Cancellink = ""; 
+var helplink ='help_ipmac.html';
+var UserName = '<!--#nk_get DisplayOnly="nUser"-->';
+var head_width=130;//fix support apple safari style by jason.huang 20100423 
+
+function PrintContent()
+{
+	PrintBeginContent();
+	//document.write('<table width="100%" class="block" border="0" cellpadding="0" cellspacing="0">');
+	PrintStaticIP(1);
+	PrintEndContent();
+}
+
+function PrintStaticIP(hasUnderLine)
+{
+	var in_head_width=head_width;
+	var in_middle_witdh=400;
+	var application =navigator.appVersion;
+	var appType ="";
+	var appName = "";
+	PrintBeginBlock(0);
+	document.write('<table  width="'+SmallLayoutwidth+'" border='+Tableborder+' bordercolor="'+Tablebordercolor+'" cellpadding="'+Tablecellpadding+'" cellspacing="'+Tablecellspacing+'" style="'+Tablestyle+'">');
+	document.write('<tr>');
+	document.write('<td valign="top" height="34" style="padding-top:15px">');
+	PrintSTButton("MAC_to_List","Show unknown MAC addresses","openTable(\'Dhcp_table1.htm\')");
+	document.write('</td>');
+	document.write('</tr>');	
+	document.write('</table>');	
+
+	appType = application.split(";");
+
+	if (appType.length!=1)
+	{
+		appName = appType[1].substring(1, 5);
+	}
+ 
+	document.write('<table id=v4Static class="Infotable" width="'+SmallLayoutwidth+'" border='+Tableborder+'>');
+	document.write('<tr>');
+	document.write('<td width='+in_head_width+' align="left">Static IP Address&nbsp;:&nbsp;</td>');
+	document.write('<td align="left" width="'+in_middle_witdh+'">');
+	document.write('<input type=text name="ss" class="inputtext"  size="36" maxlength="15" onKeypress="return Check_User_Input(event)" onFocus="this.select()">');
+	document.write('</td>');
+	document.write('<td></td>');	
+	document.write('</tr>');
+	document.write('<tr>');
+    	document.write('<td width='+in_head_width+' align="left" >MAC Address&nbsp;:&nbsp;</td>');
+	document.write('<td align="left" width="'+in_middle_witdh+'">');
+	document.write('<input type=text name="sMAC" class="inputtext" size="36" maxlength="17" onFocus="this.select()" onBlur="MACCheck(this);">');
+	document.write('</td>');
+	document.write('<td></td>');	
+	document.write('</tr>');
+	document.write('<tr>');
+    	document.write('<td width='+in_head_width+' align="left" >Name&nbsp;:&nbsp;</td>');
+	document.write('<td align="left" width="'+in_middle_witdh+'">');
+	document.write('<input type=text name="userName" class="inputtext" size="36" maxlength="12"  onFocus="this.select()">');
+	document.write('</td>');
+	document.write('<td></td>');	
+	document.write('</tr>');
+	document.write('<tr>');
+    	document.write('<td width='+in_head_width+' align="left" >Enable&nbsp;:&nbsp;</td>');
+	document.write('<td align="left" width="'+in_middle_witdh+'">');
+	document.write('<input type="checkbox" name="dhcpEnable" value="0" >');
+	document.write('</td>');
+	document.write('<td></td>');	
+	document.write('</tr>');	
+	document.write('<tr>');
+	document.write('<td align="center" colspan="2">');
+	PrintSTButton("btnAddToList","Add to list","IpMACaddSel(this.form.ss,this.form.sMAC,this.form.dhcp_staticList1,this.form.dhcpEnable,this.form.userName);");
+	document.write('</td>');
+	document.write('<td></td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td colspan="2">');
+	document.write('<select multiple class="Multiselect" name="dhcp_staticList1" size="10" onChange="showdeleteButton2(this.form, this);" style="width: 100%">');
+	<!--#nk_get DhcpStaticList=""-->
+	document.write('</select>');
+	document.write('</td>');
+	document.write('<td></td>');	
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td align="center" valign="top" colspan="2">');
+	PrintSTButton("delStatic","Delete","delSel(this.form.dhcp_staticList1, 'DHCP')");
+	SetButtonStatus("delStatic", "disabled");	
+	document.write('<img border="0" src="images/_blank.gif" width="5" height="1">');
+	PrintSTButton("btnNew","Add New","clearContent_dhcp(this.form,this.form.ss)");
+	SetButtonStatus("btnNew", "disabled");
+	document.write('</td>');
+	document.write('<td></td>');	
+	document.write('</tr>');	
+	document.write('<tr>');		
+	document.write('<td align="left" colspan="3">');
+	document.write('<input type="hidden" name="BlockMacWrongIP" value=\'<!--#nk_get CheckboxSave="BlockMacWrongIP"-->\'>');	
+	document.write('<input type="checkbox" name="BlockMacWrongIP_check" value="1" <!--#nk_get CheckboxStatus="BlockMacWrongIP"-->>');	
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('Block MAC address on the list with wrong IP address</td>');
+	document.write('</tr>');	
+	document.write('<tr>');
+	document.write('<td align="left" colspan="3">');
+	document.write('<input type="hidden" name="BlockMacNotList" value=\'<!--#nk_get CheckboxSave="BlockMacNotList"-->\'>');	
+	document.write('<input type="checkbox" name="BlockMacNotList_check" value="1" <!--#nk_get CheckboxStatus="BlockMacNotList"-->>');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('Block MAC address not on the list</td>');
+	document.write('</tr>');	
+	document.write('</table>');	
+	PrintEndBlock(hasUnderLine, 0,1);
+}
+
+//=============== End of content ===============*/
+</script>
+</head>
+<body class="mainframe" onLoad="Entryfunction();" onUnload="Leavefunction();" onResize="ChangeBgsize();">
+<script>PrintBackground();</script>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<form id="submitform" name="submitform"  method="post">
+	 	<!--#nk_get SetPageWidth="1"-->
+	</form>
+	<!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+	<script>
+         SetItemInit(foldersTree, 3, 4);		// Set Selected Node
+         initializeTree(foldersTree); 			// Draw Menu & Layout
+	</script>
+		
+	<form name="formDHCPSetup" method="post" action="dhcp_static.htm">
+	<input type="hidden" name="page" value="dhcp_static.htm">
+	<input type="hidden" name="dhcp_chsubmit" value=''>
+	<input type="hidden" name="submitStatus" value="1">
+	<input type="hidden" name="log_ch" value="0">
+	<input type="hidden" name="dhcpStatusChange" value='<!--#nk_get CheckboxSave="dhcpStatusChange"-->'>
+	<input type="hidden" name="dhcpReplyChange" value='<!--#nk_get CheckboxSave="dhcpReplyChange"-->'>		
+	<input type="hidden" name="dhcpStatusE" value='<!--#nk_get DhcpEnable=""-->'>
+	<input type="hidden" name="pointbufList1" value="0">
+	<input type="hidden" name="pointbufList2" value="0">
+	<input type="hidden" name="deviceIP" value='...'>
+	<input type="hidden" name="LanIP" value='<!--#nk_get DisplayOnly="LanIp"-->'>
+	<input type="hidden" name="LanMask" value='<!--#nk_get DisplayOnly="LanMask"-->'>
+	<input type="hidden" name="PPTPEnabled" value='<!--#nk_get CheckboxStatus="PPTPEnabled"-->'>
+	<input type="hidden" name="selectedEntry" value="0">
+	<input type="hidden" name="dhcpSubnetStatus1" value='<!--#nk_get DisplayOnly="dhcpSubnetStatus1"-->'>		
+	
+	<script>PrintContent();</script>
+	<script>PrintRight();</script>      
+	<script>PrintBottom();</script>   
+</table>
+</body>
+</html>
+<!--#nk_get SysLogChange="dhcp_static.htm"-->
+<!--#nk_get DhcpUpdate=""-->

@@ -1,0 +1,330 @@
+<!--#nk_get IpMACSetup=""-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta name="Pragma" content="No-Cache">
+<!--<meta http-equiv="refresh" content="5">-->
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>IP & MAC binding List</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<script language=JavaScript>
+var databuf="<!--#nk_get IpMacBindingdata="Name"-->";
+eval("var Message="+databuf);
+var databuf="<!--#nk_get IpMacBindingdata="Mac"-->";
+eval("var Message_Mac="+databuf);
+function Entryfunction()
+{
+	window.status='';
+}
+	
+function Leavefunction()
+{
+	opener.wDhcp_table1=null;
+}
+
+function chUsername()
+{
+	var i=1;
+	var Illegal=0;
+	var name;
+	var len=Message.data.length;
+	while(i)
+	{		
+		if(document.getElementById("username"+i)==null) break;
+		name=document.getElementById("username"+i).value;
+		if(name=="")
+		{
+			i++;
+			continue;
+		}
+		if(Check_Special_Words(document.getElementById("username"+i)) == -1)
+		{
+			document.getElementById("username"+i).select();
+			return 1;
+		}
+		for(var j=0;j<len;j++)
+		{
+			if(name==Message.data[j].Name)
+			{
+				Illegal=1;
+				break;
+			}
+		}
+		for(var j=i+1;;j++)
+		{
+			if(document.getElementById("username"+j)==null) break;
+			if(name==document.getElementById("username"+j).value)
+			{
+				Illegal=1;
+				break;
+			}
+		}
+		i++;
+	}
+	if(Illegal)
+	{
+		top.AlertMsg("Alert", aNameAlready);
+		return 1;
+	}
+	return 0;
+}
+
+function chMAC()
+{
+	var i=1;
+	var Illegal=0;
+	var mac_new;
+	var bind_new;
+	var len=Message_Mac.data.length;	
+
+	while(i)
+	{		
+		if(document.getElementById("MAC"+i)==null) break;
+		mac_new = document.getElementById("MAC"+i).value;
+		bind_new = document.getElementById("bindable"+i).checked;		
+		for(var j=0;j<len;j++)
+		{			
+			if(bind_new == true && mac_new == Message_Mac.data[j].Mac)
+			{				
+				Illegal=1;
+				break;
+			}
+		}		
+		i++;
+	}	
+	if(Illegal)
+	{
+		top.AlertMsg("Alert", aMACAlready);
+		return 1;
+	}
+	return 0;
+}
+
+function chsubmit(F)
+{
+	if(chUsername()) return;
+	if(chMAC()) return;
+	
+	//top.AlertMsg("Alert", aWaitForSetting);
+	top.AlertMsg("Alert", aWaitForSetting, "doSubmitReally();");
+//	opener.closeService(); 
+//	F.submitStatus.value="1";
+//	F.submit();
+}
+
+function doSubmitReally()
+{
+	F =document.dhcp_ip_mac_bind;
+	opener.closeService(); 
+	F.submitStatus.value="1";
+	F.submit();
+}
+
+function selectall(F)
+{
+	var SelectAll = 0;
+
+	if (F.AllSelect.checked)
+		SelectAll = 1;
+	
+	for (var i=1; i < list.length; i++) 
+	{
+		if (SelectAll == 1)
+		{
+		   	document.getElementById("bindable"+i).checked=true;
+			document.getElementById("ipmac"+i).className="SelectedRow";
+		}
+		else
+		{
+			if (i%2==1)
+				document.getElementById("ipmac"+i).className="OddRow";
+			else	
+				document.getElementById("ipmac"+i).className="EvenRow";
+			document.getElementById("bindable"+i).checked=false;	
+		}
+	}
+}
+
+function ip_mac_check(x,list_index)
+{
+   if(x.checked == true)
+       document.getElementById("ipmac"+list_index).className="SelectedRow"; 
+   else
+   {
+	if(list_index%2==1)
+		document.getElementById("ipmac"+list_index).className="OddRow";
+	else
+		document.getElementById("ipmac"+list_index).className="EvenRow";//popOddRow	
+   }  
+}
+
+function Print_table_tr_cell(cell_type,list_index,IP,MAC, index)
+{
+	MAC=MAC.toUpperCase();
+	document.write('<tr id="ipmac'+list_index+'" class="'+cell_type+'">');
+	document.write('<td class="tdContentBorderRight tdContentC"><img border="0" src="images/_blank.gif" width="10" height="1">'+IP+'<input type=hidden name="IP'+index+'" id="IP'+index+'" value="'+IP+'"><img border="0" src="images/_blank.gif" width="10" height="1"></td>');
+   	document.write('<td class="tdContentBorderRight tdContentC"><img border="0" src="images/_blank.gif" width="10" height="1">'+MAC+'<input type=hidden name="MAC'+index+'" id="MAC'+index+'" value="'+MAC+'"><img border="0" src="images/_blank.gif" width="10" height="1"></td>');
+   	document.write('<td class="tdContentBorderRight tdContentC"><img border="0" src="images/_blank.gif" width="10" height="1"><input type="text" name="username'+index+'" id="username'+index+'" maxlength="12" size="20" ><img border="0" src="images/_blank.gif" width="10" height="1"></td>');
+   	document.write('<td class="tdContentBorderRight tdContentC""><img border="0" src="images/_blank.gif" width="10" height="1"><input type="checkbox" id="bindable'+index+'" name="bindable'+index+'" value="1" onClick="ip_mac_check(this,'+list_index+')"><img border="0" src="images/_blank.gif" width="10" height="1"></td>');
+	
+	document.write('<td class="tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</td>');
+	
+	document.write('</tr>');
+}
+
+function getIPNumber(ipAddr)
+{
+	var result = 0;
+	var value = 0;
+	var ipParts = new Array();
+
+	ipParts = ipAddr.split(".");
+
+	for (var i=0; i < ipParts.length; i++) 
+	{
+	  var addr =  ipParts[i];
+
+	  if (i==0)
+	     value = addr * 256 * 256 * 256;
+	  else if (i == 1)
+	     value = addr * 256 * 256;
+	  else if (i == 2)
+	     value = addr * 256;
+	  else if (i == 3)
+	     value = addr * 1;
+
+	  result = result + value;
+	}
+	return result; 
+}
+
+function IP_S_to_B_Data(a,b)
+{
+    var aText = a;
+    var bText = b;
+	var items;
+	
+	if(!a) return -1;
+	if(!b) return 1;
+	
+	items=aText.split(splitVarforSpecialWordField+"#");
+	aText=getIPNumber(items[0]);
+	
+	items=bText.split(splitVarforSpecialWordField+"#");
+	bText=getIPNumber(items[0]);
+
+	if (aText < bText) return -1;
+    if (aText > bText) return 1;
+    return 0;
+}
+
+var list;
+function produce_table(data)
+{
+	var items;
+	
+    list=data.split(splitVarforSpecialWordField+"?");
+    list.sort(IP_S_to_B_Data);	
+	if(list.length < 2) return ;
+
+	for (var i=1; i < list.length; i++) 
+	{
+		items=list[i].split(splitVarforSpecialWordField+"#");
+		if(i%2 ==1)
+		    Print_table_tr_cell("OddRow",i,items[0],items[1],items[2]);//EvenRow
+		else
+		    Print_table_tr_cell("EvenRow",i,items[0],items[1],items[2]);//OddRow
+		list[i]=list[i]+splitVarforSpecialWordField+"#"+i;
+	}
+
+}
+
+/***************************************************/
+/*												   */	
+/*      			Begin of table    		   */
+/*												   */	
+/***************************************************/
+
+function PrintContent()
+{
+	PrintWhiteTableBegin();
+	
+	document.write('<table width="100%" >');
+	document.write('<tr><td>');
+	
+	document.write('<table width="100%" class="SpecialTable" cellspacing="0" cellpadding="0" border="0">');	
+	document.write('<tr>');	
+	document.write('<th class="firstth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('IP Address');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('MAC Address');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Name');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('<input class="checkBoxMargin" type="checkbox" id="AllSelect" name="AllSelect" value="1" onClick="selectall(document.dhcp_ip_mac_bind);"><img border="0" src="images/_blank.gif" width="6" height="1">Enable');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="lastth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	document.write('</tr>');
+	
+	var data='<!--#nk_get IP_Mac_table=""-->';
+	produce_table(data);
+	
+	document.write('</table>');
+	
+	document.write('</tr></td>');
+	document.write('</table>');
+	
+	PrintWhiteTableEnd();
+}
+
+</script>
+</head>
+<body class="poplist" onResize="ChangeWhiteTable()" style="overflow:hidden">
+<div id="maskAlertDiv" class="divAll">&nbsp;</div>
+<div id="AlertDiv"  style="display:none;position: absolute; width: 356px; top: 30%; left: 68px; background: none repeat scroll 0% 0% white; z-index: 1112;"></div>
+<form name="dhcp_ip_mac_bind" action="Dhcp_table1.htm" method="post">
+    <input type=hidden name="page" value="Dhcp_table1.htm"> 
+    <input type=hidden name="submitStatus" value="0"> 
+    <!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+  <table class="pop_title_table" border="0" width="100%">     
+    <tr>       
+      <th>
+        <script language="JavaScript">
+		PrintSTButton('OK', 'OK', 'chsubmit(this.form)', "","submit",70);
+		document.write('<img border="0" src="images/_blank.gif" width="5" height="1">');
+        	PrintSTButton('refresh', 'Refresh', "javascript: location.href='Dhcp_table1.htm'", "","",70);
+		document.write('<img border="0" src="images/_blank.gif" width="5" height="1">');
+		PrintSTButton('close', 'Close', 'closeWindow();', "","", 70);
+	    </script> 
+	  </th>  
+	</tr>     
+	</table>
+	
+<script language="JavaScript">
+	PrintContent();
+</script>
+
+</form>     
+</body>
+</html>
+<!--#nk_get DhcpUpdate=""--> 

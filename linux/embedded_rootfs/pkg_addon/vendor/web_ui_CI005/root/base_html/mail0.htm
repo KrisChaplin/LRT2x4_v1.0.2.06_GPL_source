@@ -1,0 +1,343 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Email OpenVPN Configuration</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+<script language=JavaScript>
+
+var chDelsID;
+function chDel(F)
+{
+    if (F.selectedIndex==-1) return;
+    var p;
+    var q; 
+    var forwardString=F.options[F.selectedIndex].value;  
+    var rightString;
+    var tmpString;
+    var ts=new tmpWord(6); 
+    var specialDefinedLength=splitVarforSpecialWordField.length;
+    rightString=forwardString;
+    q=rightString.length;      
+    p=rightString.indexOf(splitVarforSpecialWordField);
+    tmpString=rightString; 
+    rightString=tmpString.substring(p+specialDefinedLength,q);
+    for (var j=2; j<=5; j++)
+    {  
+        q=rightString.length;
+        p=rightString.indexOf(";");
+        ts[j]=rightString.substring(0,p); 
+        tmpString=rightString;
+        rightString=tmpString.substring(p+1,q); 
+    }
+    q=rightString.length;
+    p=rightString.indexOf("}");
+    tmpString=rightString;
+    rightString=tmpString.substring(p+1,q);
+    sID=ts[2];
+    if(sID == 0)
+    {
+        return 0;
+    }
+    for(var i=0;i<spm.data.id1.length;i++)
+    {
+        eval("var senable=spm.data.id"+sID+"["+i+"];");
+        if(senable == 1)
+        {
+        	chDelsID = sID;
+        	top.ConfirmMsg("Confirm",aDelService,"chDel",""); 
+        	return;
+        }
+    }
+    return 0;
+}
+
+function emailCheck(I, type)
+{
+	var p=-1;
+	p=I.value.indexOf("@");
+	if (p==-1)
+	{
+           if (type == 1)
+		top.AlertMsg("Alert", aSenderEMailCheck);   	
+           else if (type == 2)		
+		top.AlertMsg("Alert", aRecipientEMailCheck);   	
+           else if (type == 3)
+		top.AlertMsg("Alert", aCarponRecipientEMailCheck);   	
+           else		
+           	top.AlertMsg("Alert", aEMailCheck);
+	    I.value=I.defaultValue;
+	    return -1;       
+	}
+	return 1;
+}
+function RedirectUrl()
+{
+	if(opener==null) return;
+	opener.RedirectUrl();
+	window.close();
+}
+function chSubmit(F)
+{
+	sTrim(F.smtpServerName);
+	if (F.smtpServerName.value.length==0)
+        {
+		RedirectUrl();
+	}
+	if (F.EmailAddr1.value.length==0)
+	{
+	    top.AlertMsg("Alert", aRecipientEMail);
+	    F.EmailAddr1.select();
+	    return;
+	}
+	else if (emailCheck(F.EmailAddr1, 2) < 0)
+	{
+	    F.EmailAddr1.select();
+	    return;
+	}
+
+	if (F.EmailAddr2.value != "")
+	{
+	   if (emailCheck(F.EmailAddr2, 2) < 0)
+	   {
+		F.EmailAddr2.select();
+		return;
+	    } 	
+	}
+
+	if (F.EmailAddr3.value != "")
+	{
+	   if (emailCheck(F.EmailAddr3, 2) < 0)
+	   {
+		F.EmailAddr3.select();
+		return;
+	    } 	
+	}
+
+	if (F.EmailAddr4.value != "")
+	{
+	   if (emailCheck(F.EmailAddr4, 3) < 0)
+	   {
+		F.EmailAddr4.select();
+		return;
+	    } 	
+	}
+
+	if (F.EmailAddr5.value != "")
+	{
+	   if (emailCheck(F.EmailAddr5, 3) < 0)
+	   {
+		F.EmailAddr5.select();
+		return;
+	    } 	
+	}
+
+	F.submitStatus.value=1;
+
+	if(opener)
+		opener.closeMail(); 
+	window.status=wSave; 
+	F.submit();
+}
+
+function chValue(aName,Pro,ePo1,ePo2,iPo)
+{	
+	if ( !(Pro.selectedIndex==2) )
+	{	
+		if (PortCheck(ePo1) < 0) return -1;
+		if (PortCheck(ePo2) < 0) return -1;
+	}
+
+    return 1;
+}
+function PortCheck(I)
+{
+  var d;
+  d=parseInt(I.value,10);
+  if (!(d<=65535 && d>0)) 
+  {
+    top.AlertMsg("Alert", aPortCheck);
+    I.select();
+    return -1;    
+  }
+  I.value=d;
+  return 1;
+}
+
+function select_auth()
+{
+	if (document.formmail.smtpauth.value!="off")
+	{
+		document.formmail.smtpName.disabled=false;			
+		document.formmail.smtpPasswd.disabled=false;	
+		document.formmail.smtpName.style.background = "#FFF";
+		document.formmail.smtpPasswd.style.background = "#FFF";
+	}
+	else
+	{
+		document.formmail.smtpName.disabled=true;	
+		document.formmail.smtpPasswd.disabled=true;
+		document.formmail.smtpName.style.background = "#CCC";
+		document.formmail.smtpPasswd.style.background = "#CCC";
+	}	
+}
+
+function clearContent(F,I)
+{
+  if (I==F.deletePortRangeService)
+  {
+     F.addPortRangeService.disabled=false;  
+     F.V_name.value="";
+     F.V_protocol.options[0].selected=true;  
+     F.V_portS.value="";
+     F.V_portE.value="";
+     F.V_name.disabled =  false; 
+     F.V_protocol.disabled =  false; 
+     F.V_portS.disabled =  false;  
+     F.V_portE.disabled =  false; 	 
+     if (F.upnpOpen.value=="1") F.Vpint.value="";
+     
+     for (var i=0; i < F.PortRangeList.length; i++)
+        F.PortRangeList.options[i].selected=false;
+     
+     F.addPortRangeService.value=sAddtoList; 
+     SetButtonStatus("addPortRangeService", "");	
+     SetButtonStatus("deletePortRangeService", "disabled");  	 
+     SetButtonStatus("showNew", "disabled");   
+     F.V_name.select(); 
+  }
+}
+
+function disableIt(obj)
+{
+    obj.disabled=true;
+}
+
+function enableIt(obj)
+{
+    obj.disabled=false;
+}
+
+function Entryfunction()
+{
+	ChangedivPosition();
+	//select_auth();
+}
+function ChangedivPosition()
+{
+	var obj;
+	var BgWidth;
+	var BgHeight;
+	var divleft;
+	
+	if (window.innerWidth)
+	{
+		BgHeight = window.innerHeight;
+		BgWidth = window.innerWidth;
+	}
+	else
+	{
+		BgHeight = document.body.clientHeight;
+		BgWidth = document.body.clientWidth;
+	}
+	
+	divleft = (BgWidth - 356) / 2;
+	var obj=document.getElementById("AlertDiv");
+	if(obj)
+		obj.style.left = divleft;
+}
+
+var ButtonType = "OkResetClose";
+var Savelink = "chSubmit(document.formmail);";
+var Cancellink = ""; 
+/************************************************************************/
+</script>
+</head>
+<body class="popwindow" onResize="ChangedivPosition();" onLoad="Entryfunction();">
+<div id="maskAlertDiv" class="divAll">&nbsp;</div>
+<div id="AlertDiv"  style="display:none;position: absolute; width: 356px; top: 30%; left: 68px; background: none repeat scroll 0% 0% white; z-index: 1112;"></div>
+<form name="formmail" method="post" action="mail0.htm">
+  <input type="hidden" name="submitStatus" value="0">
+  <input type="hidden" name="upnpOpen" value="0">
+  <input type="hidden" name="DelService" value="">
+  <input type="hidden" name="smtpServerName" value='<!--#nk_get 1to1_Handle="smtpServerName"-->'>
+  <table class="pop_list" border="0" width="100%" align="center" cellspacing = "0" cellpadding ="0">
+    <tr> 
+      <td colspan="4" height="10"></td>
+    </tr>      
+    <tr> 
+      <td width="10"></td>
+      <td valign="middle" width="104">Mail Server : </td>
+      <td valign="top">
+        <input type="button" class="STbutton" name="smtpConfig" id="smtpConfig" value="Configure Mail Server" onClick="RedirectUrl();">
+      <td width="10"></td>      
+    </tr>
+    <tr> 
+      <td width="10"></td>
+      <td valign="middle" width="104">Attached File : </td>
+      <td valign="top"> <input type="text" name="ovpnfile" value='<!--#nk_get OpenVPNEmailFile=""-->' readonly style="border:0;background:transparent"></td>
+      <td width="10"></td>      
+    </tr>
+    <tr> 
+      <td colspan="4" height="10"></td>
+    </tr>
+    <tr> 
+      <td width="10"></td>
+      <td valign="middle" width="104">Recipient : </td>
+      <td valign="top">
+        <input type="text" name="EmailAddr1" class="inputtext" maxlength="64" size="20" onFocus="">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="4" height="10"></td>
+    </tr>
+    <tr> 
+      <td width="10"></td>
+      <td valign="middle" width="104"></td>
+      <td valign="top">
+        <input type="text" name="EmailAddr2" class="inputtext" maxlength="64" size="20" onFocus="">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="4" height="10"></td>
+    </tr>
+    <tr> 
+      <td width="10"></td>
+      <td valign="middle" width="104"></td>
+      <td valign="top">
+        <input type="text" name="EmailAddr3" class="inputtext" maxlength="64" size="20" onFocus="">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="4" height="10"></td>
+    </tr>
+    <tr> 
+      <td width="10"></td>
+      <td valign="middle" width="104">Carbon Recipient : </td>
+      <td valign="top">
+        <input type="text" name="EmailAddr4" class="inputtext" maxlength="64" size="20" onFocus="">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="4" height="10"></td>
+    </tr>
+    <tr> 
+      <td width="10"></td>
+      <td valign="middle" width="104"></td>
+      <td valign="top">
+        <input type="text" name="EmailAddr5" class="inputtext" maxlength="64" size="20" onFocus="">
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="4" height="10"></td>
+    </tr>
+  </table>
+  <script>PrintEndPopwindow();</script>
+</form>     
+</body>
+</html>
+<!--#nk_get OpenVPNMailSetup=""-->

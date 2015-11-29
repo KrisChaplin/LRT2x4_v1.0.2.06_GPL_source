@@ -1,0 +1,1202 @@
+<!--#nk_get SetPageWidth="0"-->
+<!--#nk_get OpenVPNServerSave=""-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Web Management</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<script  language="JavaScript">
+/***************************************************/
+/*												     */	
+/*      		Begin of content's JavaScript function    	    */
+/*												    */	
+/***************************************************/
+
+var enable='<!--#nk_get DisplayOnly="OpenVPNEnabled"-->';
+var authType='<!--#nk_get DisplayOnly="OpenVPNAuthType"-->';
+var protocol='<!--#nk_get DisplayOnly="OpenVPNProtocol"-->';
+var port='<!--#nk_get DisplayOnly="OpenVPNPort"-->';
+var cipher='<!--#nk_get DisplayOnly="OpenVPNCipher"-->';
+var servermask='<!--#nk_get DisplayOnly="OpenVPNInterfaceNetmask"-->';
+var routemask='<!--#nk_get DisplayOnly="OpenVPNRouteNetmask"-->';
+var tunnelMode='<!--#nk_get DisplayOnly="OpenVPNTunnelMode"-->';
+var country='<!--#nk_get DisplayOnly="OpenVPNServerCountry"-->';
+var state='<!--#nk_get DisplayOnly="OpenVPNServerState"-->';
+var locality='<!--#nk_get DisplayOnly="OpenVPNServerLocality"-->';
+var organization='<!--#nk_get DisplayOnly="OpenVPNServerOG"-->';
+var organization_unit='<!--#nk_get DisplayOnly="OpenVPNServerOU"-->';
+var common_name='<!--#nk_get DisplayOnly="OpenVPNServerCN"-->';
+var email='<!--#nk_get DisplayOnly="OpenVPNServerEmail"-->';
+var keylength='<!--#nk_get DisplayOnly="OpenVPNServerKeyLength"-->';
+var expire_date='<!--#nk_get DisplayOnly="OpenVPNServerExpireDate"-->';
+var NowDate = new Date();
+var NowDay =  NowDate.getUTCDate();
+var NowMonth = NowDate.getUTCMonth() + 1;
+var NowYear =  NowDate.getUTCFullYear();
+var start_date = "";
+
+function Entryfunction()
+{
+	ChangeBgsize();
+	var splitRows = document.formOpenVPN.SubnetData.value.split(';');
+	var MLANData = splitRows[0].split(',');			
+
+	if (document.formOpenVPN.OpenVPNAuthType)
+	{
+		for (var i=0; i < document.formOpenVPN.OpenVPNAuthType.length; i++)
+		{
+			if (document.formOpenVPN.OpenVPNAuthType.options[i].value==authType)
+			{
+				document.formOpenVPN.OpenVPNAuthType.options[i].selected=true;
+				break;
+			}
+		}
+	}
+	if (document.formOpenVPN.OpenVPNProtocol)
+	{
+		for (var i=0; i < document.formOpenVPN.OpenVPNProtocol.length; i++)
+		{
+			if (document.formOpenVPN.OpenVPNProtocol.options[i].value==protocol)
+			{
+				document.formOpenVPN.OpenVPNProtocol.options[i].selected=true;
+				break;
+			}
+		}
+	}
+
+	if (document.formOpenVPN.OpenVPNCipher)
+	{
+		for (var i=0; i < document.formOpenVPN.OpenVPNCipher.length; i++)
+		{
+			if (document.formOpenVPN.OpenVPNCipher.options[i].value==cipher)
+			{
+				document.formOpenVPN.OpenVPNCipher.options[i].selected=true;
+				break;
+			}
+		}
+	}
+	if (document.formOpenVPN.OpenVPNTunnelMode)
+	{
+		for (var i=0; i < document.formOpenVPN.OpenVPNTunnelMode.length; i++)
+		{
+			if (document.formOpenVPN.OpenVPNTunnelMode.options[i].value==tunnelMode)
+			{
+				document.formOpenVPN.OpenVPNTunnelMode.options[i].selected=true;
+				break;
+			}
+		}
+	}
+
+	if (document.formOpenVPN.country)
+	{
+		for (var i=0; i < document.formOpenVPN.country.length; i++)
+		{
+			if (document.formOpenVPN.country.options[i].value==country)
+			{
+				document.formOpenVPN.country.options[i].selected=true;
+				break;
+			}
+		}
+	}
+	
+	if (document.formOpenVPN.keySize)
+	{
+		for (var i=0; i < document.formOpenVPN.keySize.length; i++)
+		{
+			if (document.formOpenVPN.keySize.options[i].value==keylength)
+			{
+				document.formOpenVPN.keySize.options[i].selected=true;
+				break;
+			}
+		}
+	}
+
+	if (document.formOpenVPN.OpenVPNInterfaceNetmask)
+	{
+		for (var i=0; i < document.formOpenVPN.OpenVPNInterfaceNetmask.length; i++)
+		{
+			if (document.formOpenVPN.OpenVPNInterfaceNetmask.options[i].value==servermask)
+			{
+				document.formOpenVPN.OpenVPNInterfaceNetmask.options[i].selected=true;
+				break;
+			}
+		}		
+	}
+
+	if (document.formOpenVPN.RouteIP)
+	{
+		if (document.formOpenVPN.RouteIP.value == "")
+			document.formOpenVPN.RouteIP.value = MLANData[0];
+	}
+
+	if (document.formOpenVPN.RouteNetmask)
+	{
+		for (var i=0; i < document.formOpenVPN.RouteNetmask.length; i++)
+		{
+			if (document.formOpenVPN.RouteNetmask.options[i].value==routemask)
+			{
+				document.formOpenVPN.RouteNetmask.options[i].selected=true;
+				break;
+			}
+		}		
+	}
+
+	if (document.formOpenVPN.expire_date)
+	{
+		if (expire_date.substring(4,5) == "-")
+			document.formOpenVPN.expire_date.value = expire_date;
+	}
+	chAfterSubmit();
+	ChangeBlock();
+}
+
+function Leavefunction()
+{
+	chLeave();
+}
+
+String.prototype.trim=function(){return this.replace(/^\s+|\s+$/,'');}; // for IE Browser
+
+function chSubmit(F)
+{
+	var ServerIP, RouteIP;
+	var MLANData, MLANIP;
+	var splitRows = F.SubnetData.value.split(';');
+
+	F.ResetFlag.value = 0;
+	F.ReBuildClient.value = 0;
+	if(F.OpenVPNEnabled_check.checked==true)
+	{
+		F.UIchange.value=1;
+		F.OpenVPNEnabled.value=1;
+
+		if(IPCheck(F.OpenVPNInterfaceIP, 0, 254, 0, 0, 0)<0)
+		{
+			F.OpenVPNInterfaceIP.select();
+			return;
+		}
+
+		if(IPCheck(F.OpenVPNInterfaceNetmask, 0, 255, 0, 0, 0, "Subnet Mask")<0)
+		{
+			F.OpenVPNInterfaceNetmask.select();
+			return;
+		}
+		
+		ServerIP = F.OpenVPNInterfaceIP.value.split(".");
+		ServerIP[3] = 0;
+		for(var i=0; i<splitRows.length;i++)
+		{
+			var result = 0;
+			MLANData = splitRows[i].split(',');			
+			MLANIP = MLANData[0].split('.');
+			if (MLANIP[0] == ServerIP[0] && MLANIP[1] == ServerIP[1] && MLANIP[2] == ServerIP[2])
+			if (result == 1)	
+			{
+				if (i== 0)
+					top.AlertMsg("Alert", aLanIpConflictwithOpenVPN);
+				else	
+					top.AlertMsg("Alert", aMLanIpConflictwithOpenVPN);
+				F.OpenVPNInterfaceIP.select();
+				return;
+			}		
+		}
+		F.OpenVPNInterfaceIP.value = ServerIP[0] + "." + ServerIP[1] + "." + ServerIP[2] + "." + ServerIP[3]; 
+		
+		if (port1to65535heck(F.OpenVPNPort) < 0)
+		{
+			F.OpenVPNPort.select();
+			return;
+		}
+
+		if (F.OpenVPNTunnelMode.value == 0)
+		{
+			if(IPCheck(F.RouteIP, 0, 254, 0, 0, 0)<0)
+			{
+				F.RouteIP.select();
+				return;
+			}
+			
+			if(IPCheck(F.RouteNetmask, 0, 255, 0, 0, 0, "Subnet Mask")<0)
+			{
+				F.RouteNetmask.select();
+				return;
+			}
+			RouteIP = F.RouteIP.value.split(".");
+			RouteIP[3] = 0;
+			F.RouteIP.value = RouteIP[0] + "." + RouteIP[1] + "." + RouteIP[2] + "." + RouteIP[3]; 
+		}
+		else
+		{
+			if(IPCheck(F.DnsA, 1, 254, 0, 0, 0, "Primary DNS")<0)
+			{
+				F.DnsA.select();
+				return;
+			}
+
+			if(IPCheck(F.DnsB, 1, 254, 0, 0, 0, "Secondard DNS")<0)
+			{
+				F.DnsB.select();
+				return;
+			}
+			
+			if(IPCheck(F.WIN, 1, 254, 0, 0, 0, "WINS Server")<0)
+			{
+				F.WIN.select();
+				return;
+			}			
+		}
+
+		if (F.OpenVPNProtocol.value != protocol)
+			F.ReBuildClient.value = 1;
+
+		if (F.OpenVPNPort.value != port)
+			F.ReBuildClient.value = 1;
+
+		if (F.OpenVPNCipher.value != cipher)
+			F.ReBuildClient.value = 1;
+		
+		if (F.country)
+		if (F.country.disabled == false)
+		{
+			if (F.organization.value == "")
+			{
+				top.AlertMsg("Alert", aOrganizationName);
+				 F.organization.select();
+				return;
+			}
+
+			if (F.common_name.value == "")
+			{
+				top.AlertMsg("Alert", aCommonName);
+				 F.common_name.select();
+				return;
+			}	
+
+			if (F.email.value != "")
+			{
+				if (emailCheck(F.email) <0)
+				{
+				    F.email.select();
+				    return;
+				}
+			}
+
+			if (DateCheck(F.expire_date) < 0)
+			{
+			    top.AlertMsg("Alert", aExpiredDate+ start_date + "!");	
+			    F.expire_date.select();
+			    return;
+			}
+			
+			state = state.trim();
+			locality = locality.trim();
+			organization_unit = organization_unit.trim();
+			email = email.trim();
+
+			if (F.country.value != country)
+				F.ResetFlag.value = 1;
+			if (F.state.value != state)
+				F.ResetFlag.value = 1;
+			if (F.locality.value != locality)
+				F.ResetFlag.value = 1;
+			if (F.organization.value != organization)
+				F.ResetFlag.value = 1;
+			if (F.organization_unit.value != organization_unit)
+				F.ResetFlag.value = 1;
+			if (F.common_name.value != common_name)
+				F.ResetFlag.value = 1;
+			if (F.email.value != email)
+				F.ResetFlag.value = 1;		
+			if (F.keySize.value != keylength)
+				F.ResetFlag.value = 1;
+			if (F.expire_date.value != expire_date)
+				F.ResetFlag.value = 1;
+
+			CountDays(F);
+		}
+		if (F.OpenVPNAuthType.value != authType)
+			F.ResetFlag.value = 1;
+	}
+	else
+	{
+		if(enable =="1")
+			F.UIchange.value=1;
+		else
+			F.UIchange.value=0;
+		F.OpenVPNEnabled.value=0;
+	}
+
+	if (F.ResetFlag.value == 1 || F.ReBuildClient.value == 1 || F.UIchange.value==1)
+		F.log_ch.value=1;
+	
+	if (F.ResetFlag.value == 1)
+	{
+		top.ConfirmMsg("Confirm",cResetOpenVPN,"chSubmit",""); 
+/*		if (confirm(cResetOpenVPN))
+		{
+			F.submitStatus.value=1;
+			window.status=wSave;
+			F.submit();
+		}  */
+	}
+	else if (enable == 1 && (F.ReBuildClient.value == 1 || F.UIchange.value==1))
+	{
+		top.ConfirmMsg("Confirm",cReStartOpenVPN,"chSubmit",""); 
+/*		if (confirm(cReStartOpenVPN))
+		{	
+			F.submitStatus.value=1;
+			window.status=wSave;
+			F.submit();
+		} */
+	}
+	else
+	{
+		F.submitStatus.value=1;
+		window.status=wSave;
+		F.submit();
+	}
+}
+
+function ConfirmMsgResult(chose,mode,a)
+{
+	var F = document.formOpenVPN;
+	if(mode=="chSubmit")
+	{		
+		if(chose=="yes")
+		{
+			F.submitStatus.value=1;
+			window.status=wSave;
+			F.submit();
+		}
+		else if(chose=="no")
+		{
+			return;
+		}
+	}
+}
+
+function falseSubmit(F)
+{
+	if(F.OpenVPNEnabled_check.checked==true)
+		F.OpenVPNEnabled.value=1;
+	else	
+		F.OpenVPNEnabled.value=0;
+	F.submitStatus.value=0;    
+	F.submit();
+}
+
+function redirect_url()
+{
+	window.location.replace("openvpn_summary.htm");
+}
+
+function chAfterSubmit()
+{  
+	if (parseInt(document.formOpenVPN.afterSubmit.value,10) > 0)
+	{
+		MM_showHideLayers('AutoNumber15','','hide');
+		setTimeout("redirect_url()", 1000);		
+	}
+	else
+	{
+		EnableInputColumn(document.formOpenVPN);
+		chTunnelMode(document.formOpenVPN);
+	}	
+}
+
+function EnableInputColumn(F)
+{
+	if (F.OpenVPNAuthType)
+	{
+		F.OpenVPNAuthType.disabled = false;
+		F.OpenVPNInterfaceIP.disabled = false;
+		F.OpenVPNInterfaceNetmask.disabled = false;
+		F.OpenVPNProtocol.disabled = false;
+		F.OpenVPNPort.disabled = false;
+		F.OpenVPNCipher.disabled = false;
+		F.OpenVPNTunnelMode.disabled = false;
+
+		if (F.OpenVPNAuthType.value != "0" && F.country)	
+		{
+			F.country.disabled = false;
+			F.state.disabled = false;
+			F.locality.disabled = false;
+			F.organization.disabled = false;
+			F.organization_unit.disabled = false;
+			F.common_name.disabled = false;
+			F.email.disabled = false;
+			F.keySize.disabled = false;
+			F.expire_date.disabled = false;
+		}
+	}
+}
+
+function chTunnelMode(F)
+{
+	if (F.OpenVPNTunnelMode)
+	{
+		if (F.OpenVPNTunnelMode.value == 0)
+		{
+			F.RouteIP.style.background = "#FFF";
+			F.RouteIP.disabled = false;
+			F.RouteNetmask.style.background = "#FFF";
+			F.RouteNetmask.disabled = false;
+			F.DomainName.style.background = "#CCC";
+			F.DomainName.disabled = true;
+			F.DnsA.style.background = "#CCC";
+			F.DnsA.disabled = true;
+			F.DnsB.style.background = "#CCC";
+			F.DnsB.disabled = true;
+			F.WIN.style.background = "#CCC";
+			F.WIN.disabled = true;			
+		}
+		else
+		{
+			F.RouteIP.style.background = "#CCC";
+			F.RouteIP.disabled = true;
+			F.RouteNetmask.style.background = "#CCC";
+			F.RouteNetmask.disabled = true;
+			F.DomainName.style.background = "#FFF";
+			F.DomainName.disabled = false;
+			F.DnsA.style.background = "#FFF";
+			F.DnsA.disabled = false;
+			F.DnsB.style.background = "#FFF";
+			F.DnsB.disabled = false;
+			F.WIN.style.background = "#FFF";
+			F.WIN.disabled = false;
+		}
+	}	
+}
+
+function ChangeBlock()
+{
+	if (document.formOpenVPN.OpenVPNAuthType)
+	{
+		if (document.formOpenVPN.OpenVPNAuthType.value == "0")
+		{
+			document.getElementById("HR").style.display = "none";
+			document.getElementById("Certificate").style.display = "none";
+			document.formOpenVPN.country.disabled = true;
+			document.formOpenVPN.state.disabled = true;
+			document.formOpenVPN.locality.disabled = true;
+			document.formOpenVPN.organization.disabled = true;
+			document.formOpenVPN.organization_unit.disabled = true;
+			document.formOpenVPN.common_name.disabled = true;
+			document.formOpenVPN.email.disabled = true;
+			document.formOpenVPN.keySize.disabled = true;
+			document.formOpenVPN.expire_date.disabled = true;
+		}	
+		else	
+		{
+			document.getElementById("HR").style.display = "";
+			document.getElementById("Certificate").style.display = "";
+			document.formOpenVPN.country.disabled = false;
+			document.formOpenVPN.state.disabled = false;
+			document.formOpenVPN.locality.disabled = false;
+			document.formOpenVPN.organization.disabled = false;
+			document.formOpenVPN.organization_unit.disabled = false;
+			document.formOpenVPN.common_name.disabled = false;
+			document.formOpenVPN.email.disabled = false;
+			document.formOpenVPN.keySize.disabled = false;
+			document.formOpenVPN.expire_date.disabled = false;			
+		}
+	}
+}
+
+function port1to65535heck(I)
+{
+	return validatenum(I, 65536, 1, aPortCheck);
+}
+
+function emailCheck(I)
+{
+	var p=-1;
+	p=I.value.indexOf("@");
+	if (p==-1)
+	{
+	    top.AlertMsg("Alert", aEMailCheck);
+	    I.value=I.defaultValue;
+	    return -1;       
+	}
+	return 1;
+}
+
+function DateCheck(I)
+{
+	var Date;
+
+	if (NowYear < 2013)
+	{
+		NowYear = "2013";
+		NowMonth = "1";
+		NowDay = "1";		
+	}
+
+	if (parseInt(NowMonth, 10) < 10 && NowMonth.toString().length < 2)
+		NowMonth = "0"+NowMonth;
+
+	if (parseInt(NowDay, 10) < 10 && NowDay.toString().length < 2)
+		NowDay = "0"+NowDay;
+
+	start_date = NowYear+"-"+NowMonth+"-"+NowDay;
+
+	if (I.value =="" || I.value.length != 10)
+		return -1;
+
+	Date = I.value.split("-");
+	if (Date.length != 3)
+		return -1;
+	
+	if (isNaN(Date[0]) == true || parseInt(Date[0], 10) < 2013)
+		return -1;	
+	if (isNaN(Date[1]) == true || parseInt(Date[1], 10) <= 0 || parseInt(Date[1], 10) > 12)
+		return -1;
+	if (isNaN(Date[2]) == true || parseInt(Date[2], 10) <= 0 || parseInt(Date[2], 10) > 31)
+		return -1;
+	if (parseInt(Date[1], 10) == 2)
+	{
+		if (parseInt(Date[0], 10)%4 == 0 && (parseInt(Date[0], 10)%100 != 0 || parseInt(Date[0], 10)%400 == 0))
+		{
+			if (parseInt(Date[2], 10) > 29)
+				return -1;
+		}
+		else if (parseInt(Date[2], 10) > 28)
+			return -1;	
+	}	
+	if (parseInt(Date[1], 10) == 4 || parseInt(Date[1], 10) == 6 || parseInt(Date[1], 10) == 9 || parseInt(Date[1], 10) == 11)
+	{
+		if (parseInt(Date[2], 10) > 30)
+			return -1;
+	}
+
+	if (parseInt(NowYear, 10) >= parseInt(Date[0],10))
+	{
+		if (parseInt(NowMonth, 10) >= parseInt(Date[1],10))
+		{
+			if (parseInt(NowDay, 10) + 1 > parseInt(Date[2],10))
+				return -1;
+		}
+	}
+	return 1;
+}
+
+function CountDays(F)
+{
+	var ExpiredDate;
+	var Date1, Date2;
+	var theDay =  NowDay;
+	var theMonth = NowMonth;
+	var theYear =  NowYear;
+	var FromDate="", EndDate="", Interval = 0;
+
+	ExpiredDate = F.expire_date.value.split("-");
+	FromDate = (theYear+"/"+theMonth+"/"+theDay);
+	EndDate = (ExpiredDate[0]+"/"+ExpiredDate[1]+"/"+ExpiredDate[2]);
+	Date1 = new Date(FromDate);
+	Date2 = new Date(EndDate);
+	Interval = (Date2.getTime() - Date1.getTime()) / (86400 * 1000);
+	F.from_date.value = start_date;
+	F.days.value = Interval;
+}
+//================= End =================*/
+
+/***************************************************/
+/*												   */	
+/*      			  Begin of content    				   */
+/*												   */	
+/***************************************************/
+var ButtonType = "OkCancel";		// NULL/Refresh/OkCancel/BackOkCancel/ShowTableOkCancel
+var Savelink = "chSubmit(document.formOpenVPN);";
+var Cancellink = ""; 
+var Backlink = "";
+var helplink ='help_openvpn_server.html';
+var UserName = '<!--#nk_get DisplayOnly="nUser"-->';
+var FixedTableWidth = 640;
+var head_width=150;
+	
+function PrintContent()
+{
+	PrintBeginContent();
+	PrintOpenVPNServer(1);
+	if(document.formOpenVPN.OpenVPNEnabled_check.checked==true)
+	{
+		PrintOpenVPNGernalSetting(1);
+		PrintOpenVPNAdvSetting(0);
+		PrintOpenVPNCertificateSetting(0);
+	}
+	PrintEndContent();
+}
+function PrintOpenVPNServer(hasUnderLine)
+{
+	PrintBeginBlock(0);
+	document.write('<table class="Infotable" width="'+SmallLayoutwidth+'" border='+Tableborder+'>');	
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('<input type="hidden" name="OpenVPNEnabled" value=\'<!--#nk_get DisplayOnly="OpenVPNEnabled"-->\'>');
+	document.write('<input type="checkbox" name="OpenVPNEnabled_check" onClick="falseSubmit(this.form)" value="0" <!--#nk_get CheckboxStatus="OpenVPNEnabled"-->>');
+	document.write('<img border="0" src="images/_blank.gif" width="8">');
+	//document.write('</td>');
+	//document.write('<td>');
+	document.write('Enable OpenVPN Server');	
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('</table>');
+	if(document.formOpenVPN.OpenVPNEnabled_check.checked==true)
+		PrintEndBlock(hasUnderLine,1);
+	else
+		PrintEndBlock(0);
+}
+function PrintOpenVPNGernalSetting(hasUnderLine)
+{
+	PrintBeginBlock(1, "Global Configure Settings");
+	document.write('<table class="Setuptable" width="'+FixedTableWidth+'" border='+Tableborder+'>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Authentication Type:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<select class="Select" name="OpenVPNAuthType" style="width:200px" onChange="ChangeBlock()" disabled>');
+	document.write('<option value="0">Password</option>');
+	document.write('<option value="1">Certificate</option>');
+	document.write('<option value="2">Password + Certificate</option>');
+	document.write('</select>');		 	
+	document.write('</td>');
+	document.write('</tr>');	
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Server IP Address:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="OpenVPNInterfaceIP" maxlength="15" onFocus="this.select();" value=\'<!--#nk_get DisplayOnly="OpenVPNInterfaceIP"-->\' style="width:200px" disabled>');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	document.write('(Virtual IPv4 Address, Default 172.31.0.0)');
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Subnet Mask:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<select class="Select" name="OpenVPNInterfaceNetmask" style="width:200px" disabled>');
+	document.write('<option value="255.255.255.0">255.255.255.0</option>');
+	document.write('<option value="255.255.255.128">255.255.255.128</option>');
+	document.write('<option value="255.255.255.192">255.255.255.192</option>');
+	document.write('<option value="255.255.255.224">255.255.255.224</option>');
+	document.write('<option value="255.255.255.240">255.255.255.240</option>'); 
+	document.write('<option value="255.255.255.248">255.255.255.248</option>');
+	document.write('<option value="255.255.255.252">255.255.255.252</option>');
+	document.write('</select>');	
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Protocol:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<select class="Select" name="OpenVPNProtocol" style="width:200px" disabled>');
+	document.write('<option value="tcp">TCP</option>');
+	document.write('<option value="udp">UDP</option>');
+	document.write('</select>');	
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Port:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input name="OpenVPNPort" maxlength="5" onFocus="this.select();" value=\'<!--#nk_get DisplayOnly="OpenVPNPort"-->\' style="width:200px" disabled>');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	 	
+	document.write('(Range: 1-65535, Default 1194)</td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Encryption:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<select class="Select" name="OpenVPNCipher" style="width:200px" disabled>');
+	document.write('<option value="none">NULL</option>');
+	document.write('<option value="DES-CBC">DES</option>');
+	document.write('<option value="DES-EDE3-CBC">3DES</option>');
+	document.write('<option value="AES-128-CBC">AES-128</option>');
+	document.write('<option value="AES-192-CBC">AES-192</option>');
+	document.write('<option value="AES-256-CBC">AES-256</option>');	
+	document.write('</select>');		
+	document.write('</td>');
+	document.write('</tr>');
+	
+	document.write('</table>');
+	PrintEndBlock(hasUnderLine, 0, 1);
+}
+function PrintOpenVPNAdvSetting(hasUnderLine)
+{
+	PrintBeginBlock(1, "Advanced Configure Settings");
+	document.write('<table class="Setuptable" width="'+SmallLayoutwidth+'" border='+Tableborder+'>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Tunnel Mode:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<select name="OpenVPNTunnelMode" style="font:12px Arial;width:200px" onChange="chTunnelMode(this.form)" disabled>');
+	document.write('<option value="0">Split Tunnel</option>');
+	document.write('<option value="1">Full Tunnel</option>');
+	document.write('</select>');		
+	document.write('</td>');
+	document.write('</tr>');		
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Security IP Address:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="RouteIP" maxlength="15" onFocus="this.select();" value=\'<!--#nk_get DisplayOnly="OpenVPNRouteIP"-->\' style="width:200px" disabled>');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Security Subnet Mask:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<select class="Select" name="RouteNetmask" style="width:200px" disabled>');
+	document.write('<option value="255.255.255.0">255.255.255.0</option>');
+	document.write('<option value="255.255.255.128">255.255.255.128</option>');
+	document.write('<option value="255.255.255.192">255.255.255.192</option>');
+	document.write('<option value="255.255.255.224">255.255.255.224</option>');
+	document.write('<option value="255.255.255.240">255.255.255.240</option>'); 
+	document.write('<option value="255.255.255.248">255.255.255.248</option>');
+	document.write('<option value="255.255.255.252">255.255.255.252</option>');
+	document.write('</select>');	
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Domain Name:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="DomainName" maxlength="64" onFocus="this.select();" value=\'<!--#nk_get DisplayOnly="OpenVPNDomainName"-->\' style="width:200px" disabled>');	 	
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Primary DNS:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="DnsA" maxlength="15" onFocus="this.select();" value=\'<!--#nk_get DisplayOnly="OpenVPNDNSA"-->\' style="width:200px" disabled>');
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Secondary DNS:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="DnsB" maxlength="15" onFocus="this.select();" value=\'<!--#nk_get DisplayOnly="OpenVPNDNSB"-->\' style="width:200px" disabled>');
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('WINS Server:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="WIN" maxlength="15" onFocus="this.select();" value=\'<!--#nk_get DisplayOnly="OpenVPNWIN"-->\' style="width:200px" disabled>');
+	document.write('</td>');
+	document.write('</tr>');	
+	document.write('</table>');
+	PrintEndBlock(hasUnderLine, 0, 1);
+}
+
+function PrintOpenVPNCertificateSetting(hasUnderLine)
+{
+	document.write('<tr id="HR" style="display:none"><td>');
+	document.write('<table id="Bottom_Block" width="100%" class="block" border="0" cellpadding="0" cellspacing="0">');
+	PrintLine(1, 0);
+	document.write('</table>');
+	document.write('</td>');
+	document.write('</tr>');	
+	
+	document.write('<tr id="Certificate" style="display:none"><td>');
+	document.write('<table width="100%" class="block" border="0" cellpadding="0" cellspacing="0">');
+   	document.write('<tr>');
+	document.write('<td align="left" valign="top">');	
+	PrintBarItem("Certificate Settings", 1);
+	document.write('<table class="Setuptable" width="'+SmallLayoutwidth+'" border=0>');	
+	document.write('<tr>'); 
+	document.write('<td width="'+head_width+'">');
+	document.write('Country Name&nbsp;(C)<font color="red">*</font>&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td colspan="2">');	
+	document.write('<select class="Select" name="country" style="width:200px" disabled>');
+	document.write('<option value="AF">Afghanistan</option>');
+	document.write('<option value="AX">Aland Islands</option>');
+	document.write('<option value="AL">Albania</option>');
+	document.write('<option value="DZ">Algeria</option>');
+	document.write('<option value="AS">American Samoa</option>');
+	document.write('<option value="AD">Andorra</option>');
+	document.write('<option value="AO">Angola</option>');
+	document.write('<option value="AI">Anguilla</option>');
+	document.write('<option value="AQ">Antarctica</option>');
+	document.write('<option value="AG">Antigua and Barbuda</option>');
+	document.write('<option value="AR">Argentina</option>');
+	document.write('<option value="AM">Armenia</option>');
+	document.write('<option value="AW">Aruba</option>');
+	document.write('<option value="AU">Australia</option>');
+	document.write('<option value="AT">Austria</option>');
+	document.write('<option value="AZ">Azerbaijan</option>');
+	document.write('<option value="BS">Bahamas</option>');
+	document.write('<option value="BH">Bahrain</option>');
+	document.write('<option value="BD">Bangladesh</option>');
+	document.write('<option value="BB">Barbados</option>');
+	document.write('<option value="BY">Belarus</option>');
+	document.write('<option value="BE">Belgium</option>');
+	document.write('<option value="BZ">Belize</option>');
+	document.write('<option value="BJ">Benin</option>');
+	document.write('<option value="BM">Bermuda</option>');
+	document.write('<option value="BT">Bhutan</option>');
+	document.write('<option value="BO">Bolivia, Plurinational State of</option>');
+	document.write('<option value="BQ">Bonaire, Sint Eustatius and Saba</option>');
+	document.write('<option value="BA">Bosnia and Herzegovina</option>');
+	document.write('<option value="BW">Botswana</option>');
+	document.write('<option value="BV">Bouvet Island</option>');
+	document.write('<option value="BR">Brazil</option>');
+	document.write('<option value="IO">British Indian Ocean Territory</option>');
+	document.write('<option value="BN">Brunei Darussalam</option>');
+	document.write('<option value="BG">Bulgaria</option>');
+	document.write('<option value="BF">Burkina Faso</option>');
+	document.write('<option value="BI">Burundi</option>');
+	document.write('<option value="KH">Cambodia</option>');
+	document.write('<option value="CM">Cameroon</option>');
+	document.write('<option value="CA">Canada</option>');
+	document.write('<option value="CV">Cape Verde</option>');
+	document.write('<option value="KY">Cayman Islands</option>');
+	document.write('<option value="CF">Central African Republic</option>');
+	document.write('<option value="TD">Chad</option>');
+	document.write('<option value="CL">Chile</option>');
+	document.write('<option value="CN">China</option>');
+	document.write('<option value="CX">Christmas Island</option>');
+	document.write('<option value="CC">Cocos (Keeling) Islands</option>');
+	document.write('<option value="CO">Colombia</option>');
+	document.write('<option value="KM">Comoros</option>');
+	document.write('<option value="CG">Congo</option>');
+	document.write('<option value="CD">Congo, the Democratic Republic of the</option>');
+	document.write('<option value="CK">Cook Islands</option>');
+	document.write('<option value="CR">Costa Rica</option>');
+	document.write("<option value='CI'>Cote d'Ivoire</option>");
+	document.write('<option value="HR">Croatia</option>');
+	document.write('<option value="CU">Cuba</option>');
+	document.write('<option value="CW">Curacao</option>');
+	document.write('<option value="CY">Cyprus</option>');
+	document.write('<option value="CZ">Czech Republic</option>');
+	document.write('<option value="DK">Denmark</option>');
+	document.write('<option value="DJ">Djibouti</option>');
+	document.write('<option value="DM">Dominica</option>');
+	document.write('<option value="DO">Dominican Republic</option>');
+	document.write('<option value="EC">Ecuador</option>');
+	document.write('<option value="EG">Egypt</option>');
+	document.write('<option value="SV">El Salvador</option>');
+	document.write('<option value="GQ">Equatorial Guinea</option>');
+	document.write('<option value="ER">Eritrea</option>');
+	document.write('<option value="EE">Estonia</option>');
+	document.write('<option value="ET">Ethiopia</option>');
+	document.write('<option value="FK">Falkland Islands (Malvinas)</option>');
+	document.write('<option value="FO">Faroe Islands</option>');
+	document.write('<option value="FJ">Fiji</option>');
+	document.write('<option value="FI">Finland</option>');
+	document.write('<option value="FR">France</option>');
+	document.write('<option value="GF">French Guiana</option>');
+	document.write('<option value="PF">French Polynesia</option>');
+	document.write('<option value="TF">French Southern Territories</option>');
+	document.write('<option value="GA">Gabon</option>');
+	document.write('<option value="GM">Gambia</option>');
+	document.write('<option value="GE">Georgia</option>');
+	document.write('<option value="DE">Germany</option>');
+	document.write('<option value="GH">Ghana</option>');
+	document.write('<option value="GI">Gibraltar</option>');
+	document.write('<option value="GR">Greece</option>');
+	document.write('<option value="GL">Greenland</option>');
+	document.write('<option value="GD">Grenada</option>');
+	document.write('<option value="GP">Guadeloupe</option>');
+	document.write('<option value="GU">Guam</option>');
+	document.write('<option value="GT">Guatemala</option>');
+	document.write('<option value="GG">Guernsey</option>');
+	document.write('<option value="GN">Guinea</option>');
+	document.write('<option value="GW">Guinea-Bissau</option>');
+	document.write('<option value="GY">Guyana</option>');
+	document.write('<option value="HT">Haiti</option>');
+	document.write('<option value="HM">Heard Island and McDonald Islands</option>');
+	document.write('<option value="VA">Holy See (Vatican City State)</option>');
+	document.write('<option value="HN">Honduras</option>');
+	document.write('<option value="HK">Hong Kong</option>');
+	document.write('<option value="HU">Hungary</option>');
+	document.write('<option value="IS">Iceland</option>');
+	document.write('<option value="IN">India</option>');
+	document.write('<option value="ID">Indonesia</option>');
+	document.write('<option value="IR">Iran, Islamic Republic of</option>');
+	document.write('<option value="IQ">Iraq</option>');
+	document.write('<option value="IE">Ireland</option>');
+	document.write('<option value="IM">Isle of Man</option>');
+	document.write('<option value="IL">Israel</option>');
+	document.write('<option value="IT">Italy</option>');
+	document.write('<option value="JM">Jamaica</option>');
+	document.write('<option value="JP">Japan</option>');
+	document.write('<option value="JE">Jersey</option>');
+	document.write('<option value="JO">Jordan</option>');		
+	document.write('<option value="KZ">Kazakhstan</option>');
+	document.write('<option value="KE">Kenya</option>');
+	document.write('<option value="KI">Kiribati</option>');
+	document.write("<option value='KP'>Korea, Democratic People's Republic of</option>");
+	document.write('<option value="KR">Korea, Republic of</option>');
+	document.write('<option value="KW">Kuwait</option>');
+	document.write('<option value="KG">Kyrgyzstan</option>');
+	document.write("<option value='LA'>Lao People's Democratic Republic</option>");
+	document.write('<option value="LV">Latvia</option>');
+	document.write('<option value="LB">Lebanon</option>');
+	document.write('<option value="LS">Lesotho</option>');
+	document.write('<option value="LR">Liberia</option>');
+	document.write('<option value="LY">Libya</option>');
+	document.write('<option value="LI">Liechtenstein</option>');
+	document.write('<option value="LT">Lithuania</option>');
+	document.write('<option value="LU">Luxembourg</option>');
+	document.write('<option value="MO">Macao</option>');
+	document.write('<option value="MK">Macedonia, the former Yugoslav Republic of</option>');
+	document.write('<option value="MG">Madagascar</option>');
+	document.write('<option value="MW">Malawi</option>');
+	document.write('<option value="MY">Malaysia</option>');
+	document.write('<option value="MV">Maldives</option>');
+	document.write('<option value="ML">Mali</option>');
+	document.write('<option value="MT">Malta</option>');
+	document.write('<option value="MH">Marshall Islands</option>');
+	document.write('<option value="MQ">Martinique</option>');
+	document.write('<option value="MR">Mauritania</option>');
+	document.write('<option value="MU">Mauritius</option>');
+	document.write('<option value="YT">Mayotte</option>');
+	document.write('<option value="MX">Mexico</option>');
+	document.write('<option value="FM">Micronesia, Federated States of</option>');
+	document.write('<option value="MD">Moldova, Republic of</option>');
+	document.write('<option value="MC">Monaco</option>');
+	document.write('<option value="MN">Mongolia</option>');
+	document.write('<option value="ME">Montenegro</option>');
+	document.write('<option value="MS">Montserrat</option>');
+	document.write('<option value="MA">Morocco</option>');
+	document.write('<option value="MZ">Mozambique</option>');
+	document.write('<option value="MM">Myanmar</option>');
+	document.write('<option value="NA">Namibia</option>');
+	document.write('<option value="NR">Nauru</option>');
+	document.write('<option value="NP">Nepal</option>');
+	document.write('<option value="NL">Netherlands</option>');
+	document.write('<option value="NC">New Caledonia</option>');
+	document.write('<option value="NZ">New Zealand</option>');
+	document.write('<option value="NI">Nicaragua</option>');
+	document.write('<option value="NE">Niger</option>');
+	document.write('<option value="NG">Nigeria</option>');
+	document.write('<option value="NU">Niue</option>');
+	document.write('<option value="NF">Norfolk Island</option>');
+	document.write('<option value="MP">Northern Mariana Islands</option>');
+	document.write('<option value="NO">Norway</option>');
+	document.write('<option value="OM">Oman</option>');
+	document.write('<option value="PK">Pakistan</option>');
+	document.write('<option value="PW">Palau</option>');
+	document.write('<option value="PS">Palestinian Territory, Occupied</option>');
+	document.write('<option value="PA">Panama</option>');
+	document.write('<option value="PG">Papua New Guinea</option>');
+	document.write('<option value="PY">Paraguay</option>');
+	document.write('<option value="PE">Peru</option>');
+	document.write('<option value="PH">Philippines</option>');
+	document.write('<option value="PN">Pitcairn</option>');
+	document.write('<option value="PL">Poland</option>');
+	document.write('<option value="PT">Portugal</option>');
+	document.write('<option value="PR">Puerto Rico</option>');
+	document.write('<option value="QA">Qatar</option>');
+	document.write('<option value="RE">Reunion</option>');
+	document.write('<option value="RO">Romania</option>');
+	document.write('<option value="RU">Russian Federation</option>');
+	document.write('<option value="RW">Rwanda</option>');
+	document.write('<option value="BL">Saint Barthelemy</option>');
+	document.write('<option value="SH">Saint Helena, Ascension and Tristan da Cunha</option>');
+	document.write('<option value="KN">Saint Kitts and Nevis</option>');
+	document.write('<option value="LC">Saint Lucia</option>');
+	document.write('<option value="MF">Saint Martin (French part)</option>');
+	document.write('<option value="PM">Saint Pierre and Miquelon</option>');
+	document.write('<option value="VC">Saint Vincent and the Grenadines</option>');
+	document.write('<option value="WS">Samoa</option>');
+	document.write('<option value="SM">San Marino</option>');
+	document.write('<option value="ST">Sao Tome and Principe</option>');
+	document.write('<option value="SA">Saudi Arabia</option>');
+	document.write('<option value="SN">Senegal</option>');
+	document.write('<option value="RS">Serbia</option>');
+	document.write('<option value="SC">Seychelles</option>');
+	document.write('<option value="SL">Sierra Leone</option>');
+	document.write('<option value="SG">Singapore</option>');
+	document.write('<option value="SX">Sint Maarten (Dutch part)</option>');
+	document.write('<option value="SK">Slovakia</option>');
+	document.write('<option value="SI">Slovenia</option>');
+	document.write('<option value="SB">Solomon Islands</option>');
+	document.write('<option value="SO">Somalia</option>');
+	document.write('<option value="ZA">South Africa</option>');
+	document.write('<option value="GS">South Georgia and the South Sandwich Islands</option>');
+	document.write('<option value="SS">South Sudan</option>');
+	document.write('<option value="ES">Spain</option>');
+	document.write('<option value="LK">Sri Lanka</option>');
+	document.write('<option value="SD">Sudan</option>');
+	document.write('<option value="SR">Suriname</option>');
+	document.write('<option value="SJ">Svalbard and Jan Mayen</option>');
+	document.write('<option value="SZ">Swaziland</option>');
+	document.write('<option value="SE">Sweden</option>');
+	document.write('<option value="CH">Switzerland</option>');
+	document.write('<option value="SY">Syrian Arab Republic</option>');
+	document.write('<option value="TW">Taiwan, Province of China</option>');
+	document.write('<option value="TJ">Tajikistan</option>');
+	document.write('<option value="TZ">Tanzania, United Republic of</option>');
+	document.write('<option value="TH">Thailand</option>');
+	document.write('<option value="TL">Timor-Leste</option>');
+	document.write('<option value="TG">Togo</option>');
+	document.write('<option value="TK">Tokelau</option>');
+	document.write('<option value="TO">Tonga</option>');
+	document.write('<option value="TT">Trinidad and Tobago</option>');
+	document.write('<option value="TN">Tunisia</option>');
+	document.write('<option value="TR">Turkey</option>');
+	document.write('<option value="TM">Turkmenistan</option>');
+	document.write('<option value="TC">Turks and Caicos Islands</option>');
+	document.write('<option value="TV">Tuvalu</option>');
+	document.write('<option value="UG">Uganda</option>');
+	document.write('<option value="UA">Ukraine</option>');
+	document.write('<option value="AE">United Arab Emirates</option>');
+	document.write('<option value="GB">United Kingdom</option>');
+	document.write('<option value="US">United States</option>');
+	document.write('<option value="UM">United States Minor Outlying Islands</option>');
+	document.write('<option value="UY">Uruguay</option>');
+	document.write('<option value="UZ">Uzbekistan</option>');
+	document.write('<option value="VU">Vanuatu</option>');
+	document.write('<option value="VE">Venezuela, Bolivarian Republic of</option>');
+	document.write('<option value="VN">Viet Nam</option>');
+	document.write('<option value="VG">Virgin Islands, British</option>');
+	document.write('<option value="VI">Virgin Islands, U.S.</option>');
+	document.write('<option value="WF">Wallis and Futuna</option>');
+	document.write('<option value="EH">Western Sahara</option>');
+	document.write('<option value="YE">Yemen</option>');
+	document.write('<option value="ZM">Zambia</option>');
+	document.write('<option value="ZW">Zimbabwe</option>');
+	document.write('</select>');
+	document.write('</td>');
+	document.write('</tr>'); 
+	document.write('<tr>'); 
+	document.write('<td>');
+	document.write('State or Province Name&nbsp;(ST)&nbsp;:&nbsp;');
+	document.write('</td width="'+head_width+'">');
+	document.write('<td width="280">');		
+	document.write('<input type="text" name="state" maxlength="40" onFocus="this.select();" value=\'<!--#nk_get DisplayOnly="OpenVPNServerState"-->\' style="width:200px" disabled>');
+	document.write('</td>');
+	document.write('<td>');		
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>'); 
+	document.write('<td width="'+head_width+'">');
+	document.write('Locality Name&nbsp;(L)&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');		
+	document.write('<input type="text" name="locality" maxlength="40" onFocus="this.select();" value=\'<!--#nk_get DisplayOnly="OpenVPNServerLocality"-->\' style="width:200px" disabled>');
+	document.write('</td>');
+	document.write('<td>');		
+	document.write('</td>');
+	document.write('</tr>'); 
+	document.write('<tr>'); 
+	document.write('<td width="'+head_width+'">');
+	document.write('Organization Name&nbsp;(O)<font color="red">*</font>&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');		
+	document.write('<input type="text" name="organization" maxlength="40" onFocus="this.select();" value=\'<!--#nk_get DisplayOnly="OpenVPNServerOG"-->\' style="width:200px" disabled>');
+	document.write('</td>');
+	document.write('<td>');	
+	document.write('</td>');
+	document.write('</tr>'); 
+	document.write('<tr>'); 
+	document.write('<td>');
+	document.write('Organizational Unit Name&nbsp;(OU)&nbsp;:&nbsp;');
+	document.write('</td width="'+head_width+'">');
+	document.write('<td>');		
+	document.write('<input type="text" name="organization_unit" maxlength="40" onFocus="this.select();" value=\'<!--#nk_get DisplayOnly="OpenVPNServerOU"-->\' style="width:200px" disabled>');
+	document.write('</td>');
+	document.write('<td>');	
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>'); 
+	document.write('<td width="'+head_width+'">');
+	document.write('Common Name&nbsp;(CN)<font color="red">*</font>&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');		
+	document.write('<input type="text" name="common_name" maxlength="64" onFocus="this.select();" value=\'<!--#nk_get DisplayOnly="OpenVPNServerCN"-->\' style="width:200px" disabled>');
+	document.write('</td>');
+	document.write('<td>');		
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>'); 
+	document.write('<td width="'+head_width+'">');
+	document.write('Email Address&nbsp;(E)&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');		
+	document.write('<input type="text" name="email" maxlength="64" onFocus="this.select();" value=\'<!--#nk_get DisplayOnly="OpenVPNServerEmail"-->\' style="width:200px" disabled>');
+	document.write('</td>');
+	document.write('<td>');		
+	document.write('</td>');
+	document.write('</tr>');	
+	document.write('<tr>'); 
+	document.write('<td width="'+head_width+'">');
+	document.write('Key Encryption Length<font color="red">*</font>&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td colspan="2">');
+	document.write('<select class="Select" name="keySize" style="width:200px" disabled>');
+	document.write('<option value="1024">1024</option>');
+	document.write('<option value="2048">2048</option>');
+	document.write('</select>');
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>'); 
+	document.write('<td width="'+head_width+'">');
+	document.write('Valid Through<font color="red">*</font>&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td colspan="2">');
+	document.write('<input type="hidden" name="days" value=\'\' >');
+	document.write('<input type="hidden" name="from_date" value=\'\' >');
+	document.write('<input type="text" name="expire_date" maxlength="10" onFocus="this.select();" value=\'\' style="width:200px" disabled>');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');		
+	document.write('(YYYY-MM-DD)');
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('</table>');
+	PrintEndBlock(hasUnderLine);
+}
+
+//=============== End of content ===============*/
+</script>
+</head>
+<body class="mainframe" onLoad="Entryfunction();" onUnload="Leavefunction();" onResize="ChangeBgsize();">
+<script>PrintBackground();</script>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<form id="submitform" name="submitform"  method="post">
+	 	<!--#nk_get SetPageWidth="1"-->
+	</form>
+	<!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+	<script>
+         SetItemInit(foldersTree, 9, 2);		// Set Selected Node
+         initializeTree(foldersTree); 			// Draw Menu & Layout
+	</script>
+		
+	<form name="formOpenVPN" method="post" action="openvpn_server.htm">
+	<input type="hidden" name="page" value="openvpn_server.htm">
+	<input type="hidden" name="submitStatus" value="0">
+	<input type="hidden" name="log_ch" value="0">         
+	<input type="hidden" name="UIchange" value="0">
+	<input type="hidden" name="ReBuildClient" value="0">
+	<input type="hidden" name="ResetFlag" value="0">
+	<input type="hidden" name="afterSubmit" value='<!--#nk_get handle_tags="wzAfterSubmit"-->'>
+	<input type="hidden" name="SubnetData" value='<!--#nk_get MultipleSubnetData=""-->'>
+
+	<script>PrintContent();</script>
+	<script>PrintRight();</script>
+	<script>PrintBottom();</script>	
+</table>
+</body>
+</html>
+<!--#nk_get SysLogChange="openvpn_server.htm"-->
+<!--#nk_get OpenVPNServerUpdate=""-->

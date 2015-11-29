@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Group1 list</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<script language=JavaScript>
+function refreshMe(F)
+{
+	F.submit();
+}
+function Print_table_tr_cell(cell_type,group_name,ip_addr, time)
+{
+	document.write('<tr class='+cell_type+' >');	
+	document.write('<td class="tdContentBorderRight tdContentC">'+group_name+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+ip_addr+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+time+'</td>');	
+	
+	document.write('<td class="tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</td>');
+	
+	document.write('</tr>');
+}
+function GRP_Tunnel_List(TunnelData)
+{
+	if(TunnelData=="")
+		return;
+		
+	var items;
+	var list =TunnelData.split("?");
+		
+	for(var i=0;i<list.length;i++)
+	{
+		if(list[i]=="")
+			continue;
+		items=list[i].split("#");
+		if(i%2 == 0)
+			Print_table_tr_cell("OddRow",items[0],items[2],items[4]);
+		else
+			Print_table_tr_cell("EvenRow",items[0],items[2],items[4]);
+	}
+}
+</script>
+</head>
+<body class="poplist" onResize="ChangeWhiteTable()" style="overflow:hidden">
+<form name="formVpnGroupList" method="post" action="group_list1.htm">
+<input type="hidden" name="page" value="group_list1.htm"> 
+<input type="hidden" name="submitStatus" value="0">
+<input type="hidden" name="grouplist" value='<!--#nk_get GrpDetailList="grpips0"-->'>  
+  <table class="pop_title_table" border="0" width="100%">     
+    <tr> 
+      <td valign="middle" width="200">Group VPN Connection List&nbsp;:&nbsp;<img border="0" src="images/_blank.gif" width="8" height="1"></td>
+      <td valign="middle">		
+      </td>          
+      <th width="450">
+        <script language="JavaScript">
+		document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+		PrintSTButton('refresh', 'Refresh', 'refreshMe(this.form)', "","", 70);
+		document.write('<img border="0" src="images/_blank.gif" width="5" height="1">');
+		PrintSTButton('close', 'Close', 'closeWindow();', "","", 70);
+        </script> 
+      </th>  
+    </tr>     
+  </table>  
+
+	<script>PrintWhiteTableBegin();</script>
+
+	<table width="100%" class="" border="0">
+  	<tr><td>
+  	<script language="JavaScript">
+		document.write('<table width="100%" class="SpecialTable" cellspacing="0" cellpadding="0" border="0">');	
+		document.write('<tr >');	
+		document.write('<th class="firstth tdContentC">');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('Group Name');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+		document.write('</th>');
+		
+		document.write('<th class="middleth tdContentC">');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('IP address');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('</th>');
+		
+		document.write('<th class="middleth tdContentC">');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('Connection Time (seconds)');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('</th>');
+		
+		document.write('<th class="lastth tdContentC">');
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+		document.write('</th>');
+		document.write('</tr>');
+		
+		GRP_Tunnel_List(document.formVpnGroupList.grouplist.value);
+		document.write('</table>');
+	</script>
+		
+	</td></tr>
+	</table>
+	
+	<script>PrintWhiteTableEnd();</script>
+</form>     
+</body>
+</html>

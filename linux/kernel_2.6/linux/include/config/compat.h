@@ -1,0 +1,1 @@
+#define CONFIG_COMPAT 1

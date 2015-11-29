@@ -1,0 +1,590 @@
+<!--#nk_get SetPageWidth="0"-->
+<!--#nk_get OpenVPNTunnel="Delete"-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Web Management</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<script  language="JavaScript">
+/***************************************************/
+/*												     */	
+/*      		Begin of content's JavaScript function    	    */
+/*												    */	
+/***************************************************/
+function Entryfunction()
+{
+	ChangeBgsize();
+	chTunnelAvailable();
+}
+
+function chTunnelAvailable()
+{
+	var Max = parseInt(document.formopenvpn_summary.get_openvpn_n.value,10);		
+	if(document.formopenvpn_summary.tunnelAvailable.value<Max)
+		document.formopenvpn_summary.tunnelAvailable.value=Max-document.formopenvpn_summary.tunnelUsed.value;
+	else
+		document.formopenvpn_summary.tunnelAvailable.value=0;
+}
+
+function chTotalRules(F)
+{
+	var Max = parseInt(document.formopenvpn_summary.get_openvpn_n.value,10);		
+	if (parseInt(F.tunnelDefined.value,10)>=Max)
+	{
+		top.AlertMsg("Alert", aLimitClients + Max + aLimitEnd);
+		return;
+	}
+	else
+	    document.location.href="openvpn_client.htm";
+}
+
+function perPageRefresh()
+{
+	document.formopenvpn_summary.submitStatus.value="9";
+	//window.status=wRefresh;
+	document.formopenvpn_summary.submit();
+}
+
+function reqPage(n)
+{
+	document.formopenvpn_summary.ReqPage.value=document.formopenvpn_summary.JumpPage.selectedIndex+1+parseInt(n,10);
+	document.formopenvpn_summary.submitStatus.value="10";
+	window.status=wDownLoad;
+	document.formopenvpn_summary.submit();
+}
+
+function PrevPage()
+{
+	if(document.formopenvpn_summary.totalPage.value==1)
+		return;
+	document.formopenvpn_summary.ReqPage.value=document.formopenvpn_summary.JumpPage.selectedIndex+parseInt(0,10);
+	document.formopenvpn_summary.submitStatus.value="10";
+	window.status=wDownLoad;
+	document.formopenvpn_summary.submit();
+}
+
+function NextPage()
+{
+	if(document.formopenvpn_summary.totalPage.value==1)
+	        return;
+	if(document.formopenvpn_summary.totalPage.value==document.formopenvpn_summary.thisPage.value)
+	        return;
+	document.formopenvpn_summary.ReqPage.value=document.formopenvpn_summary.JumpPage.selectedIndex+2+parseInt(0,10);
+	document.formopenvpn_summary.submitStatus.value="10";
+	window.status=wDownLoad;
+	document.formopenvpn_summary.submit();
+}
+
+function FirstPage()
+{
+	if(document.formopenvpn_summary.totalPage.value==1)
+	        return;
+	document.formopenvpn_summary.ReqPage.value=0+parseInt(0,10);
+	document.formopenvpn_summary.submitStatus.value="10";
+	window.status=wDownLoad;
+	document.formopenvpn_summary.submit();
+}
+
+function EndPage()
+{
+	if(document.formopenvpn_summary.totalPage.value==1)
+	        return;
+	if(document.formopenvpn_summary.totalPage.value>0)
+	document.formopenvpn_summary.ReqPage.value=document.formopenvpn_summary.totalPage.value;
+	document.formopenvpn_summary.submitStatus.value="10";
+	window.status=wDownLoad;
+	document.formopenvpn_summary.submit();
+}
+
+function editClient(n)
+{
+	document.formopenvpn_summary.EditLine.value=n;
+	document.formopenvpn_summary.submitStatus.value="1011"; 
+	document.formopenvpn_summary.action="openvpn_client.htm";
+	//window.status=wEditTunnels;  
+	document.formopenvpn_summary.submit();
+}
+
+function Disconnect(n)
+{
+	document.formopenvpn_summary.RemoveLine.value=n;
+	document.formopenvpn_summary.submitStatus.value="99"; 
+	document.formopenvpn_summary.action = "openvpn_summary.htm";
+	document.formopenvpn_summary.submit();
+}
+
+var removeLinen;
+function removeLine(n)
+{
+	removeLinen = n;
+	top.ConfirmMsg("Confirm",cRemoveClient,"removeLine",""); 
+/*	if (confirm(cRemoveClient))
+	{
+		document.formopenvpn_summary.RemoveLine.value=n;
+		document.formopenvpn_summary.submitStatus.value="12";  
+		//window.status=wRemoveTunnel;
+		document.formopenvpn_summary.action = "openvpn_summary.htm";
+		document.formopenvpn_summary.submit();
+	}*/
+}
+
+function ConfirmMsgResult(chose,mode,a)
+{
+	if(mode=="removeLine")
+	{		
+		if(chose=="yes")
+		{
+			document.formopenvpn_summary.RemoveLine.value=removeLinen;
+			document.formopenvpn_summary.submitStatus.value="12";  
+			//window.status=wRemoveTunnel;
+			document.formopenvpn_summary.action = "openvpn_summary.htm";
+			document.formopenvpn_summary.submit();
+		}
+		else if(chose=="no")
+		{
+			return;
+		}
+	}
+
+}
+
+function exportOvpn(filename, index)
+{
+	var Submit_URL = "/cgi-bin/config.exp?file=" + filename + ".ovpn&index=" + index;
+	document.formopenvpn_summary.action = Submit_URL;
+	document.formopenvpn_summary.submit();
+}
+
+var mailWindow0=null;
+function openMail(filename,index)
+{
+	var Submit_URL = "?file=" + filename + ".ovpn&index=" + index;
+	if(mailWindow0 != null)
+	{
+		mailWindow0.close();
+		mailWindow0=null;
+	}
+	mailWindow0=window.open('mail0.htm'+Submit_URL,'sW0','menubar=no,scrollbars=no,width=500,height=320');
+}
+
+function closeMail()
+{
+	timer1=setTimeout("closeChild()",1000);
+}
+
+function closeChild()
+{ 
+	if (mailWindow0!=null)
+	{
+		mailWindow0.close();
+		mailWindow0=null;
+	}
+	return;
+}
+
+function Leavefunction()
+{
+	chLeave();
+}
+
+function RedirectUrl()
+{
+	window.location.replace("smtp_config.htm");
+}
+
+//================= End =================*/
+
+/***************************************************/
+/*												   */	
+/*      			  Begin of content    				   */
+/*												   */	
+/***************************************************/
+var ButtonType = "";		// NULL/Refresh/OkCancel/BackOkCancel/ShowTableOkCancel
+var helplink ='help_openvpn_summary.html';
+var UserName = '<!--#nk_get DisplayOnly="nUser"-->';
+var FixedTableWidth = "97%";
+
+function PrintContent()
+{
+	PrintBeginContent();
+	PrintSummary(1);
+	PrintServerStatus(1);
+	PrintClientStatus(0);
+	PrintEndContent();
+}
+
+function PrintSummary(hasUnderLine)
+{
+	PrintBeginBlock(0);
+	document.write('<table class="Infotable" width="100%" border='+Tableborder+'>');
+	document.write('<tr>');
+	document.write('<td width="10">');
+	document.write('<input type="text" name="tunnelUsed" value=\'<!--#nk_get OpenVPNTunnel="Used"-->\'  size="4" maxlength="4" style="background-color: #cccccc" readOnly>');
+	document.write('</td>');
+	document.write('<td width="155">');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('Tunnel(s) Used');
+	document.write('<img border="0" src="images/_blank.gif" width="40" height="1">');
+	document.write('</td>');
+	document.write('<td width="10">');
+	document.write('<input type="text" name="tunnelAvailable" value=\'\'  size="4" maxlength="4" style="background-color: #cccccc" readOnly>');
+	document.write('</td>');	
+	document.write('<td width="150">');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');		
+	document.write('Tunnel(s) Available');
+	document.write('<img border="0" src="images/_blank.gif" width="40" height="1">');	
+	document.write('</td>');
+	document.write('<td>');	
+	document.write('<img border="0" src="images/_blank.gif" width="1" height="26">');	
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('</table>');
+	PrintEndBlock(hasUnderLine, 1);
+}
+
+function PrintServerStatus(hasUnderLine)
+{
+	PrintBeginBlock(1, "OpenVPN Server Status");
+	document.write('<table width="'+FixedTableWidth+'">');	
+	document.write('<tr><td>');
+	
+	document.write('<table width="100%" class="SpecialTable" cellspacing="0" cellpadding="0" border="0" style="margin-top:15px;">');	
+	document.write('<tr height="20">');	
+	document.write('<th class="firstth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Enable');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Valid Duration');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Authentication Type');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Protocol');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Encryption');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Security Subnet');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Config.');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="lastth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');	
+	document.write('</tr>');
+	
+	document.write('<tr height="24" class="OddRow">');	
+	document.write('<td class="tdContentBorderRight tdContentC">');
+	document.write('<input type="checkbox" disabled <!--#nk_get CheckboxStatus="OpenVPNEnabled"-->>');
+	document.write('</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">');
+	document.write('<!--#nk_get OpenVPNTunnel="Duration"-->');
+	document.write('</td>');	
+	document.write('<td class="tdContentBorderRight tdContentC">');
+	var AuthType = '<!--#nk_get DisplayOnly="OpenVPNAuthType"-->';	
+	if (AuthType == "0")
+		document.write('Password');
+	else if (AuthType == "1")
+		document.write('Certificate');
+	else
+		document.write('Password + Certificate');
+	document.write('</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">');
+	var Protocol = '<!--#nk_get DisplayOnly="OpenVPNProtocol"-->';
+	var Port='<!--#nk_get DisplayOnly="OpenVPNPort"-->';
+	document.write(Protocol.toUpperCase()+'&nbsp;'+Port);
+	document.write('</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">');
+	document.write('<!--#nk_get OpenVPNTunnel="Cipher"-->');
+	document.write('</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">');
+	var TunnelMode = '<!--#nk_get DisplayOnly="OpenVPNTunnelMode"-->';
+	var SecurityIP = '<!--#nk_get DisplayOnly="OpenVPNRouteIP"-->';
+	var SecurityNetmask = '<!--#nk_get DisplayOnly="OpenVPNRouteNetmask"-->';
+	if (TunnelMode == "0")
+		document.write(SecurityIP +'<br>'+SecurityNetmask);
+	else 
+		document.write('0.0.0.0<br>0.0.0.0');
+	document.write('</td>');			
+	document.write('<td class="tdContentBorderRight tdContentC">');
+	document.write('<a href="openvpn_server.htm"><img src=images/edit.gif width=20 height=16 border=0 title=Edit></a>');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</td>');
+	
+	document.write('<td class="tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</td>');
+	document.write('</tr>');
+	
+	document.write('</table>');
+	
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('</table>');
+	PrintEndBlock(hasUnderLine);
+}
+
+function PrintClientStatus(hasUnderLine)
+{
+	PrintBeginBlock(1, "OpenVPN Client Status");
+	document.write('<table class="Infotable" width="'+FixedTableWidth+'" border='+Tableborder+'>');
+	document.write('<tr>');
+	document.write('<td width="10">');
+	document.write('<input type="hidden" name="TunnelListData" value=\'\'>');
+	document.write('<input type="text" name="tunnelEnable"  size="4" maxlength="4" style="background-color: #cccccc" readOnly value=\'<!--#nk_get OpenVPNTunnel="Enabled"-->\'>');
+	document.write('</td>');
+	document.write('<td width="155">');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');		
+	document.write('Tunnel(s) Enabled');
+	document.write('<img border="0" src="images/_blank.gif" width="40" height="1">');
+	document.write('</td>');
+	document.write('<td width="10">');
+	document.write('<input type="text" name="tunnelDefined" size="4" maxlength="4" style="background-color: #cccccc" readOnly value=\'<!--#nk_get OpenVPNTunnel="Defined"-->\'>');
+	document.write('</td>');
+	document.write('<td width="150">');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	document.write('Tunnel(s) Defined');
+	document.write('<img border="0" src="images/_blank.gif" width="40" height="1">');	
+	document.write('</td>');
+	document.write('<td><img border="0" src="images/_blank.gif" width="1" height="29"></td>');
+	document.write('</tr>');
+	document.write('</table>');	
+	
+	document.write('<table width="'+FixedTableWidth+'"  style="border:1px solid #e2e2e2" cellspacing="0" cellpadding="0"><tr><td>');
+	
+	document.write('<table width="100%" class="" border="0">');	
+	document.write('<tr>');
+	document.write('<td class="ListTitle" align="right"><b>');
+	document.write('<!--#nk_get OpenVPNTunnel="ItemInfo"-->');
+	document.write('<img border="0" src="images/_blank.gif" width="8">');
+	document.write('Rows per page&nbsp;:');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('<!--#nk_get OpenVPNTunnel="PerPageList"-->');	
+	document.write('</b></td>');
+	document.write('</tr>');	
+	document.write('</table>');
+	
+	document.write('<table width="100%" class="SpecialTable" cellspacing="0" cellpadding="0" border="0">');	
+	document.write('<tr height="20">');	
+	document.write('<th class="firstth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Enable');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');	
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Valid Duration');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Name');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+		
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Remote IP');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('<br>');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Address');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Virtual IP');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('<br>');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Address');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Status');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Export');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="middleth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('Config.');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	
+	document.write('<th class="lastth tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</th>');
+	document.write('</tr>');
+	
+	if(parseInt(document.formopenvpn_summary.tunnelDefined.value,10) > 0)
+	{
+		<!--#nk_get OpenVPNTunnel="ClientList"-->
+	}
+	
+	document.write('</table>');
+	
+	document.write('<table width="100%">');	
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('<table class="" height="29" width="100%" cellspacing="'+Tablecellspacing+'" border="'+Tableborder+'">');
+	document.write('<tr>');
+	document.write("<td align='right'>");	
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	PrintSTButton("B3", "Add", "chTotalRules(this.form)");
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	if(parseInt(document.formopenvpn_summary.tunnelAvailable.value,10) == 0)
+	{
+		SetButtonStatus("B3", "disabled");	
+		document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	}
+	document.write('</td>'); 
+	document.write('<td width="200px">');
+	document.write('<table>');
+	document.write('<tr>');
+	document.write('<td width="21px">');	
+	if(parseInt(document.formopenvpn_summary.totalPage.value,10)> 1) PrintPageButton("first", "FirstPage()");
+	else PrintPageButton("first", "FirstPage()", "disabled");
+	document.write('</td>') 	
+	document.write('<td width="26px">');
+	if(parseInt(document.formopenvpn_summary.totalPage.value,10)> 1) PrintPageButton("previous", "PrevPage()");
+	else PrintPageButton("previous", "PrevPage()","disabled");
+	document.write('</td>') ;
+	document.write('<td >Page</td><td>');
+	document.write('<img border="0" src="images/_blank.gif" width="4" height="1">');
+	document.write('<!--#nk_get OpenVPNTunnel="JumpPageList"-->');	
+	document.write('<img border="0" src="images/_blank.gif" width="4" height="1">');
+	document.write('</td><td>of&nbsp');
+	document.write('<!--#nk_get OpenVPNTunnel="totalPage"-->');
+//	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</td>');
+	document.write('<td width="21px">');	
+	if(parseInt(document.formopenvpn_summary.totalPage.value,10) > parseInt(document.formopenvpn_summary.thisPage.value,10)) PrintPageButton("next", "NextPage()");
+	else PrintPageButton("next", "NextPage()", "disabled");
+	document.write('</td>') ;	
+	document.write('<td width="20px">');	
+	if(parseInt(document.formopenvpn_summary.totalPage.value,10) > parseInt(document.formopenvpn_summary.thisPage.value,10)) PrintPageButton("end", "EndPage()");
+	else PrintPageButton("end", "EndPage()", "disabled");
+	document.write('</td>') ;
+	document.write('</tr>');
+	document.write('</table>');
+	document.write('</td>') ;
+	document.write('</tr>');
+	document.write('</table>');	
+	
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('</table>');
+	document.write("</td></tr></table>");
+	PrintEndBlock(hasUnderLine);
+}
+
+function Print_table_tr_cell(cell_type,no,enable,valid, name, RealIP, VirtualIP, bn_name, bn_value)
+{
+	var bn_fun;
+	if (bn_value == "Disconnect")
+		bn_fun="Disconnect("+no+")";
+	document.write('<tr height="24" class='+cell_type+' >');
+	document.write('<td class="tdContentBorderRight tdContentC">');
+	if (enable == "0")
+		document.write('<input type="checkbox" disabled>');
+	else
+		document.write('<input type="checkbox" checked disabled>');
+	document.write('</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+valid+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+name+'</td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+RealIP+'<img border="0" src="images/_blank.gif" width="8" height="1"></td>');
+	document.write('<td class="tdContentBorderRight tdContentC">'+VirtualIP+'<img border="0" src="images/_blank.gif" width="8" height="1"></td>');
+	document.write('<td class="tdContentBorderRight tdContentC">');
+	if (bn_value == "Disconnect")
+		PrintSTButton(bn_name, bn_value, bn_fun);
+	else	
+		document.write('N/A');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1"></td>');
+	document.write('<td class="tdContentBorderRight tdContentC">');
+	document.write('<a href="javascript: exportOvpn(\''+bn_name+'\', \''+no+'\');"><img src=images/openvpn.png width=20 height=20 border=0 title="Export Client Configuration"></a>');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('<a href="javascript: openMail(\''+bn_name+'\', \''+no+'\');"><img src=images/email.png width=20 height=20 border=0 title="Mail Client Configuration"></a>');
+	document.write('</td>');	
+	document.write('<td class="tdContentBorderRight tdContentC">');
+	if ('<!--#nk_get DisplayOnly="OpenVPNAuthType"-->' != "1")
+		document.write('<a href="javascript: editClient('+no+')"><img src=images/edit.gif width=20 height=16 border=0 title=Edit></a><img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('<a href="javascript: removeLine('+no+')"><img src=images/trash.gif width=20 height=16 border=0 title=Delete></a></td>');	
+	
+	
+	document.write('<td class="tdContentC">');
+	document.write('<img border="0" src="images/_blank.gif" width="10" height="1">');
+	document.write('</td>');
+	
+	document.write('</tr>');
+}
+
+//=============== End of content ===============*/
+</script>
+</head>
+<body class="mainframe" onLoad="Entryfunction();" onUnload="Leavefunction();" onResize="ChangeBgsize();">
+<script>PrintBackground("",FixedTableWidth);</script>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<form id="submitform" name="submitform"  method="post">
+	 	<!--#nk_get SetPageWidth="1"-->
+	</form>
+	<!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+	<script>
+         SetItemInit(foldersTree, 9, 1);		// Set Selected Node
+         initializeTree(foldersTree); 			// Draw Menu & Layout
+	</script>
+		
+	<form name="formopenvpn_summary" method="post" action="openvpn_summary.htm">
+	<input type="hidden" name="page" value="openvpn_summary.htm">
+	<input type="hidden" name="submitStatus" value="0">
+	<input type="hidden" name="ReqPage" value="0">
+	<input type="hidden" name="EditLine" value="0">
+	<input type="hidden" name="RemoveLine" value="0">
+	<input type="hidden" name="get_openvpn_n" value='<!--#nk_get DisplayOnly="openvpnclient"-->'>
+	<input type="hidden" name="thisPage" value='<!--#nk_get OpenVPNTunnel="currPage"-->'>
+	<input type="hidden" name="totalPage" value='<!--#nk_get OpenVPNTunnel="totalPage"-->'>
+	<script>PrintContent();</script>
+	<script>PrintRight();</script>      
+	<script>PrintBottom();</script>  
+	</form>
+</table>
+</body>
+</html>

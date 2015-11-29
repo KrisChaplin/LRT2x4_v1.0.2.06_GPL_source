@@ -1,0 +1,936 @@
+<!--#nk_get SetPageWidth="0"-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!--#nk_get RedirectPage="network1.htm:2"-->
+<title>Web Management</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<script  language="JavaScript">
+/***************************************************/
+/*												     */	
+/*      		Begin of content's JavaScript function    	    */
+/*												    */	
+/***************************************************/
+function Entryfunction()
+{
+	ChangeBgsize();
+	chAfterSubmit();
+	chsetDNS();	
+	chsetDHCPPD();
+	chConnectParm();
+	chSH();
+	document.formedit_Network.oldDHCPPD.value=document.formedit_Network.DHCPPD.value;
+}
+function Leavefunction()
+{
+	chLeave();
+}
+
+function chAfterSubmit()
+{
+	if(document.formedit_Network.aftersubmit.value==1)
+	{
+		SetButtonStatus("Save", "disabled");
+		SetButtonStatus("Cancel", "disabled");
+	}
+}
+
+function chsetDNS()
+{
+    if (document.formedit_Network.WAN1ConnectionType_v6)	
+    if (document.formedit_Network.WAN1ConnectionType_v6.options[0].selected==true)
+    {
+    	if (document.formedit_Network.setWan1DNS_check)
+		{
+    		if (document.formedit_Network.setWan1DNS_check.checked==true) 
+        	{
+				enableIt(document.formedit_Network.Wan1DnsA_v6);
+				enableIt(document.formedit_Network.Wan1DnsB_v6);
+        	}
+        	else
+        	{
+				disableIt(document.formedit_Network.Wan1DnsA_v6);
+				disableIt(document.formedit_Network.Wan1DnsB_v6);
+        	}
+		}
+    }
+}
+
+function chsetDHCPPD()
+{
+    	if (document.formedit_Network.useDHCPPD)
+		{
+    		if (document.formedit_Network.useDHCPPD.checked==true) 
+        	{
+				disableIt(document.formedit_Network.DHCPPD_address);
+        	}
+        	else
+        	{
+				enableIt(document.formedit_Network.DHCPPD_address);
+        	}
+		}
+}
+
+function chConnectParm()
+{
+	if (document.formedit_Network.WAN1ConnectionType_v6)
+	if (document.formedit_Network.WAN1ConnectionType_v6.options[2].selected==true)
+	{
+		if (document.formedit_Network.Wan1ConnectAlive[0].checked)
+		{
+		    document.formedit_Network.Wan1IdleTime.disabled=false;
+		    document.formedit_Network.Wan1RedialTime.disabled=true;	
+		}
+		else if (document.formedit_Network.Wan1ConnectAlive[1].checked)
+		{
+		    document.formedit_Network.Wan1IdleTime.disabled=true;
+		    document.formedit_Network.Wan1RedialTime.disabled=false;	
+		}
+	}
+}
+
+function bytesCheck(I)
+{
+	validatenum(I, 1501, 68, aBytesCheck);
+}
+
+function disableIt(obj)
+{
+    obj.disabled=true;
+}
+
+function enableIt(obj)
+{
+    obj.disabled=false;
+}
+
+function falseSubmit(F,n)
+{
+	if (n==0)
+	{
+		F.submitStatus.value=0;
+		F.action="edit_network6.htm";
+	} 
+	else if (n==1)
+	{
+		F.submitStatus.value=0;
+		F.action="network.htm";		
+	}
+	else if (n==100)
+	{
+		F.submitStatus.value=100;
+		F.action="edit_network6.htm";	
+	}
+	MM_showHideLayers('AutoNumber15','','hide');  	
+	F.submit();
+}
+
+function chSH5()
+{
+	if(document.formedit_Network.setDHCPPD)
+	{
+		if(document.formedit_Network.setDHCPPD.checked==true)
+		{	
+			document.formedit_Network.DHCPPD.value=1;
+			document.getElementById("LANv6").readOnly=true;
+			document.getElementById("LANv6").style.background='#cccccc';
+			document.getElementById('ISP_prefix').style.display='';
+			document.getElementById('usr_prefix').style.display='none';
+		}
+		else
+		{
+			document.formedit_Network.DHCPPD.value=0;
+			document.getElementById("LANv6").readOnly=false;
+			document.getElementById("LANv6").style.background='#ffffff';
+			document.getElementById('ISP_prefix').style.display='none';
+			document.getElementById('usr_prefix').style.display='';
+		}
+	}
+}
+
+function chSameIp()
+{	var F=document.formedit_Network;
+	var subnetit1,subnetit;
+		subnetit1 = document.formedit_Network.Wan1AliasIp_v6;
+		subnetit = subnetit1;
+
+	/* 0-1 */
+	if (F.editInterface.value != "1") // cannot compare with self.
+	{
+		if(F.Wan1status_v6.value !="0" && F.Wan1status_v6.value !="2")
+			if(IPRangeCheck_v6(subnetit, subnetit, F.WAN1IP_v6, '', 'same')){
+				top.AlertMsg("Alert", aConflictIP);
+				return -1;
+			}	
+
+		if(IPRangeCheck_v6(subnetit, subnetit, F.WAN1IP_v6, '', 'same')){
+			top.AlertMsg("Alert", aConflictIP);
+			return -1;
+		}	
+	}						
+	/* 0-2 */
+	if (F.editInterface.value != "2") // cannot compare with self.
+	{
+		if(F.Wan1status_v6.value !="0" && F.Wan1status_v6.value !="2")
+			if(IPRangeCheck_v6(subnetit, subnetit, F.WAN2IP_v6, '', 'same')){
+				top.AlertMsg("Alert", aConflictIP);
+				return -1;
+			}	
+
+		if(IPRangeCheck_v6(subnetit, subnetit, F.WAN2IP_v6, '', 'same')){
+			top.AlertMsg("Alert", aConflictIP);
+			return -1;
+		}	
+	}		
+	/* 0-3 */
+	if (F.editInterface.value != "3") // cannot compare with self.
+	{
+		if(F.Wan1status_v6.value !="0" && F.Wan1status_v6.value !="2")
+			if(IPRangeCheck_v6(subnetit, subnetit, F.WAN3IP_v6, '', 'same')){
+				top.AlertMsg("Alert", aConflictIP);
+				return -1;
+			}	
+
+		if(IPRangeCheck_v6(subnetit, subnetit, F.WAN3IP_v6, '', 'same')){
+			top.AlertMsg("Alert", aConflictIP);
+			return -1;
+		}	
+	}	
+	/* 0-4 */
+	if (F.editInterface.value != "4") // cannot compare with self.
+	{
+		if(F.Wan1status_v6.value !="0" && F.Wan1status_v6.value !="2")
+			if(IPRangeCheck_v6(subnetit, subnetit, F.WAN4IP_v6, '', 'same')){
+				top.AlertMsg("Alert", aConflictIP);
+				return -1;
+			}	
+
+		if(IPRangeCheck_v6(subnetit, subnetit, F.WAN4IP_v6, '', 'same')){
+			top.AlertMsg("Alert", aConflictIP);
+			return -1;
+		}	
+	}	
+	/* 0-5 */
+	if (F.editInterface.value != "5") // cannot compare with self.
+	{
+		if(F.Wan1status_v6.value !="0" && F.Wan1status_v6.value !="2")
+			if(IPRangeCheck_v6(subnetit, subnetit, F.WAN5IP_v6, '', 'same')){
+				top.AlertMsg("Alert", aConflictIP);
+				return -1;
+			}	
+
+		if(IPRangeCheck_v6(subnetit, subnetit, F.WAN5IP_v6, '', 'same')){
+			top.AlertMsg("Alert", aConflictIP);
+			return -1;
+		}	
+	}	
+	/* 0-6 */
+	if (F.editInterface.value != "6") // cannot compare with self.
+	{
+		if(F.Wan1status_v6.value !="0" && F.Wan1status_v6.value !="2")
+			if(IPRangeCheck_v6(subnetit, subnetit, F.WAN6IP_v6, '', 'same')){
+				top.AlertMsg("Alert", aConflictIP);
+				return -1;
+			}	
+
+		if(IPRangeCheck_v6(subnetit, subnetit, F.WAN6IP_v6, '', 'same')){
+			top.AlertMsg("Alert", aConflictIP);
+			return -1;
+		}	
+	}	
+	/* 0-7 */
+	if (F.editInterface.value != "7") // cannot compare with self.
+	{
+		if(F.Wan1status_v6.value !="0" && F.Wan1status_v6.value !="2")
+			if(IPRangeCheck_v6(subnetit, subnetit, F.WAN7IP_v6, '', 'same')){
+				top.AlertMsg("Alert", aConflictIP);
+				return -1;
+			}	
+
+		if(IPRangeCheck_v6(subnetit, subnetit, F.WAN7IP_v6, '', 'same')){
+			top.AlertMsg("Alert", aConflictIP);
+			return -1;
+		}	
+	}		
+    return 1;
+}
+
+function chSubmit(F)
+{
+	var str_wanStatus ="";
+	var bigPrefixLength;
+
+	if('<!--#nk_get SelectHandleByInf="WAN1ConnectionType_v6:1"-->'=='selected'){
+		if(!CheckIPv6(F.Wan1AliasIp_v6,'global'))
+		{
+			F.Wan1AliasIp_v6.select();
+			return 0;
+		}
+
+		if(!CheckIPv6(F.Wan1RouterIp_v6,'global'))
+		{
+			F.Wan1RouterIp_v6.select();
+			return 0;
+		}
+
+		if(F.Wan1AliasIp_v6.value=="::" || IPRangeCheck_v6(F.Wan1AliasIp_v6, F.Wan1AliasIp_v6, F.Wan1AliasIp_v6, 0, 'zero') ){
+			F.Wan1AliasIp_v6.select();
+			top.AlertMsg("Alert", "WAN IP cannot be the unspecified address.");
+			return 0;		
+		}
+			
+		if(!IPRangeCheck_v6(F.Wan1AliasIp_v6, F.Wan1AliasIp_v6, F.Wan1RouterIp_v6, F.Wan1AliasPrefix_v6, 'test_under')){
+			var tmp_router_IP =  F.Wan1RouterIp_v6.value.split(":");
+			if (tmp_router_IP[0] != 'fe80') {
+				top.AlertMsg("Alert", "WAN IP Address and Default Gateway Address should have the same Prefix.");
+				return 0;
+			}
+		}
+		
+		if(chSameIp()<0) return;
+		//WAN&LAN
+		if (parseInt(F.ipAddr_v6pre.value) > parseInt(F.Wan1AliasPrefix_v6.value)){
+			bigPrefixLength=F.ipAddr_v6pre;	
+		}
+		else{
+			bigPrefixLength=F.Wan1AliasPrefix_v6;
+		} 
+
+		if(IPRangeCheck_v6(F.Wan1AliasIp_v6, F.Wan1AliasIp_v6, F.ipAddr_v6, bigPrefixLength, 'test_under')){
+			top.AlertMsg("Alert", aConflictIP);
+			return 0;
+		}		
+
+		//check WAN /LAN Prefix
+		for (var i=1;i<=F.wanNumbers_now.value;i++)
+		{
+			tmp = "WAN" + i + "IP_v6LANprefix"; 
+			obj = document.getElementById(tmp);
+
+			objPrefix = document.getElementById("LANv6Prefix");
+
+			if (obj && obj.value != "::" && i!=parseInt(F.editInterface.value))
+			{	
+				if (parseInt(F.Wan1AliasPrefix_v6.value) > parseInt(objPrefix.value))
+					bigPrefixLength=F.Wan1AliasPrefix_v6;
+				else 
+					bigPrefixLength=objPrefix;
+
+				if (IPRangeCheck_v6(obj, obj, F.Wan1AliasIp_v6, bigPrefixLength, 'test_under'))
+				{	
+					top.AlertMsg("Alert", aConflictIP);
+					return;
+				}
+			}
+		}
+
+		if(!CheckIPv6(F.Wan1DnsA_v6,'DNS'))
+		{
+			F.Wan1DnsA_v6.select();
+			return 0;
+		}
+
+	
+		if(!CheckIPv6(F.Wan1DnsB_v6,'DNS'))
+		{
+			F.Wan1DnsB_v6.select();
+			return 0;
+		}
+
+	}
+	
+	if(document.getElementById('setWan1DNS_v6'))
+	{		
+		if (F.setWan1DNS_check.checked)
+		{
+			if (F.Wan1DnsA_v6.value!='')
+			{   
+				if(!CheckIPv6(F.Wan1DnsA_v6,'global'))
+				{
+					F.Wan1DnsA_v6.select();
+					return 0;
+				}
+			}
+			if (F.Wan1DnsB_v6.value!='')
+			{	
+				if(!CheckIPv6(F.Wan1DnsB_v6,'global'))
+				{
+					F.Wan1DnsB_v6.select();
+					return 0;
+				}
+			}
+			F.setWan1DNS_v6.value = 1;		
+		}
+		else
+			F.setWan1DNS_v6.value = 0;
+	}
+
+	if (parseInt(F.ipAddr_v6pre.value) > parseInt(F.LANv6Prefix.value))
+		bigPrefixLength=F.ipAddr_v6pre;
+	else 
+		bigPrefixLength=F.LANv6Prefix;
+
+	//if(document.formedit_Network.setDHCPPD)
+	//{
+		if(!document.formedit_Network.setDHCPPD || document.formedit_Network.setDHCPPD.checked==false)
+		{
+			if(!CheckIPv6(F.LANv6,'DNS'))
+			{
+					F.LANv6.select();
+					return 0;
+			}
+
+			if ('<!--#nk_get SelectHandleByInf="WAN1ConnectionType_v6:1"-->'=='selected')
+			{
+				//WAN&LAN Prefix
+				if (parseInt(F.Wan1AliasPrefix_v6.value) > parseInt(F.LANv6Prefix.value)){
+					bigPrefixLength=F.Wan1AliasPrefix_v6;	
+				}
+				else{
+					bigPrefixLength=F.LANv6Prefix;
+				} 
+
+				if(IPRangeCheck_v6(F.Wan1AliasIp_v6, F.Wan1AliasIp_v6, F.LANv6, bigPrefixLength, 'test_under')){
+					F.LANv6.select();
+					top.AlertMsg("Alert", aConflictIP);
+					return 0;
+				}	
+			}
+
+			//LAN&LAN Prefix
+			if (parseInt(F.ipAddr_v6pre.value) > parseInt(F.LANv6Prefix.value)){
+				bigPrefixLength=F.ipAddr_v6pre;	
+			}
+			else{
+				bigPrefixLength=F.LANv6Prefix;
+			} 
+
+			if(IPRangeCheck_v6(F.ipAddr_v6, F.ipAddr_v6, F.LANv6, bigPrefixLength, 'test_under')){
+				F.LANv6.select();
+				top.AlertMsg("Alert", aConflictIP);
+				return 0;
+			}	
+
+			for (var i=1;i<=F.wanNumbers_now.value;i++)
+			{
+				tmp = "WAN" + i + "IP_v6"; 
+				obj = document.getElementById(tmp);
+
+				tmp = "WAN" + i + "IP_v6prefix";
+				objPrefix = document.getElementById(tmp);
+					
+				if (obj && obj.value != "::" && i!=parseInt(F.editInterface.value))
+				{	
+					if (parseInt(F.LANv6Prefix.value) > parseInt(objPrefix.value))
+						bigPrefixLength=F.LANv6Prefix;
+					else 
+						bigPrefixLength=objPrefix;
+
+					if (IPRangeCheck_v6(obj, obj, F.LANv6, bigPrefixLength, 'test_under'))
+					{	
+						top.AlertMsg("Alert", aConflictIP);
+						return;
+					}
+				}
+			}
+
+			for (var i=1;i<=F.wanNumbers_now.value;i++)
+			{
+				tmp = "WAN" + i + "IP_v6LANprefix"; 
+				obj = document.getElementById(tmp);
+
+				if (obj && obj.value != "::" && i!=parseInt(F.editInterface.value))
+				{	
+					if (IPRangeCheck_v6(obj, obj, F.LANv6, F.LANv6Prefix, 'test_under'))
+					{	
+						top.AlertMsg("Alert", aConflictIP);
+						return;
+					}
+				}
+			}
+
+		}
+	/*}
+	else
+	{
+		if(!CheckIPv6(F.LANv6,'DNS'))
+		{
+			F.LANv6.select();
+			return 0;
+		}
+	}
+	*/
+	if(document.formedit_Network.PPPoEType.value==2)
+		document.formedit_Network.PPPoEType.value=0;
+	//document.formedit_Network.PPPoEType.value=1;
+
+	str_wanStatus="Wan"+document.formedit_Network.editInterface.value+"status_v6";
+	if (document.formedit_Network.WAN1ConnectionType_v6.selectedIndex==2 && document.getElementById(str_wanStatus).value!=2)
+	{
+		top.ConfirmMsg("Confirm",aWanPPPoEtype,"chSubmit","");
+		return;
+/*		if (!confirm(aWanPPPoEtype))
+		{
+			return 0;
+		}*/
+	}
+	if(ConfirmCount==-1)
+	{
+		if(document.formedit_Network.oldDHCPPD.value==0 && document.formedit_Network.DHCPPD.value==1 )
+		{
+			switch (document.formedit_Network.WAN1ConnectionType_v6.selectedIndex)
+			{
+				case 0:
+					top.ConfirmMsg("Confirm",aWanDHCPPDtypeDHCP,"chSubmit2","");
+	/*				if (!confirm(aWanDHCPPDtypeDHCP))
+					{
+						document.formedit_Network.setDHCPPD.checked=false;
+						chSH5();
+						return 0;
+					}*/
+					break;
+				case 2:
+					top.ConfirmMsg("Confirm",aWanDHCPPDtypePPPoE,"chSubmit2","");
+	/*				if (!confirm(aWanDHCPPDtypePPPoE))
+					{
+						document.formedit_Network.setDHCPPD.checked=false;
+						chSH5();
+						return 0;
+					}*/
+					break;
+				default:
+					break;
+			}
+		}
+	}
+	if(ConfirmCount==-1)
+	{
+		F.submitStatus.value=1;
+		F.log_ch.value=1;
+		window.status=wSave;		
+		MM_showHideLayers('AutoNumber15','','hide');  	
+		F.submit();
+	}
+}
+
+function ConfirmMsgResult(chose,mode,a)
+{
+	var F = document.formedit_Network;
+	if(mode=="chSubmit")
+	{		
+		if(chose=="yes")
+		{
+			if(document.formedit_Network.oldDHCPPD.value==0 && document.formedit_Network.DHCPPD.value==1 )
+			{
+				switch (document.formedit_Network.WAN1ConnectionType_v6.selectedIndex)
+				{
+					case 0:
+						top.ConfirmMsg("Confirm",aWanDHCPPDtypeDHCP,"chSubmit2","");
+		/*				if (!confirm(aWanDHCPPDtypeDHCP))
+						{
+							document.formedit_Network.setDHCPPD.checked=false;
+							chSH5();
+							return 0;
+						}*/
+						break;
+					case 2:
+						top.ConfirmMsg("Confirm",aWanDHCPPDtypePPPoE,"chSubmit2","");
+		/*				if (!confirm(aWanDHCPPDtypePPPoE))
+						{
+							document.formedit_Network.setDHCPPD.checked=false;
+							chSH5();
+							return 0;
+						}*/
+						break;
+					default:
+						break;
+				}
+				return;
+			}
+		}
+		else if(chose=="no")
+		{
+			return 0;
+		}
+	}
+	if(mode=="chSubmit2")
+	{
+		if(chose=="yes")
+		{
+			;
+		}
+		else if(chose=="no")
+		{
+			document.formedit_Network.setDHCPPD.checked=false;
+			chSH5();
+			return ;
+		}
+	}
+	if(ConfirmCount==-1)
+	{
+		F.submitStatus.value=1;
+		F.log_ch.value=1;
+		window.status=wSave;		
+		MM_showHideLayers('AutoNumber15','','hide');  	
+		F.submit();
+	}
+}
+
+function MKCheck(I)
+{
+	validatenum(I, 256, 0, aMaskCheck);
+}
+function minCheck(I)
+{
+	validatenum(I, 100000, 1, aMinuteNums2Check);
+}
+function secCheck(I)
+{
+	validatenum(I, 10000000, 1, aSecondNums3Check);
+}	
+
+function chSH()
+{
+	if (document.formedit_Network.mtu_auto_v6[0] && document.formedit_Network.mtu_auto_v6[0].checked == true)
+	{
+	    document.formedit_Network.bytesMTU_v6.disabled=true;
+	    if(document.formedit_Network.WAN1ConnectionType_v6)
+	    if(document.formedit_Network.WAN1ConnectionType_v6.selectedIndex==3)
+	    	document.formedit_Network.bytesMTU_v6.value="1460";
+	    else if(document.formedit_Network.WAN1ConnectionType_v6.selectedIndex==2)
+		document.formedit_Network.bytesMTU_v6.value="1492";
+	    else
+	        document.formedit_Network.bytesMTU_v6.value="1500";
+	}
+	else if ( document.formedit_Network.mtu_auto_v6[1] && document.formedit_Network.mtu_auto_v6[1].checked == true)
+	{
+	    document.formedit_Network.bytesMTU_v6.disabled=false;	
+	}
+}
+
+//================= End =================*/
+
+/***************************************************/
+/*												   */	
+/*      			  Begin of content    				   */
+/*												   */	
+/***************************************************/
+var ButtonType = "BackOkCancel";		// NULL/Refresh/OkCancel/BackOkCancel/ShowTableOkCancel
+var Savelink = "chSubmit(document.formedit_Network);";
+var Cancellink = ""; 
+var Backlink = "network1.htm";
+var helplink ='help_edit_network.html';
+var UserName = '<!--#nk_get DisplayOnly="nUser"-->';
+var head_width=170;
+
+function PrintContent()
+{
+	PrintBeginContent();
+	PrintWANSetup(0);
+	PrintEndContent();
+}
+
+function PrintWANSetup(hasUnderLine)
+{
+	PrintBeginBlock(1, "Edit WAN Connection");
+	PrintWANInterface();	
+	switch(document.formedit_Network.WAN1ConnectionType_v6.value)
+	{	
+		case '0': //Obtain an IP automatically
+			PrintWANDynamicIP();
+			PrintWANDNS();
+			break;
+		case '1': //Static IP
+			PrintWANSpecifyIP();
+			PrintWANDNS();
+			break;
+		case '2':
+			PrintWANUernamePassword();
+			break;
+		default:
+			break;
+	}
+	PrintMultipleMTU();
+	PrintEndBlock(1, 0,1);
+	PrintBeginBlock(0);
+	PrintSetLANPrefix();
+	PrintEndBlock(0);
+}
+
+function PrintSetLANPrefix()
+{
+	var i=parseInt(document.formedit_Network.WAN1ConnectionType_v6.selectedIndex);
+	document.write('<input type=hidden name=oldDHCPPD id=oldDHCPPD>');
+	document.write('<input type=hidden name=DHCPPD id=DHCPPD value=\'<!--#nk_get CheckboxSaveByInf="DHCPPD"-->\'>');
+	document.write('<table width="'+SmallLayoutwidth+'"  border='+Tableborder+' style="margin-top:15px;">'); 
+	if(i!=1)
+	{
+
+		document.write('<tr><td width="'+head_width+'">');
+		document.write('Enable DHCP-PD&nbsp;:&nbsp;');
+		document.write('</th><td>');
+		
+		document.write('<input type="checkbox" name="setDHCPPD" value="1" onClick="chSH5();" <!--#nk_get CheckboxStatusByInf="DHCPPD"-->>');
+		document.write('</td><td align="left" ></tr>');
+
+
+	}
+
+	document.write('<tr><td width="'+head_width+'">');
+	document.write('LAN IPv6 Address&nbsp;:&nbsp;');
+	document.write('</th><td colspan="2">');
+	document.write('<div name="ISP_prefix" id="ISP_prefix" style="display:none;" >');
+	document.write('<input type="text" id="ISPLANv6" name="ISPLANv6" maxlength="39" size="40" value="<!--#nk_get 1to1_HandleByInf="ISPLANv6"-->" disabled>/64');
+	document.write('</div>');
+	document.write('<div name="usr_prefix" id="usr_prefix" >');
+	document.write('<input type="text" name="LANv6" id="LANv6" maxlength="39" size="40" value=\'<!--#nk_get 1to1_HandleByInf="LANv6"-->\'>/64');
+	document.write('<input type="hidden" name="LANv6Prefix" id="LANv6Prefix" value="64">');
+	document.write('</div>');
+	document.write('</td></tr>');
+	document.write('</table>');
+
+	chSH5();
+}
+
+function PrintWANInterface()
+{
+	document.write('<table class="Setuptable" width="'+SmallLayoutwidth+'" border='+Tableborder+'>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Interface&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td><font color="#8e8e8e">');
+	if (document.formedit_Network.editInterface.value==1) document.write('WAN1');
+	else if (document.formedit_Network.editInterface.value==2) document.write('WAN2');
+	else if (document.formedit_Network.editInterface.value==3) document.write('WAN3');
+	else if (document.formedit_Network.editInterface.value==4) document.write('WAN4');
+	else if (document.formedit_Network.editInterface.value==5) document.write('WAN5');
+	else if (document.formedit_Network.editInterface.value==6) document.write('WAN6');
+	else if (document.formedit_Network.editInterface.value==7) document.write('WAN7');
+	document.write('</font></td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('WAN Connection Type&nbsp;:&nbsp;');	
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<select class="select" name="WAN1ConnectionType_v6" onChange="falseSubmit(this.form,0)" style="width:192px">');
+	document.write('<option value="0" <!--#nk_get SelectHandleByInf="WAN1ConnectionType_v6:0"-->>Obtain an IP automatically</option>');
+	document.write('<option value="1" <!--#nk_get SelectHandleByInf="WAN1ConnectionType_v6:1"-->>Static IP</option>');
+	document.write('<option value="2" <!--#nk_get SelectHandleByInf="WAN1ConnectionType_v6:2"-->>PPPoE</option>');
+	document.write('</select>');
+	document.write('</td>');
+	document.write('</tr>');
+}
+
+function PrintWANDynamicIP()
+{
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="hidden" name="setWan1DNS_v6" id="setWan1DNS_v6" value=\'<!--#nk_get CheckboxSaveByInf="setWan1DNS_v6"-->\'>');
+	document.write('<input type="checkbox" name="setWan1DNS_check" value="0" onClick="chsetDNS();" <!--#nk_get CheckboxStatusByInf="setWan1DNS_v6"-->>');	
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	document.write('Use the Following DNS Server Address');
+	document.write('</td>');
+	document.write('</tr>');	
+}
+
+function PrintWANUernamePassword()
+{
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Username&nbsp;:&nbsp;'); 
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="Wan1UserName" value=\'<!--#nk_get WanConnUserName=""-->\' size="32" maxlength="60"  onFocus="this.select();" onBlur="sTrim(this);">'); 		
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Password&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="password" name="Wan1PassWord" value=\'<!--#nk_get WanConnPasswd=""-->\' size="32" maxlength="60"  onFocus="this.select();" onBlur="sTrim(this);">'); 		
+	document.write('</td>');
+	document.write('</tr>');
+	if (document.formedit_Network.WAN1ConnectionType_v6.selectedIndex==2)
+	{
+		document.write('<tr>');
+		document.write('<td width="'+head_width+'">');
+		document.write('Service Name&nbsp;:&nbsp;'); 
+		document.write('</td>');
+		document.write('<td>');
+		document.write('<input type="text" name="Wan1Service" value=\'<!--#nk_get WanConnService=""-->\' size="32" maxlength="60"  onFocus="this.select();" onBlur="sTrim(this);">'); 		
+		document.write('</td>');
+		document.write('</tr>');
+	}
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="radio" name=Wan1ConnectAlive value="1" onClick="chConnectParm();" <!--#nk_get WanConnAlive="1"-->>');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	document.write('Connect on Demand : Max Idle Time');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('<input type="text" name=Wan1IdleTime value=\'<!--#nk_get WanConnMaxIdleTime=""-->\' size="5" maxlength="5" onFocus="this.select();" onBlur=" minCheck(this)" onKeypress="return Check_User_Input_Number(event)">'); 
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');	
+	document.write('Min.');
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('</td>');
+	document.write('<td>');	
+	document.write('<input type="radio" name=Wan1ConnectAlive value="2" onClick="chConnectParm();" <!--#nk_get WanConnAlive="2"-->>'); 
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('Keep Alive&nbsp;:&nbsp;Redial Period');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('<input type="text" name=Wan1RedialTime value=\'<!--#nk_get WanConnRedialTime=""-->\' size="7" maxlength="7" onFocus="this.select();" onBlur=" secCheck(this)" onKeypress="return Check_User_Input_Number(event)">');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('Sec.');
+	document.write('</td>');
+	document.write('</tr>');
+}
+
+function PrintWANDNS()
+{	
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('DNS Server (Required) 1&nbsp;:&nbsp;'); 
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="Wan1DnsA_v6" maxlength="39" size="40" value="<!--#nk_get 1to1_HandleByInf="Wan1DnsA_v6"-->" >');		
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('<img border="0" src="images/_blank.gif" width="137" height="1">');		
+	document.write('2&nbsp;:&nbsp;'); 
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="Wan1DnsB_v6" maxlength="39" size="40" value="<!--#nk_get 1to1_HandleByInf="Wan1DnsB_v6"-->">');	
+	document.write('</td>');
+	document.write('</tr>');
+}
+
+function PrintWANSpecifyIP()
+{
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Specify WAN IP Address&nbsp;:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="Wan1AliasIp_v6" maxlength="39" size="40" value="<!--#nk_get 1to1_HandleByInf="Wan1AliasIp_v6"-->">');		
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Prefix&nbsp;Length&nbsp;:&nbsp;'); 
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="Wan1AliasPrefix_v6" maxlength="15" size="20" onKeypress="return Check_User_Input_Number(event)" onBlur="CheckIPv6Prefix(this)" value="<!--#nk_get 1to1_HandleByInf="Wan1AliasPrefix_v6"-->">');	
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('Default Gateway Address&nbsp;:&nbsp;'); 
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="Wan1RouterIp_v6" maxlength="39" size="40" value="<!--#nk_get 1to1_HandleByInf="Wan1RouterIp_v6"-->">');		
+	document.write('</td>');
+	document.write('</tr>');
+}
+
+
+function PrintMultipleMTU()
+{
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('MTU&nbsp;:&nbsp;');
+	document.write('</td width="'+head_width+'">');
+	document.write('<td>');
+	document.write('<input type="radio" name="mtu_auto_v6" value="1" onClick="chSH()" <!--#nk_get RadioHandleByInf_MTU="mtu_auto_v6:1"-->>');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('Auto');
+	document.write('<img border="0" src="images/_blank.gif" width="50" height="1">');
+	document.write('<input type="radio" name="mtu_auto_v6" value="0" onClick="chSH()" <!--#nk_get RadioHandleByInf_MTU="mtu_auto_v6:0"-->>'); 
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('Manual');	
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('<input type="text" name="bytesMTU_v6" size="5" maxlength="5" onFocus="this.select();" onBlur="bytesCheck(this)" onKeypress="return Check_User_Input_Number(event)" value="<!--#nk_get RadioHandleByInf_MTU="bytesMTU_v6"-->">');
+	document.write('<img border="0" src="images/_blank.gif" width="8" height="1">');
+	document.write('bytes');
+	document.write('</td>');
+	document.write('</tr>');
+	document.write('</table>');	
+}
+
+//=============== End of content ===============*/
+</script>
+</head>
+<body class="mainframe" onLoad="Entryfunction();" onUnload="Leavefunction();" onResize="ChangeBgsize();">
+<script>PrintBackground();</script>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<form id="submitform" name="submitform"  method="post">
+	 	<!--#nk_get SetPageWidth="1"-->
+	</form>
+	<!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+	<script>
+         SetItemInit(foldersTree, 2, 1);		// Set Selected Node
+         initializeTree(foldersTree); 			// Draw Menu & Layout
+	</script>
+		
+	<form name="formedit_Network" method="post" action="edit_network6.htm">
+	<input type="hidden" name="page" value="edit_network6.htm"> 
+	<input type="hidden" name="submitStatus" value="0"> 	
+	<input type="hidden" name="aftersubmit" id=aftersubmit value='<!--#nk_get IfAfterSubmit=""-->'>
+	<input type="hidden" name="log_ch" value="0">
+	<input type="hidden" name="editInterface" value='<!--#nk_get WanEditInterface=""-->'>	
+	<input type="hidden" name="ipAddr_v6" value='<!--#nk_get DisplayOnly="ipAddr_v6"-->'>
+	<input type="hidden" name="ipAddr_v6pre" value='<!--#nk_get DisplayOnly="ipAddr_v6pre"-->'>
+	<input type="hidden" name="WAN1IP_v6" id="WAN1IP_v6" value='<!--#nk_get DisplayOnly="wan1IP_v6"-->'> 
+	<input type="hidden" name="WAN2IP_v6" id="WAN2IP_v6" value='<!--#nk_get DisplayOnly="wan2IP_v6"-->'> 
+	<input type="hidden" name="WAN3IP_v6" id="WAN3IP_v6" value='<!--#nk_get DisplayOnly="wan3IP_v6"-->'> 
+	<input type="hidden" name="WAN4IP_v6" id="WAN4IP_v6" value='<!--#nk_get DisplayOnly="wan4IP_v6"-->'> 
+	<input type="hidden" name="WAN5IP_v6" id="WAN5IP_v6" value='<!--#nk_get DisplayOnly="wan5IP_v6"-->'> 
+	<input type="hidden" name="WAN6IP_v6" id="WAN6IP_v6" value='<!--#nk_get DisplayOnly="wan6IP_v6"-->'> 
+	<input type="hidden" name="WAN7IP_v6" id="WAN7IP_v6" value='<!--#nk_get DisplayOnly="wan7IP_v6"-->'> 		
+	<input type="hidden" name="WAN1IP_v6prefix" id="WAN1IP_v6prefix" value='<!--#nk_get DisplayOnly="Wan1AliasPrefix_v61"-->'> 
+	<input type="hidden" name="WAN2IP_v6prefix" id="WAN2IP_v6prefix" value='<!--#nk_get DisplayOnly="Wan1AliasPrefix_v62"-->'> 
+	<input type="hidden" name="WAN3IP_v6prefix" id="WAN3IP_v6prefix" value='<!--#nk_get DisplayOnly="Wan1AliasPrefix_v63"-->'> 
+	<input type="hidden" name="WAN4IP_v6prefix" id="WAN4IP_v6prefix" value='<!--#nk_get DisplayOnly="Wan1AliasPrefix_v64"-->'> 
+	<input type="hidden" name="WAN5IP_v6prefix" id="WAN5IP_v6prefix" value='<!--#nk_get DisplayOnly="Wan1AliasPrefix_v65"-->'> 
+	<input type="hidden" name="WAN6IP_v6prefix" id="WAN6IP_v6prefix" value='<!--#nk_get DisplayOnly="Wan1AliasPrefix_v66"-->'> 
+	<input type="hidden" name="WAN7IP_v6prefix" id="WAN7IP_v6prefix" value='<!--#nk_get DisplayOnly="Wan1AliasPrefix_v67"-->'> 		
+	<input type="hidden" name="Wan1status_v6" id="Wan1status_v6" value='<!--#nk_get WanConnType_v6="1"-->'>
+	<input type="hidden" name="Wan2status_v6" id="Wan2status_v6" value='<!--#nk_get WanConnType_v6="2"-->'>
+	<input type="hidden" name="Wan3status_v6" id="Wan3status_v6" value='<!--#nk_get WanConnType_v6="3"-->'>
+	<input type="hidden" name="Wan4status_v6" id="Wan4status_v6" value='<!--#nk_get WanConnType_v6="4"-->'>
+	<input type="hidden" name="Wan5status_v6" id="Wan5status_v6" value='<!--#nk_get WanConnType_v6="5"-->'>
+	<input type="hidden" name="Wan6status_v6" name="Wan6status_v6" value='<!--#nk_get WanConnType_v6="6"-->'>
+	<input type="hidden" name="Wan7status_v6" id="Wan7status_v6" value='<!--#nk_get WanConnType_v6="7"-->'>
+	<input type="hidden" name="Wan8status_v6" id="Wan8status_v6" value='<!--#nk_get WanConnType_v6="8"-->'>
+	<input type=hidden name="PPPoEType" value='<!--#nk_get NK_Getvalue=""-->'>
+	<input type="hidden" name="WAN1IP_v6LANprefix" id="WAN1IP_v6LANprefix" value='<!--#nk_get DisplayOnly="LANv61"-->'> 
+	<input type="hidden" name="WAN2IP_v6LANprefix" id="WAN2IP_v6LANprefix" value='<!--#nk_get DisplayOnly="LANv62"-->'> 
+	<input type="hidden" name="WAN3IP_v6LANprefix" id="WAN3IP_v6LANprefix" value='<!--#nk_get DisplayOnly="LANv63"-->'> 
+	<input type="hidden" name="WAN4IP_v6LANprefix" id="WAN4IP_v6LANprefix" value='<!--#nk_get DisplayOnly="LANv64"-->'> 
+	<input type="hidden" name="WAN5IP_v6LANprefix" id="WAN5IP_v6LANprefix" value='<!--#nk_get DisplayOnly="LANv65"-->'> 
+	<input type="hidden" name="WAN6IP_v6LANprefix" id="WAN6IP_v6LANprefix" value='<!--#nk_get DisplayOnly="LANv66"-->'> 
+	<input type="hidden" name="WAN7IP_v6LANprefix" id="WAN7IP_v6LANprefix" value='<!--#nk_get DisplayOnly="LANv67"-->'> 	
+	<input type="hidden" name="wanNumbers_now" value='<!--#nk_get GetSystemNum="wan_port_num_now"-->'>
+	<script>PrintContent();</script>
+	<script>PrintRight();</script>      
+	<script>PrintBottom();</script>	
+</table>
+</body>
+</html>
+<!--#nk_get SysLogChange="edit_network6.htm"-->
+<!--#nk_get NetworkUpdate=""-->
+<!--#nk_get NetworkUpdate_v6=""-->

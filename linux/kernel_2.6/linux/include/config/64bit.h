@@ -1,0 +1,1 @@
+#define CONFIG_64BIT 1

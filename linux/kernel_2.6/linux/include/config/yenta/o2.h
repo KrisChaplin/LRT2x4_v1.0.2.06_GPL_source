@@ -1,0 +1,1 @@
+#define CONFIG_YENTA_O2 1

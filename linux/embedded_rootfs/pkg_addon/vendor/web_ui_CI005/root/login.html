@@ -1,0 +1,642 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Router</title>
+<style type="text/css">
+body{
+margin:0px;padding-top:30px;padding-bottom:30px;
+text-align: center;
+}
+.Logo{background-image:url(/images/logo.gif)!important;background:url();Filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/logo.gif');width:145px;height:20px;}
+.APName{font-family:Arial;font-size:20px;color:#FFFFFF;}
+.LoginFeild{background:black;filter:alpha(opacity:30);opacity:0.3;padding:0px;}
+.AuthFeildFont{font-family:Arial;font-size:13px;color:#ffffff;}
+.Copyright{font-family:Arial;font-weight:normal;font-size:11px;color:#cce1f7;}
+.STbutton{font-family:Arial;color:#FFFFFF;font-size:14px;font-weight:bold;width:120px;height:26px;vertical-align:middle;text-decoration:none;cursor:pointer;background:#70A0D4;border-style:solid;border-width:0px;}
+.page{z-index:-1;position:absolute;left:0;top:0;width:100%;}
+.tipsy{background:#ebebeb;padding:15px 20px;text-align:justify;font-family:Arial;font-size:13px;color:#af0000;}
+.tipsy-west{background-position:left center;}
+.a1{line-height:0px;border-top:14px solid;border-right:14px solid;border-bottom:14px solid;border-left:14px solid;border-color:transparent #ebebeb transparent transparent;}
+</style>
+<script src="/md5.js"></script>
+<script language="JavaScript">
+function changeHostHame(string)
+{
+	 var temp="";   
+	 
+	 for(var i=0;i<string.length;i++)
+	 {
+	     if ( string.charCodeAt(i) == 34 || string.charCodeAt(i) == 37 || string.charCodeAt(i) == 39 
+		   || string.charCodeAt(i) == 44 || string.charCodeAt(i) == 59 || string.charCodeAt(i) == 92 )
+		     temp+=string.charCodeAt(i);
+		 else
+			 temp+=string.charAt(i);		     
+	 }
+	return temp;	   
+}
+function SubmitPassword(e)
+{
+	var keynum;
+	var keychar;
+	var numcheck;
+
+	if(window.event) // IE
+		keynum = e.keyCode;
+	else if(e.which) // Netscape/Firefox/Opera
+		keynum = e.which;
+	if (keynum == 13)
+		SendPassword();
+}
+function SendPassword()
+{	
+	if(document.getElementById("password_expired").value=="1")
+	{
+		if (document.form_contents.current_password.value =="")
+		{
+			document.getElementById("expired").innerHTML = "The current password is empty.<br>Please input it!";
+			return ;
+		} 
+		if(document.form_contents.new_password.value =="")
+		{
+			document.getElementById("expired").innerHTML = "The new password is empty.<br>Please input it!";
+			return ;
+		}
+		if(document.form_contents.re_new_password.value =="")
+		{
+			document.getElementById("expired").innerHTML = "The confirm password is empty.<br>Please input it!";
+			return ;
+		}
+		if(document.form_contents.new_password.value != document.form_contents.re_new_password.value )
+		{
+			document.getElementById("expired").innerHTML = "The confirm password isn't match<br>with the new password.<br>Please correct it!";
+			return ;
+		} 
+		
+		var tmp;
+		document.form_contents.elements['current_password'].value=document.form_contents.elements['current_password'].value+document.form_contents.elements['auth_key'].value;
+		tmp=hex_md5(document.form_contents.elements['current_password'].value);
+		document.form_contents.current_password.value=tmp;
+
+		document.form_contents.elements['new_password'].value=document.form_contents.elements['new_password'].value+document.form_contents.elements['auth_key'].value;
+		tmp=hex_md5(document.form_contents.elements['new_password'].value);
+		document.form_contents.new_password.value=tmp;
+		document.form_contents.re_new_password.value="";
+	}
+	else
+	{
+	    if(document.form_contents.elements['username'].value == "" && document.form_contents.elements['password'].value == "" )
+	    {
+	        document.form_contents.elements['username'].select();
+	    	return;
+	    }
+
+	    var tmp;
+	    document.form_contents.elements['md5_old_pass'].value=document.form_contents.elements['password'].value+document.form_contents.elements['auth_key'].value;
+	    tmp=hex_md5(document.form_contents.elements['md5_old_pass'].value);
+	    document.form_contents.password.value=tmp;
+	    document.form_contents.md5_old_pass.value="";	
+	}
+	window.status="Login...";
+	document.form_contents.submit();
+}  
+
+function  PrintBackground()
+{
+	var BgWidth=0;
+	var BgHeight=0;
+	if (window.innerWidth)
+	{
+		BgHeight = window.innerHeight;
+		BgWidth = window.innerWidth;
+	}
+	else
+	{
+		BgHeight = document.body.clientHeight;
+		BgWidth = document.body.clientWidth;
+	}
+
+	document.write('<div class="page">');
+	document.write('<img border="0" id="loginbg" width="'+BgWidth+'" height="'+BgHeight+'" src="/images/login_backgroundgrad.jpg">');	
+	document.write('</div>');
+	
+}
+var error_type = 0;
+function ChangeBgsize()
+{
+	var obj;
+	var offset =0;
+	var BgWidth=0;
+	var BgHeight=0;
+	var TableWidth = 0;
+	var LastSpace = 0;
+	var MidSpace = 0;
+	if (window.innerWidth)
+	{
+		BgHeight = window.innerHeight;
+		BgWidth = window.innerWidth;
+	}
+	else
+	{
+		BgHeight = document.body.clientHeight;
+		BgWidth = document.body.clientWidth;
+	}
+
+	TableWidth = BgWidth - 40;
+	LastSpace = BgWidth - 763;
+	LastSpace = LastSpace / 3;
+	MidSpace = LastSpace;
+	if (BgWidth < 763)
+	{
+		TableWidth = 763;
+		offset = 56;
+		MidSpace = 0;
+		LastSpace = 0;
+		BgWidth = TableWidth + 40;
+	}
+	else	
+		TableWidth = "100%";
+
+	if (LastSpace < 1)
+		LastSpace = 0;
+	else if (LastSpace > 210)
+	{
+		MidSpace = 210;
+		LastSpace = (LastSpace * 3 - 210) / 2;
+	}	
+	
+	obj = document.getElementById("loginbg");	
+	if (obj)
+	{
+		obj.style.width= BgWidth;
+		obj.style.height= BgHeight;
+	}
+
+	obj = document.getElementById("main_content");	
+	if (obj)
+		obj.style.width= TableWidth;
+
+	ChangedivPosition();
+	Error_Status();
+}
+function ChangedivPosition()
+{
+	var obj;
+	var BgWidth;
+	var BgHeight;
+	var divleft;
+	var isIE = navigator.userAgent.search("MSIE") > -1; 
+	var msg_string=(window.location.href.split('status='))[1];
+	var error_string=(window.location.href.split('err='))[1];
+	
+	if (window.innerWidth)
+	{
+		BgHeight = window.innerHeight;
+		BgWidth = window.innerWidth;
+	}
+	else
+	{
+		BgHeight = document.body.clientHeight;
+		BgWidth = document.body.clientWidth;
+	}
+	
+	divleft = (BgWidth - 356) / 2;
+	obj=document.getElementById("AlertDiv");
+	if(obj)
+	{
+		obj.style.left = divleft;
+	}
+	
+	divleft = (BgWidth - 395) / 2;
+	if (divleft < 185)
+			divleft = 185;
+	obj=document.getElementById("blacktd");
+	if(obj)
+	{
+		obj.style.left = divleft;
+		if (isIE)
+		{
+			if (msg_string && msg_string.match('logout'))
+				obj.style.top="261";
+			else
+				obj.style.top="265";
+			
+			obj.style.height="224";
+		}
+		else
+		{
+			obj.style.top="259";
+			obj.style.height="220";
+		}
+	}
+	
+	divleft = divleft + 395;
+	obj=document.getElementById("error_message1");
+	if(obj)
+	{
+		obj.style.left = divleft-29;
+		if (isIE)
+			obj.style.top="341";
+		else
+			obj.style.top="331";
+	}
+	obj=document.getElementById("error_message2");
+	if(obj)
+	{
+		obj.style.left = divleft-29;
+		if (isIE)
+			obj.style.top="359";
+		else
+			obj.style.top="351";
+	}
+		
+	obj=document.getElementById("error");
+	if(obj)
+	{
+		obj.style.left = divleft-1;
+		if (isIE)
+		{
+			obj.style.top="322";
+		}
+		else
+		{
+			obj.style.top="313";
+		}
+	}
+		
+	obj=document.getElementById("expired");
+	if(obj)
+	{
+		obj.style.left = divleft-1;
+		if (isIE)
+		{
+			obj.style.top="343";
+		}
+		else
+		{
+			obj.style.top="333";
+		}
+	}
+			
+	obj = document.getElementById("copyright");	
+	if(obj)
+	{
+		divleft = (BgWidth - 395) / 2;
+		if (divleft < 185)
+			divleft = 185;
+		obj.style.left = divleft;
+		if ((!msg_string) && error_string && error_string.match('expired'))
+		{
+			if (isIE)
+			{
+				if(BgHeight < 584)
+				{
+					obj.style.top = 526;
+					obj.style.bottom = "";
+				}
+				else
+				{
+					obj.style.top = "";
+					obj.style.bottom = 30;	
+				}
+			}
+			else
+			{
+				if(BgHeight < 571)
+				{
+					obj.style.top = 513;
+					obj.style.bottom = "";
+				}
+				else
+				{
+					obj.style.top = "";
+					obj.style.bottom = 30;	
+				}
+			}
+		}
+		else
+		{
+			if (isIE)
+			{
+				if(BgHeight < 547)
+				{		
+					obj.style.top = 486;
+					obj.style.bottom = "";
+				}
+				else
+				{
+					obj.style.top = "";
+					obj.style.bottom = 30;	
+				}
+			}
+			else
+			{
+				if(BgHeight < 541)
+				{		
+					obj.style.top = 476;
+					obj.style.bottom = "";
+				}
+				else
+				{
+					obj.style.top = "";
+					obj.style.bottom = 30;	
+				}
+			}			
+		}
+	}
+}
+function PrintSTButton(Name, StrValue, ClickFun, type)
+{
+	document.write('<input type="button" class="STbutton" width="120" name="'+Name+'" id="'+Name+'" value="'+StrValue+'"');	
+	document.write(' onmouseover="ChangeButtonStyle(this,\'mouseover\')"');
+	document.write(' onmouseout="ChangeButtonStyle(this,\'mouseout\')"');
+	document.write(' onmousedown="ChangeButtonStyle(this,\'mousedown\')"');
+	document.write(' onmouseup="ChangeButtonStyle(this,\'mouseup\');this.blur();"');
+	document.write(' onClick="'+ClickFun+'"');	
+	document.write(' >');	
+}
+function ChangeButtonStyle(obj, EventType)
+{
+	if(EventType == 'mouseover')
+	{
+		obj.style.background ="#0068d9";
+	}
+	else if(EventType == 'mouseout')
+	{
+		window.status = "";
+		obj.style.background ="#70a0d4";
+	}
+	else if(EventType == 'mousedown')
+	{
+		obj.style.background ="#70a0d4";
+	}
+	else if(EventType == 'mouseup')
+	{
+		obj.style.background ="#0068d9";
+	}	
+}	
+
+function Error_Status()
+{
+	var msg_string=(window.location.href.split('status='))[1];
+	var error_string=(window.location.href.split('err='))[1];
+	var isIE = navigator.userAgent.search("MSIE") > -1; 
+
+	document.getElementById("error_message1").style.display = "none";
+	document.getElementById("error").style.display = "none";
+	document.getElementById("error_message2").style.display = "none";
+	document.getElementById("expired").style.display = "none";
+	document.getElementById("logout_message").style.display = "none";
+	document.getElementById("blankinfo").style.display = "";
+	
+	if (msg_string)
+	{
+		error_type = 0;	
+		if(msg_string.match('logout'))
+		{
+			document.getElementById("logout_message").style.display = "";
+			document.getElementById("blankinfo").style.display = "none";
+			document.getElementById("blacktd").style.top = document.getElementById("blacktd").offsetTop -32;
+			if(document.getElementById("ModelName").value == "LRT224")
+			{
+				var HTML = "You have logged out of the "+document.getElementById("ModelName").value+" Dual WAN Gigabit VPN Router.";
+			}
+			else
+			{
+				var HTML = "You have logged out of the "+document.getElementById("ModelName").value+"  Gigabit VPN Router.";
+			}
+			document.getElementById("logoutmessagetd").innerHTML = HTML;
+		}
+		else if(msg_string.match('timeout'))
+		{
+			document.getElementById("logout_message").style.display = "";
+			document.getElementById("blankinfo").style.display = "none";
+			document.getElementById("logoutmessagetd").innerHTML = "You have been logged out as a result of being inactive for 30 minutes. Use the fields to log in. Once logged in the last screen displayed before logout will be displayed."
+		}
+	}
+	else
+	{
+		if(error_string)
+		{
+		    error_type = 1;	
+			if (error_string.match('error'))
+			{
+				document.getElementById("error_message1").style.display = "";
+				document.getElementById("error").style.display = "";	
+			}
+		    else if (error_string.match('expired'))	
+			{
+				document.getElementById("error_message2").style.display = "";
+				document.getElementById("expired").style.display = "";	
+			}
+		}	
+		else
+		{
+		    error_type = 0;	
+		}	
+
+		if( error_string && error_string.match('expired'))
+		{
+			error_type = -1;
+			document.getElementById("change_password").style.display="";
+			if (isIE)
+				document.getElementById("blacktd").style.height=263;
+			else
+				document.getElementById("blacktd").style.height=257;
+			document.getElementById("nk_login").style.display="none";
+			document.form_contents.password_expired.value="1";
+		}
+	}
+	if(document.form_contents.username && (error_type != -1))
+	{
+		document.form_contents.username.focus();
+	}
+}
+
+function show_login()
+{
+	error_type = 0;
+	ChangeBgsize();
+	document.getElementById("error_message1").style.display="none";
+	document.getElementById("error_message2").style.display="none";
+	document.getElementById("error").style.display="none";
+	document.getElementById("expired").style.display="none";
+	document.getElementById("change_password").style.display="none";
+	document.getElementById("nk_login").style.display="";
+	document.getElementById("blacktd").style.height=220;
+	document.getElementById("password_expired").value="0";
+}
+
+</script>
+</head>
+<body onResize="ChangeBgsize()" onLoad="ChangeBgsize();" style="overflow:hidden;">
+<script>PrintBackground();</script>
+<div align="center" style="position:relative;z-index:1001;">
+<table id="main_content" width="100%" height="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+	<form name="form_contents" method="post" action="/cgi-bin/userLogin.cgi">
+	<input type="hidden" name="login" value="true">
+	<input type="hidden" name="portalname" value="CommonPortal">
+	<input type="hidden" name="password_expired" id="password_expired" value="0">
+	<input type="hidden" name="auth_key" value="1964300002">
+	<input type="hidden" name="md5_old_pass" value="">
+	<input type="hidden" id="ModelName" name="ModelName" value='<!--#ModelName-->'>
+	<tr>
+		<td align="center" valign="top">
+		<table width="395" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">	
+			<tr>
+			<td valign="top">
+				<table id="logout_message" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;background:#7d7d7d;display:none;">		
+				<tr>
+				<td valign="top" style="padding-top:12px;padding-right:15px;padding-left:15px">
+				<img border="0" src="/images/icon_info.gif" height="40">
+				</td>
+				<td id="logoutmessagetd" class ="AuthFeildFont" style="font-size:14px;padding-top:15px;padding-right:36px;padding-bottom:15px;text-align:justify;">
+				</td>
+				</tr>
+				</table>
+			<img id="blankinfo" border="0" src="/images/_blank.gif" width="395" height="94" style="display:;">
+			</td>
+			</tr>
+		
+			<tr>
+			<td style="padding-top:36px;">
+			<img border="0" src="/images/Linksys_logo_145x20.png" width="145" height="20">
+			</td>
+			</tr>
+			
+			<tr>
+			<td class="APName" style="padding-top:15px;">
+			<script>
+				if(document.getElementById("ModelName").value == "LRT224")
+				{
+					document.write(document.getElementById("ModelName").value+' Dual WAN Gigabit VPN Router');
+				}
+				else
+				{
+					document.write(document.getElementById("ModelName").value+' Gigabit VPN Router');
+				}
+				
+			</script>
+			</td>
+			</tr>
+			
+			<tr height="35">
+			<td>
+			<img border="0" src="/images/_blank.gif" width="145" height="1">
+			</td>
+			</tr>
+		
+			<tr>
+			<td style="padding:30px;">
+				<table id="nk_login" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;display:;">		
+					<tr><td class="AuthFeildFont" colspan="2" style="font-size:16px;">AUTHENTICATION REQUIRED</td></tr>
+					<tr>
+					<td class="AuthFeildFont" align="right" style="padding-top:40px;padding-bottom:15px;">
+					Username:<img border="0" src="/images/_blank.gif" width="20" height="1">
+					</td>
+					<td align="right" style="padding-top:40px;padding-bottom:15px;">
+					<input type="text" name="username" maxlength="64" style="font-family:Arial;font-size:13px;color:#303030;width:252px;">
+					</a>
+					</td>
+					</tr>
+					<tr>
+					<td class="AuthFeildFont" style="padding-bottom:20px;">
+					Password:<img border="0" src="/images/_blank.gif" width="20" height="1">
+					</td>
+					<td align="right" style="padding-bottom:20px;">
+					<input type="password" name="password" maxlength="64" style="font-family:Arial;font-size:13px;color:#303030;width:252px;" onKeypress="SubmitPassword(event);">
+					</td>
+					</tr>
+					<tr><td colspan="2" align="right">
+					<script>PrintSTButton("Login", "  Log In  ", "SendPassword();", "submit");</script>
+					</td>
+					</tr>
+				</table>
+				
+				<table id="change_password" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;display:none;">		
+					<tr><td class="AuthFeildFont" colspan="2" style="font-size:16px;">AUTHENTICATION REQUIRED</td></tr>
+					<tr>					
+					<td class="AuthFeildFont" align="right" style="padding-top:40px;padding-bottom:15px;">
+					Current Password:<img border="0" src="/images/_blank.gif" width="20" height="1">
+					</td>
+					<td align="right" style="padding-top:40px;padding-bottom:15px;">
+					<input type="password" name="current_password" maxlength="64" style="font-family:Arial;font-size:13px;color:#303030;width:170px;" onKeypress="SubmitPassword(event);"></td>
+					</tr>
+					<tr>
+					<td class="AuthFeildFont" align="right" style="padding-top:0px;padding-bottom:15px;">
+					New Password:<img border="0" src="/images/_blank.gif" width="20" height="1">
+					</td>
+					<td align="right" style="padding-top:0px;padding-bottom:15px;">
+					<input type="password" name="new_password" maxlength="64" style="font-family:Arial;font-size:13px;color:#303030;width:170px;" onKeypress="SubmitPassword(event);">
+					</td>
+					</tr>
+					<tr>
+					<td class="AuthFeildFont" align="right" style="padding-top:0px;padding-bottom:20px;">
+					Re-enter New Password:<img border="0" src="/images/_blank.gif" width="20" height="1">
+					</td>
+					<td align="right" style="padding-top:0px;padding-bottom:20px;">
+					<input type="password" name="re_new_password" maxlength="64" style="font-family:Arial;font-size:13px;color:#303030;width:170px;" onKeypress="SubmitPassword(event);">
+					</td>
+					</tr>
+					<tr>
+					<td class="AuthFeildFont" colspan="2" align="right">
+					<script>
+						PrintSTButton("Save", "  Save  ", "SendPassword();", "", "submit");
+						document.write('<img border="0" src="/images/_blank.gif" width="15" height="1">');
+						PrintSTButton("Cancel", " Cancel ", "show_login();");
+					</script>
+					</td>	
+					</tr>
+				</table>
+			</td>
+			</tr>	
+		</table>
+		
+		</td>
+		</tr>	
+		</table>
+		<div id="error_message1" class="a1" style="position:absolute;z-index:100001;top:310px;left:887px;visibility:visible;display:;"></div>
+		<div id="error" class="tipsy tipsy-west" style="position:absolute;z-index:100000;top:291px;left:918px;overflow:visible;visibility:visible;display:;">
+		Invalid username or password.<br>Please try again.
+		</div>
+		<div id="error_message2" class="a1" style="position:absolute;z-index:100001;top:333px;left:887px;visibility:visible;display:;"></div>
+		<div id="expired" class="tipsy tipsy-west" style="position:absolute;z-index:100000;top:315px;left:918px;overflow:visible;visibility:visible;display:none;">
+		The old password has expired.<br>Please change the password.
+		</div>
+		<script>ChangedivPosition();</script>
+		</td>
+	</tr>
+	</form>
+</table>
+</div>
+<script>
+	var obj;
+	var BgWidth;
+	var BgHeight;
+	var divleft;
+	
+	if (window.innerWidth)
+	{
+		BgHeight = window.innerHeight;
+		BgWidth = window.innerWidth;
+	}
+	else
+	{
+		BgHeight = document.body.clientHeight;
+		BgWidth = document.body.clientWidth;
+	}
+	
+	divleft = (BgWidth - 395) / 2;
+	document.write('<div id="blacktd" class="LoginFeild" style="position:absolute;z-index:1000;left:'+divleft+'px;visibility:visible;display:block;width:395px;height:220px;"></div>');
+	
+	if(BgHeight < 515)
+		document.write('<div id="copyright" class="Copyright" style="text-align:justify;position:absolute;z-index:10000;width:395px;left:'+divleft+'px;top:455px;">');
+	else
+		document.write('<div id="copyright" class="Copyright" style="text-align:justify;position:absolute;z-index:10000;width:395px;left:'+divleft+'px;bottom:30px;">');
+</script>
+	&copy; 2013 Belkin International, Inc. and/or its subsidiaries and affiliates, including Linksys, LLC. All rights reserved.
+</div>
+</body>
+</html>
+

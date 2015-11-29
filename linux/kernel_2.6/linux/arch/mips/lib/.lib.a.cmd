@@ -1,0 +1,1 @@
+cmd_arch/mips/lib/lib.a := rm -f arch/mips/lib/lib.a; mips64-octeon-linux-gnu-ar  rcs arch/mips/lib/lib.a arch/mips/lib/csum_partial_copy.o arch/mips/lib/iomap.o arch/mips/lib/memcpy.o arch/mips/lib/promlib.o arch/mips/lib/strlen_user.o arch/mips/lib/strncpy_user.o arch/mips/lib/strnlen_user.o arch/mips/lib/uncached.o

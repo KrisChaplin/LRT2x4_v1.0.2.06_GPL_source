@@ -1,0 +1,370 @@
+<!--#nk_get SetPageWidth="0"-->
+<!--#nk_get EzlinkVPNInitiatorSave=""-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Web Management</title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<script  language="JavaScript">
+/***************************************************/
+/*												     */	
+/*      		Begin of content's JavaScript function    	    */
+/*												    */	
+/***************************************************/
+var lanip = '<!--#nk_get DisplayOnly="ipAddr"-->';
+var lanmask = '<!--#nk_get DisplayOnly="netMask"-->';
+
+String.prototype.trim=function(){return this.replace(/^\s+|\s+$/,'');}; // for IE Browser
+
+function Entryfunction()
+{
+	ChangeBgsize();
+	
+	if (document.formezlinkvpn_client.RouteIP)
+	{
+		if (document.formezlinkvpn_client.RouteIP.value == "")
+			document.formezlinkvpn_client.RouteIP.value = lanip.trim();
+	}
+
+	chAfterSubmit();
+}
+
+function Leavefunction()
+{
+	chLeave();
+}
+
+function CancelSubmit(F)
+{
+	document.location.href="ezlinkvpn_summary.htm";
+}
+
+function chSubmit(F)
+{
+
+	if (F.Username.value == "")
+	{
+		top.AlertMsg("Alert", aUserName);
+		  F.Username.select();
+		return;
+	}
+
+	if (F.Password.value == "")
+	{
+		top.AlertMsg("Alert", aPassword);
+		  F.Password.select();
+		return;
+	}
+
+	if(F.PrimaryIP.value=="")
+	{
+		top.AlertMsg("Alert", aIPAddressRSW);
+		F.PrimaryIP.select();
+		return -1;	
+	}
+	else if (F.PrimaryIP.value=="0.0.0.0")	 
+	{		
+		top.AlertMsg("Alert", aIPRSWCheck);
+		F.PrimaryIP.select();	
+		return -1;		
+	}
+
+	if (F.SecondaryIP.value=="0.0.0.0")	 
+	{		
+		top.AlertMsg("Alert", aIPRSWCheck);
+		F.SecondaryIP.select();	
+		return -1;		
+	}
+
+	if(F.RouteIP.value=="")
+	{
+		top.AlertMsg("Alert", aIPAddress);
+		F.RouteIP.select();
+		return -1;	
+	}
+	
+	if(IPCheck(F.RouteIP, 0, 254, 0, 0, 0)<0)
+	{
+		F.RouteIP.select();
+		return;
+	}
+
+	F.chTunnelStatus.value = "0";
+	if(F.tunnelStatus.checked == true){
+		  F.chTunnelStatus.value = "1"
+	}
+
+	F.chKeepEnable.value = "NO";
+	if(F.KeepAlive.checked == true){
+		  F.chKeepEnable.value = "YES"
+	}
+
+	if (F.editStatus.value == "1")
+		F.log_ch.value=1;
+	F.UIchange.value=1;
+
+	F.submitStatus.value=1;
+	window.status=wSave;
+	F.submit();
+}
+
+function redirect_url()
+{
+	window.location.replace("ezlinkvpn_summary.htm");
+}
+
+function chAfterSubmit()
+{  
+	if (parseInt(document.formezlinkvpn_client.afterSubmit.value,10) == 100)
+	{
+		MM_showHideLayers('AutoNumber15','','hide');
+		setTimeout("redirect_url()", 1000);		
+	}
+	else
+	{
+		if (parseInt(document.formezlinkvpn_client.afterSubmit.value,10) == 1)
+			top.AlertMsg("Alert", aUserNameAlready);	
+		EnableInputColumn(document.formezlinkvpn_client);
+	}	
+}
+
+function EnableInputColumn(F)
+{
+	if (F.editStatus.value == "1")
+	{
+		F.tunnelStatus.disabled = false;
+	}
+	else
+	{
+		F.tunnelStatus.checked = true;
+		F.tunnelStatus.disabled = true;
+	}
+	F.Username.disabled = false;
+	F.Username.style.background = "#FFF";
+	F.Password.disabled = false;
+	F.Password.style.background = "#FFF";
+	F.PrimaryIP.disabled = false;
+	F.PrimaryIP.style.background = "#FFF";
+	F.SecondaryIP.disabled = false;
+	F.SecondaryIP.style.background = "#FFF";	
+	F.port_number.disabled = false;
+	F.KeepAlive.disabled = false;	
+	F.RouteIP.disabled = false;
+	F.RouteIP.style.background = "#FFF";
+	F.RouteNetmask.disabled = false;
+}
+
+function PageSetStatus(enable, account, passwd, PrimaryIP, SecondaryIP, port, keep, RouteIP, RouteNetmask)
+{
+	if(enable=="1"){
+		  document.formezlinkvpn_client.tunnelStatus.checked = true;
+	}
+
+	if(keep=="YES"){
+		  document.formezlinkvpn_client.KeepAlive.checked = true;
+	}
+
+	document.formezlinkvpn_client.Username.value = account;
+	document.formezlinkvpn_client.Password.value =  passwd;
+
+	document.formezlinkvpn_client.PrimaryIP.value = PrimaryIP;
+	document.formezlinkvpn_client.SecondaryIP.value =  SecondaryIP;
+	document.formezlinkvpn_client.RouteIP.value =  RouteIP;
+
+	for(i=0; i<document.formezlinkvpn_client.port_number.length ;i++)
+	{
+		if(document.formezlinkvpn_client.port_number.options[i].value==port)
+		{
+			document.formezlinkvpn_client.port_number.options[i].selected=true;
+			break;
+		}
+	}
+	for(i=0; i<document.formezlinkvpn_client.RouteNetmask.length ;i++)
+	{
+		if(document.formezlinkvpn_client.RouteNetmask.options[i].value==RouteNetmask)
+		{
+			document.formezlinkvpn_client.RouteNetmask.options[i].selected=true;
+			break;
+		}
+	}
+}
+
+//================= End =================*/
+
+/***************************************************/
+/*												   */	
+/*      			  Begin of content    				   */
+/*												   */	
+/***************************************************/
+var ButtonType = "OkCancel";		// NULL/Refresh/OkCancel/BackOkCancel/ShowTableOkCancel
+var Savelink = "chSubmit(document.formezlinkvpn_client);";
+var Cancellink = "CancelSubmit(document.formezlinkvpn_client);"; 
+var Backlink = "";
+var helplink ='help_easylinkvpn_initiator.html';
+var UserName = '<!--#nk_get DisplayOnly="nUser"-->';
+var FixedTableWidth = 640;
+var head_width=200;
+	
+function PrintContent()
+{
+	PrintBeginContent();
+	PrintInitiatorSetting(0);
+	PrintEndContent();
+	<!--#nk_get EzlinkVPNInitiator="setStatus" -->
+}
+
+function PrintInitiatorSetting(hasUnderLine)
+{
+	PrintBeginBlock(1, "Edit Account");
+	document.write('<table class="Setuptable" width="'+FixedTableWidth+'" border='+Tableborder+'>');
+	document.write('<tr>');
+	document.write('<td width="'+head_width+'">');
+	document.write('VPN Role:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('Initiator');
+	document.write('</td>');
+	document.write('</tr>');
+
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('Enable:&nbsp;');
+	document.write('</td>');
+	document.write('<td valign="middle">');
+	document.write('<input type="hidden" name="TunnelNo" value="<!--#nk_get EzlinkVPNInitiator="tNo"-->">');
+	document.write('<input type="checkbox" name="tunnelStatus" value="1" >');
+	document.write('</td>');
+	document.write('</tr>');
+
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('Account Name:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="Username" id="Username" maxlength="64" value="" onFocus="this.select();" onBlur="sTrim(this);" style="background:#CCC;width:200px" disabled>');
+	document.write('</td>');
+	document.write('</tr>');
+
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('Password:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="Password" name="Password" maxlength="64" value=""  onFocus="this.select();" onBlur="sTrim(this);" style="background:#CCC;width:200px" disabled>');
+	document.write('</td>');
+	document.write('</tr>');
+
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('Primary Server:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="PrimaryIP" maxlength="64" value=""   onFocus="this.select();" onBlur="sTrim(this);" style="background:#CCC;width:200px" disabled>');
+	document.write('&nbsp;(Name or IPv4 Address) </td>');
+	document.write('</tr>');
+
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('Secondary Server:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="SecondaryIP" maxlength="64" value=""  onFocus="this.select();" onBlur="sTrim(this);" style="background:#CCC;width:200px" disabled>');
+	document.write('&nbsp;(Name or IPv4 Address)</td>');
+	document.write('</tr>');
+
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('Authentication Port:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<select class="Select" name="port_number" style="width:200px" disabled>');
+	document.write('<option value="10443">10443</option>');
+	document.write('<option value="60443">60443</option>');
+	document.write('</select>');
+	document.write('</td>');
+	document.write('</tr>');
+
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('Keep Alive:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="checkbox" name="KeepAlive" value="1" >');
+	document.write('</td>');
+	document.write('</tr>');
+
+	document.write('<tr>');
+	document.write('<td valign="middle">');
+	document.write('Local Security Group Type:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('Subnet');
+	document.write('</td>');
+	document.write('</tr>');
+
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('IP Address:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<input type="text" name="RouteIP" maxlength="64" value=""  onFocus="this.select();" onBlur="sTrim(this);" style="background:#CCC;width:200px" disabled>');
+	document.write('</td>');
+	document.write('</tr>');
+
+	document.write('<tr>');
+	document.write('<td>');
+	document.write('Subnet Mask:&nbsp;');
+	document.write('</td>');
+	document.write('<td>');
+	document.write('<select class="Select" name="RouteNetmask" style="width:200px" disabled>');
+	document.write('<option value="255.255.255.0">255.255.255.0</option>');
+	document.write('<option value="255.255.255.128">255.255.255.128</option>');
+	document.write('<option value="255.255.255.192">255.255.255.192</option>');
+	document.write('<option value="255.255.255.224">255.255.255.224</option>');
+	document.write('<option value="255.255.255.240">255.255.255.240</option>');
+	document.write('<option value="255.255.255.248">255.255.255.248</option>');
+	document.write('<option value="255.255.255.252">255.255.255.252</option>');
+	document.write('<option value="255.255.0.0">255.255.0.0</option>');
+	document.write('</select>');
+	document.write('</td>');
+	document.write('</tr>');	
+	document.write('</table>');
+	PrintEndBlock(hasUnderLine, 0, 1);
+}
+
+//=============== End of content ===============*/
+</script>
+</head>
+<body class="mainframe" onLoad="Entryfunction();" onUnload="Leavefunction();" onResize="ChangeBgsize();">
+<script>PrintBackground();</script>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<form id="submitform" name="submitform"  method="post">
+	 	<!--#nk_get SetPageWidth="1"-->
+	</form>
+	<!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+	<script>
+         SetItemInit(foldersTree, 10, 3);		// Set Selected Node
+         initializeTree(foldersTree); 			// Draw Menu & Layout
+	</script>
+		
+	<form name="formezlinkvpn_client" method="post" action="ezlinkvpn_initiator.htm">
+	<input type="hidden" name="page" value="ezlinkvpn_initiator.htm">
+	<input type="hidden" name="submitStatus" value="0">
+	<input type="hidden" name="log_ch" value="0">         
+	<input type="hidden" name="UIchange" value="0">
+	<input type="hidden" name="editStatus" value='<!--#nk_get EzlinkVPNInitiator="isEdit"-->'>
+	<input type="hidden" name="afterSubmit" value='<!--#nk_get handle_tags="wzAfterSubmit"-->'>
+	<input type="hidden" name="chTunnelStatus" value="">
+	<input type="hidden" name="chKeepEnable" value="">
+	<script>PrintContent();</script>
+	<script>PrintRight();</script>
+	<script>PrintBottom();</script>	
+</table>
+</body>
+</html>
+<!--#nk_get SysLogChange="ezlinkvpn_initiator.htm"-->
+<!--#nk_get EzlinkVPNInitiator="clearEditNo"-->

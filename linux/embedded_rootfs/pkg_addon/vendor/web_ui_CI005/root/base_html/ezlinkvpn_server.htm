@@ -1,0 +1,135 @@
+<!--#nk_get EzlinkVPNServerSettingSave=""-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="Pragma" content="No-Cache">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>EasyLink VPN Server </title>
+<link type="text/css" rel="stylesheet" href="nk.css">
+<!--#nk_get JavaScript="nk:0"--><script src="nk.js"></script><!--#nk_get JavaScript="nk:1"-->
+<!--#nk_get JavaScript="lg:0"--><script src="lg.js"></script><!--#nk_get JavaScript="lg:1"-->
+<!--#nk_get JavaScript="menu:0"--><script src="menu.js"></script><!--#nk_get JavaScript="menu:1"-->
+<script language=JavaScript>
+
+var port_number = '<!--#nk_get DisplayOnly="EzlinkVPNPort"-->';
+
+String.prototype.trim=function(){return this.replace(/^\s+|\s+$/,'');}; // for IE Browser
+
+function Entryfunction()
+{
+	if (document.formezlinkserver.port_number)
+	{
+		if (port_number.trim() == "")
+		{
+			port_number = 10443;
+		}	
+			
+		for (var i=0; i < document.formezlinkserver.port_number.length; i++)
+		{
+			if (document.formezlinkserver.port_number.options[i].value==port_number.trim())
+			{
+				document.formezlinkserver.port_number.options[i].selected=true;
+				break;
+			}
+		}		
+	}
+}
+
+function Leavefunction()
+{
+}
+
+function chSubmit(F)
+{
+	if(opener)
+		opener.closeService();
+	
+	F.submitStatus.value=1;
+	window.status=wSave;
+	F.submit();
+}
+
+/************************************************************************/
+var ButtonType = "OkCancelClose";
+var Savelink = "chSubmit(document.formezlinkserver);";
+var Cancellink = ""; 
+/************************************************************************/
+</script>
+</head>
+<body class="popwindow" onResize="ChangedivPosition();" onLoad="Entryfunction();">
+<div id="maskAlertDiv" class="divAll">&nbsp;</div>
+<div id="AlertDiv"  style="display:none;position: absolute; width: 356px; top: 30%; left: 68px; background: none repeat scroll 0% 0% white; z-index: 1112;"></div>
+<form name="formezlinkserver" method="post" action="ezlinkvpn_server.htm">
+<input type="hidden" name="submitStatus" value="0">
+
+  <table class="pop_list" border="0" width="100%" align="center" cellspacing = "0" cellpadding ="0">  	
+    <tr> 
+      <td colspan="4" height="10"></td>
+    </tr>      
+    <tr> 
+      <td width="10"></td>
+      <td valign="middle" width="104">Enable : </td>
+      <td valign="top">
+        <input type="checkbox" name="ServerStatus" value="1" <!--#nk_get CheckboxStatus="EzlinkVPNEnabled"-->>
+      </td>
+      <td width="10"></td>      
+    </tr>   
+    <tr> 
+      <td colspan="4" height="10"></td>
+    </tr>
+    <tr> 
+      <td></td>
+      <td valign="middle" height="22">Protocol : </td>
+	<td align="left"><!--#nk_get EzlinkVPNTunnel="Protocol"--></td>
+      <td></td> 
+    </tr>   
+    <tr> 
+      <td colspan="4" height="10"></td>
+    </tr>
+    <tr> 
+       <td></td> 
+      <td valign="middle" height="22">Port : </td>
+      <td align="left">
+        <select class="Select" name="port_number">
+          <option value="10443">10443</option>
+          <option value="60443">60443</option>
+        </select>
+      </td>
+      <td></td> 
+    </tr>   
+    <tr> 
+      <td colspan="4" height="10"></td>
+    </tr>
+    <tr> 
+      <td></td>
+      <td valign="middle" height="22">Encryption : </td>
+	<td align="left"><!--#nk_get EzlinkVPNTunnel="Encryption"--></td>
+      <td></td> 
+    </tr>   
+    <tr> 
+      <td colspan="4" height="10"></td>
+    </tr>
+    <tr> 
+      <td></td>
+      <td valign="middle" height="22">Authentication : </td>
+	<td align="left"><!--#nk_get EzlinkVPNTunnel="Authentication"--></td>
+      <td></td> 
+    </tr>   
+    <tr> 
+      <td colspan="4" height="10"></td>
+    </tr>
+    <tr> 
+      <td></td>
+      <td valign="middle" height="22">DH Group : </td>
+	<td align="left"><!--#nk_get EzlinkVPNTunnel="DH_Grp"--></td>
+      <td></td> 
+    </tr>   
+    <tr> 
+      <td colspan="4" height="10"></td>
+    </tr>
+  </table>
+  <script>PrintEndPopwindow();</script>
+</form>     
+</body>
+</html>
+<!--#nk_get SysLogChange="ezlinkvpn_server.htm"-->

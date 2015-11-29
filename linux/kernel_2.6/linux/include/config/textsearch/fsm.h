@@ -1,0 +1,1 @@
+#define CONFIG_TEXTSEARCH_FSM 1

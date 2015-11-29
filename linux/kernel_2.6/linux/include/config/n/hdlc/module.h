@@ -1,0 +1,1 @@
+#define CONFIG_N_HDLC_MODULE 1

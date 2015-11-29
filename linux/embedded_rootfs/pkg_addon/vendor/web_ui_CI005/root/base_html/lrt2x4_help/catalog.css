@@ -1,0 +1,847 @@
+b.cBold
+{
+  font-weight: bold
+}
+code.cCode
+{
+}
+em.cEmphasis
+{
+  font-style: Arial
+}
+code.cExBold
+{
+  font-weight: bold
+}
+code.cExItalic
+{
+}
+sub.cSubscript
+{
+  vertical-align: sub
+}
+sup.cSuperscript
+{
+  vertical-align: super
+}
+sup.cSuperscriptBold
+{
+  font-weight: bold;
+  vertical-align: super
+}
+u.cUnderline
+{
+  text-decoration: underline
+}
+
+p.pBody
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pBodyAutonumNoRule
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pBodyAutonumRel
+{
+  color: Black;
+  font-family: Arial;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pBodyAutonumRule
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pBodyBold
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pBodyCode
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pBodyRelative
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pCaution
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pCellBody
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pCellHeading
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 0em;
+  margin-left: 0em;
+  margin-right: 0em;
+  margin-top: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pCellHeading2
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+blockquote.pCmdEnv
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 1%;
+  margin-left: 3em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: -1em;
+  text-transform: none
+}
+blockquote.pCmdEnvNoBold
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 3em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: -1em;
+  text-transform: none
+}
+p.pDropDownClosed
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pDropDownOpen
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pErrorMsg
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pErrorMsgNoText
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pFigureCaption
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+h1.pGlossaryTitle
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+h1.pHeading1
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+h2.pHeading2
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+h3.pHeading3
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+h4.pHeading4
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+h5.pHeading5
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+h6.pHeading6
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pIndented1
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 2.5em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pIndented2
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 5em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pIndented3
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 7.5em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pIndented4
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 10em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pIndented5
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 12.5em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pIndentedRelative
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 2.5em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pListBodyLevel1
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pListBodyLevel2
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pListBodyLevel3
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pListNote1
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pNoteBullet
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6pt;
+  margin-left: 0em;
+  margin-right: 0em;
+  margin-top: 6pt;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pPopup
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pPopupAppend
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pPopupOnly
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pPopupOnlyAppend
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pPreformatted
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0em;
+  margin-left: 0em;
+  margin-right: 0em;
+  margin-top: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pPreformattedRelative
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0em;
+  margin-left: 0em;
+  margin-right: 0em;
+  margin-top: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pPreformattedRelative2
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0em;
+  margin-left: 0em;
+  margin-right: 0em;
+  margin-top: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pPreformattedRelative3
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0em;
+  margin-left: 0em;
+  margin-right: 0em;
+  margin-top: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+blockquote.pQuotation
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 2.5em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pRelatedTopic
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pRelatedTopicOnly
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pSmartList0
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6pt;
+  margin-left: 0em;
+  margin-right: 0em;
+  margin-top: 6pt;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pSmartList1
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6pt;
+  margin-left: 0em;
+  margin-right: 0em;
+  margin-top: 6pt;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pSmartList2
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6pt;
+  margin-left: 0em;
+  margin-right: 0em;
+  margin-top: 6pt;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pSmartList3
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6pt;
+  margin-left: 0em;
+  margin-right: 0em;
+  margin-top: 6pt;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pSmartList4
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6pt;
+  margin-left: 0em;
+  margin-right: 0em;
+  margin-top: 6pt;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pSmartList5
+{
+  color: Black;
+  font-family: Arial;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 6pt;
+  margin-left: 0em;
+  margin-right: 0em;
+  margin-top: 6pt;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pTableFootnote
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 0em;
+  margin-left: 0em;
+  margin-right: 0em;
+  margin-top: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+div.pTableTitle
+{
+  color: #455A73;
+  font-size: small;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+h1.pTitle
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+	vertical-align:middle;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pWarning
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: normal;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+p.pWarnTrans
+{
+  color: Black;
+  font-variant: normal;
+  font-weight: bold;
+  margin-bottom: 1%;
+  margin-left: 0em;
+  margin-right: 0em;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0em;
+  text-transform: none
+}
+
+
+table
+{
+	border-width:1px;
+	word-spacing:1px;
+	border-collapse:collapse;
+	vertical-align:top;
+	border:1px solid;
+	width:100%
+}
+th{
+	font-family: Arial;
+	font-size: 12px;
+	font-weight: bold;
+	border:1px solid;
+	height:22px;
+	vertical-align:  top;
+	padding:1px 0px 0px 8px!important;padding:1px 8px 9px 2px;
+	text-align: left;
+	text-decoration: none;
+	text-indent: 0em;
+	text-transform: none;
+	width:25%;
+	}
+	
+td {
+	font-family: Arial;
+	font-size: 12px;
+	font-weight: normal;
+	vertical-align:  top;
+	height:22px;
+	color: #000000;
+	padding:1px 0px 0px 8px!important;padding:1px 8px 9px 2px;
+	border:1px solid;
+	text-align: left;
+	text-decoration: none;
+	text-indent: 0em;
+	text-transform: none
+}

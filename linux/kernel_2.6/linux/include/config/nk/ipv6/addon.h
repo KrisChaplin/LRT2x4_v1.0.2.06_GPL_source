@@ -1,0 +1,1 @@
+#define CONFIG_NK_IPV6_ADDON 1
